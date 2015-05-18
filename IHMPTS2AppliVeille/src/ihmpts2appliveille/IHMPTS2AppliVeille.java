@@ -5,6 +5,8 @@
  */
 package ihmpts2appliveille;
 
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author x1QG1x
@@ -15,7 +17,14 @@ public class IHMPTS2AppliVeille {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        SwingUtilities.invokeLater(new Runnable(){
+
+            @Override
+            public void run() {
+                MainWindow mw = new MainWindow();
+            }
+        
+        });
     }
     
 }
