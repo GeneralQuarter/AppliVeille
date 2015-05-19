@@ -7,7 +7,6 @@ package ihmpts2appliveille;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -19,6 +18,9 @@ public class MainSession extends JPanel{
     private MainWindow mw;
     private Messagerie msa;
     private ActualiteArticleView aaw;
+    private ActualiteArticleView aawArticle;
+    
+    private JPanel currentMainContent;
     
     private EcouteurBouton ec;
     
@@ -41,12 +43,35 @@ public class MainSession extends JPanel{
         // -- Setup Messagerie --
         msa = new Messagerie(this);
         this.add(msa, BorderLayout.EAST);
+        
+        // -- Setup MainContent --
         aaw = new ActualiteArticleView(this, "Actualités");
-        this.add(aaw, BorderLayout.CENTER);
+        aawArticle = new ActualiteArticleView(this, "Articles");
+        
+        currentMainContent = null;
+        this.changeMainContent(aaw);
     }
     
-    public MainWindow getMainWindow()
+    public void changeMainContent(JPanel content)
     {
-        return mw;
+        if(currentMainContent != null)
+            this.remove(currentMainContent);
+        currentMainContent = content;
+        this.add(currentMainContent, BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
+    }
+    
+    public void goTo(String action)
+    {
+        switch(action)
+        {
+            case "ACCUEIL":
+                this.changeMainContent(aaw);
+                break;
+            case "Tous les articles":
+                this.changeMainContent(aawArticle);
+                break;
+        }
     }
 }

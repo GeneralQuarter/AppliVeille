@@ -7,13 +7,11 @@ package ihmpts2appliveille;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -71,7 +69,8 @@ public class MainMenuBar extends JMenuBar{
         // -- Init Sub Menus --
         newArticleSubMenu = new JMenuItem("Nouvel article...");
         myArticleSubMenu = new JMenuItem("Mes articles");
-        allArticleSubMenu = new JMenuItem("Tout les articles");
+        allArticleSubMenu = new JMenuItem("Tous les articles");
+        allArticleSubMenu.addActionListener(ec);
         editMyThemeSubMenu = new JMenuItem("Editer mon thème");
         listThemeSubMenu = new JMenuItem("Liste des thèmes");
         moodle = new JMenuItem("Moodle");
@@ -84,6 +83,7 @@ public class MainMenuBar extends JMenuBar{
         // -- Init Menus --
         accueilButton = new QGButton("ACCUEIL", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
         accueilButton.setMaximumSize(new Dimension(accueilButton.getPreferredSize().width, 40));
+        accueilButton.addActionListener(ec);
         articleMenu = new QGMenu("ARTICLE", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
         themeMenu = new QGMenu("THEME", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
         links = new QGMenu("LIENS", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);

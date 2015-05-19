@@ -115,6 +115,12 @@ public class MainWindow extends JFrame{
                     Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
+            case "ACCUEIL":
+                this.ms.goTo(actionCommand);
+                break;
+            case "Tous les articles":
+                this.ms.goTo(actionCommand);
+                break;
         }
     }
 }

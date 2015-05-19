@@ -51,10 +51,8 @@ public class Messagerie extends JPanel{
         f = new Font("Arial", 0, 20);
         
         // -- Setup NewMessage --
-        ec = new EcouteurBouton(this.ms.getMainWindow());
         newMessage = new QGButton("Nouveau Message", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
         newMessage.setPreferredSize(new Dimension(370,50));
-        newMessage.addActionListener(ec);
         add(newMessage);
         layout.putConstraint(SpringLayout.WEST, newMessage, 10, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, newMessage, 10, SpringLayout.NORTH, this);
