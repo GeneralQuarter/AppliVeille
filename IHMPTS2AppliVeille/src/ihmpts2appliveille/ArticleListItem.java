@@ -139,9 +139,9 @@ public class ArticleListItem extends JPanel implements MouseListener{
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        this.setBackground(Color.GRAY);
-        this.content.setBackground(Color.GRAY);
-        this.actionButton.setBackground(Color.GRAY);
+        this.setBackground(new Color(189,189,189));
+        this.content.setBackground(new Color(189,189,189));
+        this.actionButton.setBackground(new Color(189,189,189));
     }
 
     @Override

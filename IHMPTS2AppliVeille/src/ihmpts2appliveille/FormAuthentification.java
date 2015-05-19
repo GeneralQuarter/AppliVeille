@@ -50,7 +50,7 @@ public class FormAuthentification extends JPanel{
     {
         // -- Setup MainFrame --
         super(); // Utile ?
-        setBackground(Color.gray);
+        setBackground(new Color(189,189,189));
         setLayout(new GridBagLayout());
         setMinimumSize(formDim);
         this.mw = mw;
