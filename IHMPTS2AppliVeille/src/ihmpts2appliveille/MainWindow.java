@@ -100,12 +100,21 @@ public class MainWindow extends JFrame{
                 changeMainFrame(fa, false);
                 break;
             case "Nouveau Message":
+                break;
+            case "ENT":
+                try {
+                    Desktop.getDesktop().browse(URI.create("https://ent.univ-lr.fr"));
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            case "Moodle":
                 try {
                     Desktop.getDesktop().browse(URI.create("https://moodle.univ-lr.fr"));
                 } catch (IOException ex) {
                     Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            break;
+                break;
         }
     }
 }

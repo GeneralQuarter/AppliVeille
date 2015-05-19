@@ -75,7 +75,9 @@ public class MainMenuBar extends JMenuBar{
         editMyThemeSubMenu = new JMenuItem("Editer mon thème");
         listThemeSubMenu = new JMenuItem("Liste des thèmes");
         moodle = new JMenuItem("Moodle");
+        moodle.addActionListener(ec);
         ent = new JMenuItem("ENT");
+        ent.addActionListener(ec);
         myProfilSubMenu = new JMenuItem("Mon profil");
         listUsersSubMenu = new JMenuItem("Liste des utilisateurs");
         
@@ -92,15 +94,18 @@ public class MainMenuBar extends JMenuBar{
         // -- Adding sub menus --
         articleMenu.add(newArticleSubMenu);
         articleMenu.add(myArticleSubMenu);
+        articleMenu.addSeparator();
         articleMenu.add(allArticleSubMenu);
         
         themeMenu.add(editMyThemeSubMenu);
+        themeMenu.addSeparator();
         themeMenu.add(listThemeSubMenu);
         
         links.add(moodle);
         links.add(ent);
         
         profilMenu.add(myProfilSubMenu);
+        profilMenu.addSeparator();
         profilMenu.add(listUsersSubMenu);
         
         deconnexionButton = new QGButton("DECONNEXION", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
