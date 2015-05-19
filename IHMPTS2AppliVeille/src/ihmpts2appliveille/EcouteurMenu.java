@@ -25,7 +25,7 @@ public class EcouteurMenu implements MenuListener{
     @Override
     public void menuSelected(MenuEvent e) {
         JMenu m = (JMenu) e.getSource();
-        mw.changeMainFrame(m.getText());
+        mw.buttonClicked(m.getText());
     }
 
     @Override

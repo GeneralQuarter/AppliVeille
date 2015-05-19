@@ -44,4 +44,9 @@ public class MainSession extends JPanel{
         aaw = new ActualiteArticleView(this, "Actualités");
         this.add(aaw, BorderLayout.CENTER);
     }
+    
+    public MainWindow getMainWindow()
+    {
+        return mw;
+    }
 }

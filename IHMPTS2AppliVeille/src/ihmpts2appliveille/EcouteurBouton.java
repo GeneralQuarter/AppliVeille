@@ -21,7 +21,7 @@ public class EcouteurBouton implements ActionListener{
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        mw.changeMainFrame(e.getActionCommand());
+        mw.buttonClicked(e.getActionCommand());
     }
     
 }

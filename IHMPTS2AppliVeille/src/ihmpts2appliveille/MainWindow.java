@@ -6,8 +6,10 @@
 package ihmpts2appliveille;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -87,17 +89,23 @@ public class MainWindow extends JFrame{
         this.repaint();
     }
     
-    public void changeMainFrame(String mainFrame)
+    public void buttonClicked(String actionCommand)
     {
-        switch(mainFrame)
+        switch(actionCommand)
         {
             case "CONNEXION":
                 changeMainFrame(ms, true);
                 break;
             case "DECONNEXION":
-            case "Déconnexion":
                 changeMainFrame(fa, false);
                 break;
+            case "Nouveau Message":
+                try {
+                    Desktop.getDesktop().browse(URI.create("https://moodle.univ-lr.fr"));
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            break;
         }
     }
 }

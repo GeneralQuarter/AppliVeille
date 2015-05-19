@@ -8,60 +8,56 @@ package ihmpts2appliveille;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
+import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JButton;
+import javax.swing.JMenu;
 
 /**
  *
  * @author x1QG1x
  */
-public class QGButton extends JButton implements MouseListener{
+public class QGMenu extends JMenu implements MouseListener{
     private Color primaryColor;
     private Color hoverColor;
     private Color textColor;
     private Font f;
     
-    public QGButton(String text, Color primary, Color hover, Color textColor, Font f)
+    public QGMenu(String text, Color primaryColor, Color hoverColor, Color textColor, Font f)
     {
         super(text);
-        this.primaryColor = primary;
-        this.hoverColor = hover;
+        this.primaryColor = primaryColor;
+        this.hoverColor = hoverColor;
         this.textColor = textColor;
-        this.f = f;
-        this.setContentAreaFilled(false);
         this.setOpaque(true);
-        this.setBackground(primaryColor);
-        this.setForeground(textColor);
-        this.setFont(this.f);
+        this.setMargin(new Insets(0,10,0,10));
+        this.setBackground(this.primaryColor);
+        this.setForeground(this.textColor);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        this.setFont(f);
         this.addMouseListener(this);
     }
-    
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //Useless can use ActionListener
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // Useless
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // Useless
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        this.setBackground(hoverColor);
+        this.setBackground(this.hoverColor);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        this.setBackground(primaryColor);
+        this.setBackground(this.primaryColor);
+        this.setSelected(false);
     }
 }
