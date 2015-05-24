@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.modele.MainWindow;
+import ihmpts2appliveille.modele.Statut;
 import java.awt.BorderLayout;
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -22,27 +24,27 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author x1QG1x
  */
-public class MainWindow extends JFrame{
-    private MainMenuBar mmb;
-    private FormAuthentification fa;
-    private MainSession ms;
+public class MainWindowVue extends JFrame implements Observer{
+    private MainWindow modele;
+    
+    private MainMenuBarVue mmb;
+    private FormAuthentificationVue fa;
+    private MainSessionVue ms;
     
     private BorderLayout mainLayout;
     private JPanel currentMainFrame;
     
-    public MainWindow()
+    public MainWindowVue(MainWindow modele)
     {
+        // -- Setup Model --
+        this.modele = modele;
+        this.modele.addObserver(this);
+        
         try {
             // -- Look and Feel --
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         // -- Setup Basic JFrame --
@@ -56,9 +58,9 @@ public class MainWindow extends JFrame{
         this.setLayout(mainLayout);
         
         // -- Setup Frames --
-        fa = new FormAuthentification(this);
-        ms = new MainSession(this);
-        mmb = new MainMenuBar(this);
+        fa = new FormAuthentificationVue(this);
+        ms = new MainSessionVue(this);
+        mmb = new MainMenuBarVue(this);
         
         // -- Setup currentMainFrame --
         currentMainFrame = fa;
@@ -73,7 +75,7 @@ public class MainWindow extends JFrame{
         try {
         this.setIconImage(ImageIO.read(new File("logo2.png")));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Impossible de charger l'icone de l'application");
         }
         this.setVisible(true);
     }
@@ -88,10 +90,11 @@ public class MainWindow extends JFrame{
         this.revalidate();
         this.repaint();
     }
-    
-    public void buttonClicked(String actionCommand)
-    {
-        switch(actionCommand)
+
+    @Override
+    public void update(Observable o, Object arg) {
+        
+        /*switch(modele.getAction())
         {
             case "CONNEXION":
                 changeMainFrame(ms, true);
@@ -105,22 +108,36 @@ public class MainWindow extends JFrame{
                 try {
                     Desktop.getDesktop().browse(URI.create("https://ent.univ-lr.fr"));
                 } catch (IOException ex) {
-                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
             case "Moodle":
                 try {
                     Desktop.getDesktop().browse(URI.create("https://moodle.univ-lr.fr"));
                 } catch (IOException ex) {
-                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
             case "ACCUEIL":
-                this.ms.goTo(actionCommand);
                 break;
             case "Tous les articles":
-                this.ms.goTo(actionCommand);
                 break;
+        }*/
+        if(modele.getStatut() == Statut.DECONNECTE)
+        {
+            changeMainFrame(fa, false);
+        }else{
+            changeMainFrame(ms, true);
         }
+    }
+    
+    public MainWindow getModele()
+    {
+        return modele;
+    }
+    
+    public FormAuthentificationVue getFormAuthentificationVue()
+    {
+        return fa;
     }
 }

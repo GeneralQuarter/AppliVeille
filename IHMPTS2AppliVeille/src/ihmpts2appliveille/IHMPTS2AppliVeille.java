@@ -5,6 +5,8 @@
  */
 package ihmpts2appliveille;
 
+import ihmpts2appliveille.modele.MainWindow;
+import ihmpts2appliveille.vue.MainWindowVue;
 import javax.swing.SwingUtilities;
 
 /**
@@ -21,7 +23,8 @@ public class IHMPTS2AppliVeille {
 
             @Override
             public void run() {
-                MainWindow mw = new MainWindow();
+                MainWindow m = new MainWindow();
+                MainWindowVue mw = new MainWindowVue(m);
             }
         
         });

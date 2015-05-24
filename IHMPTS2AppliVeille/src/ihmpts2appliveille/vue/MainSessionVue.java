@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.modele.MainWindow;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JButton;
@@ -14,11 +15,12 @@ import javax.swing.JPanel;
  *
  * @author x1QG1x
  */
-public class MainSession extends JPanel{
-    private MainWindow mw;
-    private Messagerie msa;
-    private ActualiteArticleView aaw;
-    private ActualiteArticleView aawArticle;
+public class MainSessionVue extends JPanel{
+    
+    private MainWindowVue mw;
+    private MessagerieVue msa;
+    private ActualiteArticleVue aaw;
+    private ActualiteArticleVue aawArticle;
     
     private JPanel currentMainContent;
     
@@ -26,7 +28,7 @@ public class MainSession extends JPanel{
     
     private JButton returnButton;
     
-    public MainSession(MainWindow mw)
+    public MainSessionVue(MainWindowVue mw)
     {
         super(); // Utile ?
         
@@ -41,12 +43,12 @@ public class MainSession extends JPanel{
         this.setBackground(Color.white);
         
         // -- Setup Messagerie --
-        msa = new Messagerie(this);
+        msa = new MessagerieVue(this);
         this.add(msa, BorderLayout.EAST);
         
         // -- Setup MainContent --
-        aaw = new ActualiteArticleView(this, "Actualités");
-        aawArticle = new ActualiteArticleView(this, "Articles");
+        aaw = new ActualiteArticleVue(this, "Actualités");
+        aawArticle = new ActualiteArticleVue(this, "Articles");
         
         currentMainContent = null;
         this.changeMainContent(aaw);

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
  * @author x1QG1x
  */
 public class MessageListItem extends JPanel implements MouseListener{
-    private Messagerie m;
+    private MessagerieVue m;
     
     private JLabel objet;
     private JTextArea message;
@@ -31,7 +31,7 @@ public class MessageListItem extends JPanel implements MouseListener{
     private Font fObjet;
     private Font fBottom;
     
-    public MessageListItem(String objet, String message, String auteur, String date, Messagerie m)
+    public MessageListItem(String objet, String message, String auteur, String date, MessagerieVue m)
     {
         this.objet = new JLabel(objet);
         this.message = new JTextArea(message);

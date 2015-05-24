@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,7 +14,6 @@ import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -24,8 +23,8 @@ import javax.swing.JTextField;
  *
  * @author x1QG1x
  */
-public class FormAuthentification extends JPanel{
-    private MainWindow mw;
+public class FormAuthentificationVue extends JPanel{
+    private MainWindowVue mw;
     
     private EcouteurBouton ec;
     
@@ -46,7 +45,7 @@ public class FormAuthentification extends JPanel{
     private Dimension formDim;
     private Dimension frameDim;
     
-    public FormAuthentification(MainWindow mw)
+    public FormAuthentificationVue(MainWindowVue mw)
     {
         // -- Setup MainFrame --
         super(); // Utile ?
@@ -116,5 +115,15 @@ public class FormAuthentification extends JPanel{
         
         // -- Change preferred dim for JFrame --
         this.mw.setMinimumSize(frameDim);
+    }
+    
+    public String getLogin()
+    {
+        return loginField.getText();
+    }
+    
+    public String getMdp()
+    {
+        return mdpField.getText();
     }
 }

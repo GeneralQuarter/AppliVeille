@@ -3,61 +3,65 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JMenu;
+import javax.swing.JButton;
 
 /**
  *
  * @author x1QG1x
  */
-public class QGMenu extends JMenu implements MouseListener{
+public class QGButton extends JButton implements MouseListener{
     private Color primaryColor;
     private Color hoverColor;
     private Color textColor;
     private Font f;
     
-    public QGMenu(String text, Color primaryColor, Color hoverColor, Color textColor, Font f)
+    public QGButton(String text, Color primary, Color hover, Color textColor, Font f)
     {
         super(text);
-        this.primaryColor = primaryColor;
-        this.hoverColor = hoverColor;
+        this.primaryColor = primary;
+        this.hoverColor = hover;
         this.textColor = textColor;
+        this.f = f;
+        this.setContentAreaFilled(false);
         this.setOpaque(true);
-        this.setMargin(new Insets(0,10,0,10));
-        this.setBackground(this.primaryColor);
-        this.setForeground(this.textColor);
+        this.setBackground(primaryColor);
+        this.setForeground(textColor);
+        this.setFont(this.f);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        this.setFont(f);
         this.addMouseListener(this);
     }
+    
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        //Useless can use ActionListener
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        // Useless
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        // Useless
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        this.setBackground(this.hoverColor);
+        this.setBackground(hoverColor);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        this.setBackground(this.primaryColor);
-        this.setSelected(false);
+        this.setBackground(primaryColor);
     }
 }

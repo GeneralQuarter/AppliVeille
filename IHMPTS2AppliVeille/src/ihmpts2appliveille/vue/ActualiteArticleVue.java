@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.vue.ArticleListItem;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,8 +21,8 @@ import javax.swing.JScrollPane;
  *
  * @author x1QG1x
  */
-public class ActualiteArticleView extends JPanel{
-    private MainSession ms;
+public class ActualiteArticleVue extends JPanel{
+    private MainSessionVue ms;
     
     private JLabel title;
     private JPanel articleHolder;
@@ -29,7 +30,7 @@ public class ActualiteArticleView extends JPanel{
     
     private Font fTitle;
     
-    public ActualiteArticleView(MainSession ms, String title)
+    public ActualiteArticleVue(MainSessionVue ms, String title)
     {
         this.ms = ms;
         this.setLayout(new BorderLayout(10, 10));

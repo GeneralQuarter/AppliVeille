@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -22,7 +22,7 @@ import javax.swing.SpringLayout;
  * @author x1QG1x
  */
 public class ArticleListItem extends JPanel implements MouseListener{
-    private ActualiteArticleView aaw;
+    private ActualiteArticleVue aaw;
     
     private JLabel theme;
     private JLabel title;
@@ -40,7 +40,7 @@ public class ArticleListItem extends JPanel implements MouseListener{
     private Font fContent;
     private Font fInfo;
     
-    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, ActualiteArticleView aaw)
+    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, ActualiteArticleVue aaw)
     {
         this.aaw = aaw;
         this.theme = new JLabel("[" + theme + "]");

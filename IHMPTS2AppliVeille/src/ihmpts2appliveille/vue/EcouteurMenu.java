@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
 import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
@@ -15,9 +15,9 @@ import javax.swing.event.MenuListener;
  */
 public class EcouteurMenu implements MenuListener{
 
-    private MainWindow mw;
+    private MainWindowVue mw;
     
-    public EcouteurMenu(MainWindow mw)
+    public EcouteurMenu(MainWindowVue mw)
     {
         this.mw = mw;
     }    
@@ -25,7 +25,7 @@ public class EcouteurMenu implements MenuListener{
     @Override
     public void menuSelected(MenuEvent e) {
         JMenu m = (JMenu) e.getSource();
-        mw.buttonClicked(m.getText());
+        //mw.buttonClicked(m.getText());
     }
 
     @Override

@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.vue.QGMenu;
+import ihmpts2appliveille.vue.QGButton;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -20,8 +22,8 @@ import javax.swing.JMenuItem;
  *
  * @author x1QG1x
  */
-public class MainMenuBar extends JMenuBar{
-    private MainWindow mw;
+public class MainMenuBarVue extends JMenuBar{
+    private MainWindowVue mw;
     
     private EcouteurMenu em;
     
@@ -56,7 +58,7 @@ public class MainMenuBar extends JMenuBar{
     
     private EcouteurBouton ec;
     
-    public MainMenuBar(MainWindow mw)
+    public MainMenuBarVue(MainWindowVue mw)
     {
         this.mw = mw;
         

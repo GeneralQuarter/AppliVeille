@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ihmpts2appliveille;
+package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.vue.MessageListItem;
+import ihmpts2appliveille.vue.QGButton;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -24,8 +26,8 @@ import javax.swing.SpringLayout;
  *
  * @author x1QG1x
  */
-public class Messagerie extends JPanel{
-    private MainSession ms;
+public class MessagerieVue extends JPanel{
+    private MainSessionVue ms;
     
     private SpringLayout layout;
     
@@ -39,7 +41,7 @@ public class Messagerie extends JPanel{
     
     private EcouteurBouton ec;
     
-    public Messagerie(MainSession ms)
+    public MessagerieVue(MainSessionVue ms)
     {
         super(); // Utile ??
         this.ms = ms;
