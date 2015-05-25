@@ -5,12 +5,17 @@
  */
 package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.modele.Statut;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,10 +28,10 @@ import javax.swing.JTextField;
  *
  * @author x1QG1x
  */
-public class FormAuthentificationVue extends JPanel{
+public class FormAuthentificationVue extends JPanel implements Observer{
     private MainWindowVue mw;
     
-    private EcouteurBouton ec;
+    private EcouteurConnexion ec;
     
     private JPanel form;
     private JPanel fields;
@@ -36,6 +41,7 @@ public class FormAuthentificationVue extends JPanel{
     private JLabel connexionLabel;
     private JLabel loginLabel;
     private JLabel mdpLabel;
+    private JLabel infoLabel;
     
     private JTextField loginField;
     private JPasswordField mdpField;
@@ -53,7 +59,8 @@ public class FormAuthentificationVue extends JPanel{
         setLayout(new GridBagLayout());
         setMinimumSize(formDim);
         this.mw = mw;
-        ec = new EcouteurBouton(this.mw);
+        this.mw.getModele().addObserver(this);
+        ec = new EcouteurConnexion(this.mw);
         
         formDim = new Dimension(350, 400);
         frameDim = new Dimension(450, 500);
@@ -75,16 +82,21 @@ public class FormAuthentificationVue extends JPanel{
         mdpLabel = new JLabel("Mot de Passe");
         mdpLabel.setFont(f);
         
+        infoLabel = new JLabel("Entrez vos identifiants de connexion", JLabel.CENTER);
+        mdpLabel.setFont(f);
+        
         // -- Setup Fields --        
         loginField = new JTextField();
         loginField.setFont(f);
         loginField.setPreferredSize(new Dimension(800, 50));
         loginField.setMaximumSize(loginField.getPreferredSize());
+        loginField.addKeyListener(new EcouteurToucheEntree());
         
         mdpField = new JPasswordField();
         mdpField.setFont(f);
         mdpField.setPreferredSize(new Dimension(800, 50));
         mdpField.setMaximumSize(mdpField.getPreferredSize());
+        mdpField.addKeyListener(new EcouteurToucheEntree());
         
         // -- Setup Fields Panel --
         fields = new JPanel();
@@ -97,6 +109,8 @@ public class FormAuthentificationVue extends JPanel{
         fields.add(mdpLabel);
         fields.add(Box.createRigidArea(new Dimension(0,10)));
         fields.add(mdpField);
+        fields.add(Box.createRigidArea(new Dimension(0,10)));
+        fields.add(infoLabel);
         
         // -- Setup connexionButton --
         connexionButton = new QGButton("CONNEXION", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
@@ -115,6 +129,10 @@ public class FormAuthentificationVue extends JPanel{
         
         // -- Change preferred dim for JFrame --
         this.mw.setMinimumSize(frameDim);
+        
+        // -- Info Message --
+        infoLabel.setVisible(false);
+        infoLabel.setForeground(Color.red);
     }
     
     public String getLogin()
@@ -125,5 +143,40 @@ public class FormAuthentificationVue extends JPanel{
     public String getMdp()
     {
         return mdpField.getText();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(mw.getModele().getStatut() == Statut.ERREUR_IDENTIFIANTS)
+        {
+            infoLabel.setVisible(true);
+            infoLabel.setText("Identifiant ou mot de passe incorrects");
+            mw.getModele().setStatut(Statut.DECONNECTE);
+        }else{
+            infoLabel.setVisible(false);
+        }
+    }
+    
+    public class EcouteurToucheEntree implements KeyListener
+    {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                connexionButton.doClick();
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
     }
 }

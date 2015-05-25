@@ -39,7 +39,7 @@ public class MessagerieVue extends JPanel{
     
     private Font f;
     
-    private EcouteurBouton ec;
+    private EcouteurConnexion ec;
     
     public MessagerieVue(MainSessionVue ms)
     {
@@ -47,6 +47,7 @@ public class MessagerieVue extends JPanel{
         this.ms = ms;
         this.setBackground(new Color(236, 239, 241));
         this.setPreferredSize(new Dimension(380,100));
+        this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.LIGHT_GRAY));
         layout = new SpringLayout();
         this.setLayout(layout);
         

@@ -12,16 +12,17 @@ import java.awt.event.ActionListener;
  *
  * @author x1QG1x
  */
-public class EcouteurBouton implements ActionListener{
+public class EcouteurNavigation implements ActionListener{
     private MainWindowVue mw;
-
-    public EcouteurBouton(MainWindowVue mw)
+    
+    public EcouteurNavigation(MainWindowVue mw)
     {
         this.mw = mw;
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        mw.getModele().connexion(mw.getFormAuthentificationVue().getLogin(), mw.getFormAuthentificationVue().getMdp());
+        mw.getNavigation().naviguer(e.getActionCommand());
     }
     
 }

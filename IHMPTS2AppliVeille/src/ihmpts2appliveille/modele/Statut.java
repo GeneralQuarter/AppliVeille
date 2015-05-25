@@ -10,5 +10,5 @@ package ihmpts2appliveille.modele;
  * @author x1QG1x
  */
 public enum Statut {
-    CONNECTE,DECONNECTE;
+    CONNECTE, CONNECTION_IMPOSSIBLE, ERREUR_IDENTIFIANTS, DECONNECTE;
 }

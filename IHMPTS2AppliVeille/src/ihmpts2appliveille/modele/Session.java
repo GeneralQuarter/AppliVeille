@@ -29,8 +29,8 @@ public class Session {
         // Recupération droits
         if(login.equals("qgangler") && mdp.equals("password"))
         {
-            nom = "Gangler";
-            prenom = "Quentin";
+            nom = "Pivet";
+            prenom = "Valentin";
             droits = Droits.ETUDIANT;
             return true;
         }else

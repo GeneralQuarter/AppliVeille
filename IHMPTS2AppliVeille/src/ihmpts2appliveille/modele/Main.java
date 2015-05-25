@@ -11,11 +11,11 @@ import java.util.Observable;
  *
  * @author x1QG1x
  */
-public class MainWindow extends Observable{
+public class Main extends Observable{
     private Statut statut;
     private Session session;
     
-    public MainWindow(){
+    public Main(){
         statut = Statut.DECONNECTE;
     }
     
@@ -26,8 +26,10 @@ public class MainWindow extends Observable{
             session = new Session(login, mdp);
             if(session.connection())
             {
-                System.out.print(login + " " + mdp);
                 statut = Statut.CONNECTE;
+            }else{
+                statut = Statut.ERREUR_IDENTIFIANTS;
+                session = null;
             }   
         }else{
             statut = Statut.DECONNECTE;

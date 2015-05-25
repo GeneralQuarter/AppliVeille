@@ -25,8 +25,6 @@ import javax.swing.JMenuItem;
 public class MainMenuBarVue extends JMenuBar{
     private MainWindowVue mw;
     
-    private EcouteurMenu em;
-    
     // -- Menus --
     private QGButton accueilButton;
     private JMenu articleMenu;
@@ -56,36 +54,38 @@ public class MainMenuBarVue extends JMenuBar{
     
     private Font f;
     
-    private EcouteurBouton ec;
+    private EcouteurConnexion ec;
+    private EcouteurNavigation en;
     
     public MainMenuBarVue(MainWindowVue mw)
     {
         this.mw = mw;
         
-        em = new EcouteurMenu(this.mw);
-        ec = new EcouteurBouton(this.mw);
+        ec = new EcouteurConnexion(this.mw);
+        en = new EcouteurNavigation(this.mw);
         
         f = new Font("Arial", Font.BOLD, 16);
         
         this.setPreferredSize(new Dimension(getWidth(),40));
         // -- Init Sub Menus --
         newArticleSubMenu = new JMenuItem("Nouvel article...");
+        newArticleSubMenu.addActionListener(en);
         myArticleSubMenu = new JMenuItem("Mes articles");
         allArticleSubMenu = new JMenuItem("Tous les articles");
-        allArticleSubMenu.addActionListener(ec);
+        allArticleSubMenu.addActionListener(en);
         editMyThemeSubMenu = new JMenuItem("Editer mon thème");
         listThemeSubMenu = new JMenuItem("Liste des thèmes");
         moodle = new JMenuItem("Moodle");
-        moodle.addActionListener(ec);
+        moodle.addActionListener(en);
         ent = new JMenuItem("ENT");
-        ent.addActionListener(ec);
+        ent.addActionListener(en);
         myProfilSubMenu = new JMenuItem("Mon profil");
         listUsersSubMenu = new JMenuItem("Liste des utilisateurs");
         
         // -- Init Menus --
         accueilButton = new QGButton("ACCUEIL", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
         accueilButton.setMaximumSize(new Dimension(accueilButton.getPreferredSize().width, 40));
-        accueilButton.addActionListener(ec);
+        accueilButton.addActionListener(en);
         articleMenu = new QGMenu("ARTICLE", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
         themeMenu = new QGMenu("THEME", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
         links = new QGMenu("LIENS", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
@@ -131,5 +131,10 @@ public class MainMenuBarVue extends JMenuBar{
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(new Color(33,150,243));
         g2d.fillRect(0, 0, getWidth(), getHeight()-1);
+    }
+    
+    public void setProfilName(String nomPrenom)
+    {
+        profilMenu.setText(nomPrenom);
     }
 }

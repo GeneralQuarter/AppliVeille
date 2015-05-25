@@ -5,7 +5,8 @@
  */
 package ihmpts2appliveille.vue;
 
-import ihmpts2appliveille.modele.MainWindow;
+import ihmpts2appliveille.modele.Main;
+import ihmpts2appliveille.modele.Navigation;
 import ihmpts2appliveille.modele.Statut;
 import java.awt.BorderLayout;
 import java.io.File;
@@ -25,7 +26,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author x1QG1x
  */
 public class MainWindowVue extends JFrame implements Observer{
-    private MainWindow modele;
+    private Main modele;
+    private Navigation nav;
     
     private MainMenuBarVue mmb;
     private FormAuthentificationVue fa;
@@ -34,11 +36,13 @@ public class MainWindowVue extends JFrame implements Observer{
     private BorderLayout mainLayout;
     private JPanel currentMainFrame;
     
-    public MainWindowVue(MainWindow modele)
+    public MainWindowVue(Main modele, Navigation nav)
     {
         // -- Setup Model --
         this.modele = modele;
         this.modele.addObserver(this);
+        
+        this.nav = nav;
         
         try {
             // -- Look and Feel --
@@ -126,14 +130,20 @@ public class MainWindowVue extends JFrame implements Observer{
         if(modele.getStatut() == Statut.DECONNECTE)
         {
             changeMainFrame(fa, false);
-        }else{
+        }else if(modele.getStatut() == Statut.CONNECTE){
+            mmb.setProfilName(modele.getSession().getNom() + " " + modele.getSession().getPrenom());
             changeMainFrame(ms, true);
         }
     }
     
-    public MainWindow getModele()
+    public Main getModele()
     {
         return modele;
+    }
+    
+    public Navigation getNavigation()
+    {
+        return nav;
     }
     
     public FormAuthentificationVue getFormAuthentificationVue()
