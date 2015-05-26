@@ -12,15 +12,23 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
@@ -46,6 +54,8 @@ public class EditorVue extends JPanel{
     private JButton boldButton;
     private JButton italicButton;
     private JButton underlineButton;
+    private JButton linksButton;
+    private JButton addImageButton;
     
     private JComboBox stylesComboxBox;
     
@@ -106,8 +116,18 @@ public class EditorVue extends JPanel{
         underlineButton.setFont(f);
         underlineButton.addActionListener(new EcouteurBoutonStyle());
         underlineButton.setPreferredSize(new Dimension(45, 30));
+        linksButton = new JButton("Lien");
+        linksButton.addActionListener(new EcouteurBoutonStyle());
+        linksButton.setPreferredSize(new Dimension(70, 30));
+        linksButton.setFont(f);
+        addImageButton = new JButton("Ajouter image");
+        addImageButton.addActionListener(new EcouteurBoutonStyle());
+        addImageButton.setPreferredSize(new Dimension(150, 30));
+        addImageButton.setFont(f);
         acceptEditButton = new QGButton("Publier", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
+        acceptEditButton.setPreferredSize(new Dimension(100, 30));
         cancelEditButton = new QGButton("Annuler", new Color(189, 189, 189), Color.white, Color.black, f);
+        cancelEditButton.setPreferredSize(new Dimension(100, 30));
         optionnalActionButton = new QGButton("Brouillon", new Color(189, 189, 189), Color.white, Color.black, f);
         
         // -- Setup ComboBox --
@@ -116,7 +136,7 @@ public class EditorVue extends JPanel{
         stylesComboxBox.setSelectedIndex(2);
         stylesComboxBox.addActionListener(new EcouteurBoutonStyle());
         stylesComboxBox.setFont(f);
-        stylesComboxBox.setPreferredSize(new Dimension(200, 28));
+        stylesComboxBox.setPreferredSize(new Dimension(150, 28));
         
         // -- Setup content --
         contentPanel = new JPanel();
@@ -133,6 +153,8 @@ public class EditorVue extends JPanel{
         contentPanel.add(contentScroller);
         contentPanel.add(acceptEditButton);
         contentPanel.add(cancelEditButton);
+        contentPanel.add(linksButton);
+        contentPanel.add(addImageButton);
         
         sp.putConstraint(SpringLayout.WEST, articleTitleLabel, 5, SpringLayout.WEST, contentPanel);
         sp.putConstraint(SpringLayout.NORTH, articleTitleLabel, 20, SpringLayout.NORTH, contentPanel);
@@ -154,7 +176,13 @@ public class EditorVue extends JPanel{
         sp.putConstraint(SpringLayout.NORTH, underlineButton, 5, SpringLayout.SOUTH, contentLabel);
         
         sp.putConstraint(SpringLayout.WEST, stylesComboxBox, 5, SpringLayout.EAST, underlineButton);
-        sp.putConstraint(SpringLayout.SOUTH, stylesComboxBox, -6, SpringLayout.NORTH, contentScroller);
+        sp.putConstraint(SpringLayout.NORTH, stylesComboxBox, 6, SpringLayout.SOUTH, contentLabel);
+        
+        sp.putConstraint(SpringLayout.WEST, linksButton, 5, SpringLayout.EAST, stylesComboxBox);
+        sp.putConstraint(SpringLayout.NORTH, linksButton, 5, SpringLayout.SOUTH, contentLabel);
+        
+        sp.putConstraint(SpringLayout.WEST, addImageButton, 5, SpringLayout.EAST, linksButton);
+        sp.putConstraint(SpringLayout.NORTH, addImageButton, 5, SpringLayout.SOUTH, contentLabel);
         
         sp.putConstraint(SpringLayout.WEST, contentScroller, 5, SpringLayout.WEST, contentPanel);
         sp.putConstraint(SpringLayout.NORTH, contentScroller, 5, SpringLayout.SOUTH, boldButton);
@@ -209,6 +237,46 @@ public class EditorVue extends JPanel{
                         break;
                 }
                 contentField.requestFocus();
+            }
+            
+            if(e.getSource().equals(addImageButton))
+            {
+                String url = JOptionPane.showInputDialog(ms, "Entrer l'url de l'image", "Ajouter une image", JOptionPane.QUESTION_MESSAGE);
+                if(url.matches("https?://.+\\..+\\..+\\.(png|jpeg|jpg|bmp)"))
+                {
+                    HTMLDocument doc = (HTMLDocument) contentField.getDocument();
+
+                    try {
+                        String sale = "9:12:45:63:5:76:2:1:87:3:2:45:3";
+                        doc.insertString(contentField.getCaretPosition(), sale, null);
+                        String[] textSplit = contentField.getText().split(sale);
+                        contentField.setText(textSplit[0] + "<img src=\""+url+"\"/>" + textSplit[1]);
+                    } catch (BadLocationException ex) {
+                        Logger.getLogger(EditorVue.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(ms, "URL : " + url + " invalide", "URL Invalide", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+            if(e.getSource().equals(linksButton))
+            {
+                String url = JOptionPane.showInputDialog(ms, "Entrer l'url du lien", "Ajouter un lien", JOptionPane.QUESTION_MESSAGE);
+                if(url.matches("https?://.+\\..+\\..+"))
+                {
+                    String sel = contentField.getSelectedText();
+                    HTMLDocument doc = (HTMLDocument) contentField.getDocument();
+                    String sale = "9:12:45:63:5:76:2:1:87:3:2:45:3";
+                    try {
+                        doc.insertString(contentField.getCaretPosition(), sale, null);
+                    } catch (BadLocationException ex) {
+                        Logger.getLogger(EditorVue.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    String[] textSplit = contentField.getText().split(sale+sel);
+                    contentField.setText(textSplit[0] + "<a href=\"" + url + "\">" + sel + "</a>" + textSplit[1]);
+                }else{
+                    JOptionPane.showMessageDialog(ms, "URL : " + url + " invalide", "URL Invalide", JOptionPane.ERROR_MESSAGE);
+                } 
             }
         } 
     }
