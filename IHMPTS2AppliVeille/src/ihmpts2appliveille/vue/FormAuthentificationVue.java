@@ -5,17 +5,18 @@
  */
 package ihmpts2appliveille.vue;
 
-import ihmpts2appliveille.modele.Statut;
+import ihmpts2appliveille.controleur.MainControleur;
+import ihmpts2appliveille.modele.AppliColor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,10 +29,8 @@ import javax.swing.JTextField;
  *
  * @author x1QG1x
  */
-public class FormAuthentificationVue extends JPanel implements Observer{
-    private MainWindowVue mw;
-    
-    private EcouteurConnexion ec;
+public class FormAuthentificationVue extends JPanel{
+    private MainControleur mctrl;
     
     private JPanel form;
     private JPanel fields;
@@ -51,16 +50,18 @@ public class FormAuthentificationVue extends JPanel implements Observer{
     private Dimension formDim;
     private Dimension frameDim;
     
-    public FormAuthentificationVue(MainWindowVue mw)
+    public FormAuthentificationVue(MainControleur mctrl)
     {
         // -- Setup MainFrame --
         super(); // Utile ?
-        setBackground(new Color(189,189,189));
+        
+        // -- Setup COntroleur --
+        this.mctrl = mctrl;
+        this.mctrl.setFormAuthentificationVue(this);
+        
+        setBackground(AppliColor.GRAY.getColor());
         setLayout(new GridBagLayout());
         setMinimumSize(formDim);
-        this.mw = mw;
-        this.mw.getModele().addObserver(this);
-        ec = new EcouteurConnexion(this.mw);
         
         formDim = new Dimension(350, 400);
         frameDim = new Dimension(450, 500);
@@ -113,8 +114,8 @@ public class FormAuthentificationVue extends JPanel implements Observer{
         fields.add(infoLabel);
         
         // -- Setup connexionButton --
-        connexionButton = new QGButton("CONNEXION", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
-        connexionButton.addActionListener(ec);
+        connexionButton = new QGButton("CONNEXION", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
+        connexionButton.addActionListener(new EcouteurConnexion());
         connexionButton.setPreferredSize(new Dimension(100,50));
          
         // -- Setup Form -- 
@@ -128,33 +129,20 @@ public class FormAuthentificationVue extends JPanel implements Observer{
         add(form, gbc);
         
         // -- Change preferred dim for JFrame --
-        this.mw.setMinimumSize(frameDim);
+        //this.mw.setMinimumSize(frameDim); Need to reimplments that !!
         
         // -- Info Message --
         infoLabel.setVisible(false);
         infoLabel.setForeground(Color.red);
     }
     
-    public String getLogin()
+    public class EcouteurConnexion implements ActionListener
     {
-        return loginField.getText();
-    }
-    
-    public String getMdp()
-    {
-        return mdpField.getText();
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if(mw.getModele().getStatut() == Statut.ERREUR_IDENTIFIANTS)
-        {
-            infoLabel.setVisible(true);
-            infoLabel.setText("Identifiant ou mot de passe incorrects");
-            mw.getModele().setStatut(Statut.DECONNECTE);
-        }else{
-            infoLabel.setVisible(false);
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mctrl.connection(loginField.getText(), mdpField.getText());
         }
+        
     }
     
     public class EcouteurToucheEntree implements KeyListener
@@ -178,5 +166,18 @@ public class FormAuthentificationVue extends JPanel implements Observer{
             
         }
         
+    }
+    
+    public void afficherErreurIdentifiants()
+    {
+        infoLabel.setVisible(true);
+        infoLabel.setText("Identifiant ou mot de passe incorrect");
+    }
+    
+    public void resetConnection()
+    {
+        loginField.setText("");
+        mdpField.setText("");
+        infoLabel.setVisible(false);
     }
 }

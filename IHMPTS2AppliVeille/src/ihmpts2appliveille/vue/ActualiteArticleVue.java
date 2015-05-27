@@ -5,6 +5,7 @@
  */
 package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.vue.ArticleListItem;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,7 +23,7 @@ import javax.swing.JScrollPane;
  * @author x1QG1x
  */
 public class ActualiteArticleVue extends JPanel{
-    private MainSessionVue ms;
+    private MainControleur mctrl;
     
     private JLabel title;
     private JPanel articleHolder;
@@ -30,20 +31,51 @@ public class ActualiteArticleVue extends JPanel{
     
     private Font fTitle;
     
-    public ActualiteArticleVue(MainSessionVue ms, String title)
+    public ActualiteArticleVue(String title, MainControleur mctrl)
     {
-        this.ms = ms;
-        this.setLayout(new BorderLayout(10, 10));
+        // -- Setup Controleur --
+        this.mctrl = mctrl;
+        this.mctrl.setActualiteArticleVue(this);
         
+        this.setLayout(new BorderLayout(10, 10)); 
+        
+        // -- Setup Title --
         this.title = new JLabel(title);
         fTitle = new Font("Arial", Font.BOLD, 40);
         this.title.setFont(fTitle);
-        this.title.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        this.title.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0)); // See Editor for changes...
         
-        
+        // -- Setup articleHolder --
         this.articleHolder = new JPanel();
         this.articleHolder.setLayout(new BoxLayout(this.articleHolder, BoxLayout.Y_AXIS));
         this.articleHolder.add(Box.createRigidArea(new Dimension(0,10)));
+        
+        // -- Setup articleScroller --
+        this.articleScroller = new JScrollPane(this.articleHolder);
+        this.articleScroller.setBorder(null);
+        this.articleScroller.getVerticalScrollBar().setUnitIncrement(16);
+        this.articleScroller.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, new Color(33,33,33))); // need to extend to side see gap up
+        
+        this.add(this.title, BorderLayout.NORTH);
+        this.add(this.articleScroller, BorderLayout.CENTER);
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // WTF !! remove that ! ASAP 
+        
+        this.testInsert(); // TO REMOVE !!
+    }
+    
+    public void ajouterArticle(ArticleListItem ali)
+    {
+        this.articleHolder.add(ali);
+        this.articleHolder.add(Box.createRigidArea(new Dimension(0,10)));
+    }
+    
+    public void setTitle(String title)
+    {
+        this.title.setText(title);
+    }
+    
+    private void testInsert()
+    {
         for(int i = 0; i < 50; i++)
         {
             this.ajouterArticle(new ArticleListItem("Google","Les Google Glass au RDV" + (i+1), 
@@ -54,22 +86,7 @@ public class ActualiteArticleVue extends JPanel{
                         + "in there. Now, for loading I took a completely "
                         + "different route. I decided to use ImageIO instead "
                         + "of default loading. To load the image, you use this code:",
-            "GANGLER Quentin", "01/02/12", 40+i, this));
+            "GANGLER Quentin", "01/02/12", 40+i));
         }
-        
-        this.articleScroller = new JScrollPane(this.articleHolder);
-        this.articleScroller.setBorder(null);
-        this.articleScroller.getVerticalScrollBar().setUnitIncrement(16);
-        this.articleScroller.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, new Color(33,33,33)));
-        
-        this.add(this.title, BorderLayout.NORTH);
-        this.add(this.articleScroller, BorderLayout.CENTER);
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));  
-    }
-    
-    public void ajouterArticle(ArticleListItem ali)
-    {
-        this.articleHolder.add(ali);
-        this.articleHolder.add(Box.createRigidArea(new Dimension(0,10)));
     }
 }

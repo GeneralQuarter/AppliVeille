@@ -5,8 +5,7 @@
  */
 package ihmpts2appliveille;
 
-import ihmpts2appliveille.modele.Main;
-import ihmpts2appliveille.modele.Navigation;
+import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.vue.MainWindowVue;
 import javax.swing.SwingUtilities;
 
@@ -24,9 +23,8 @@ public class IHMPTS2AppliVeille {
 
             @Override
             public void run() {
-                Main m = new Main();
-                Navigation nav = new Navigation();
-                MainWindowVue mw = new MainWindowVue(m, nav);
+                MainControleur mctrl = new MainControleur();
+                MainWindowVue mwv = new MainWindowVue(mctrl);
             }
         
         });

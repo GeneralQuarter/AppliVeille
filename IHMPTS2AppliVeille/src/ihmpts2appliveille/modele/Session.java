@@ -15,26 +15,42 @@ public class Session {
     private String nom;
     private String prenom;
     private Droits droits;
+    private Statut statut;
     
-    public Session(String login, String mdp)
+    public Session()
     {
-        this.login = login;
-        this.mdp = mdp;
+        this.statut = Statut.DECONNECTE;
     }
     
-    public boolean connection()
+    public void connection(String login, String mdp)
     {
         // BDD
         // Recupération du nom/prenom
         // Recupération droits
-        if(login.equals("qgangler") && mdp.equals("password"))
-        {
+        if(login.equals("qgangler") && mdp.equals("password")){
+            this.login = login;
+            this.mdp = mdp;
             nom = "Pivet";
             prenom = "Valentin";
             droits = Droits.ETUDIANT;
-            return true;
-        }else
-            return false;
+            statut = Statut.CONNECTE;
+        }else{
+            statut = Statut.ERREUR_IDENTIFIANTS;
+        }
+    }
+    
+    public void deconnexion()
+    {
+        statut = Statut.DECONNECTE;
+        login = null;
+        mdp = null;
+        nom = null;
+        prenom = null;
+        droits = null;
+    }
+
+    public Statut getStatut() {
+        return statut;
     }
 
     public String getLogin() {
@@ -53,20 +69,8 @@ public class Session {
         this.mdp = mdp;
     }
 
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public String getNomPrenom() {
+        return nom + " " + prenom;
     }
 
     public Droits getDroits() {

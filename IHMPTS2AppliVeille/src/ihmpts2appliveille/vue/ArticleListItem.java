@@ -5,6 +5,7 @@
  */
 package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.modele.AppliColor;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -21,8 +22,7 @@ import javax.swing.SpringLayout;
  *
  * @author x1QG1x
  */
-public class ArticleListItem extends JPanel implements MouseListener{
-    private ActualiteArticleVue aaw;
+public class ArticleListItem extends JPanel{
     
     private JLabel theme;
     private JLabel title;
@@ -40,19 +40,21 @@ public class ArticleListItem extends JPanel implements MouseListener{
     private Font fContent;
     private Font fInfo;
     
-    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, ActualiteArticleVue aaw)
+    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments)
     {
-        this.aaw = aaw;
         this.theme = new JLabel("[" + theme + "]");
         this.title = new JLabel(title);
         this.content = new JTextArea(content);
         this.auteur = new JLabel(auteur);
         this.date = new JLabel("Publié le " + date);
         this.nbComments = new JLabel(nbComments + " Commentaires");
+        
+        // -- Setup This --
         this.setBackground(Color.white);
         this.setPreferredSize(new Dimension(500, 200));
         this.setMaximumSize(new Dimension(4000, 200));
         
+        // -- Setup Font --
         fTheme = new Font("Arial", 0, 18);
         fTitle = new Font("Arial", Font.BOLD, 22);
         fContent = new Font("Arial", 0, 16);
@@ -113,41 +115,43 @@ public class ArticleListItem extends JPanel implements MouseListener{
         sp.putConstraint(SpringLayout.SOUTH, this.content, -10, SpringLayout.NORTH, this.auteur);
         sp.putConstraint(SpringLayout.EAST, this.content, -5, SpringLayout.EAST, this);
         
-        this.addMouseListener(this);
-        this.content.addMouseListener(this);
-        this.actionButton.addMouseListener(this);
+        this.addMouseListener(new EcouteurHover());
+        this.content.addMouseListener(new EcouteurHover());
+        this.actionButton.addMouseListener(new EcouteurHover());
         
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
+    
+    public class EcouteurHover implements MouseListener
+    {
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // Go to article
-        // Go to theme
-        // Go to profil
-    }
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            // Go to article
+            // Go to theme
+            // Go to profil
+        }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        //Useless
-    }
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        //Useless
-    }
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        this.setBackground(new Color(189,189,189));
-        this.content.setBackground(new Color(189,189,189));
-        this.actionButton.setBackground(new Color(189,189,189));
-    }
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            ArticleListItem.this.setBackground(AppliColor.GRAY.getColor());
+            ArticleListItem.this.content.setBackground(AppliColor.GRAY.getColor());
+            ArticleListItem.this.actionButton.setBackground(AppliColor.GRAY.getColor());
+        }
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-        this.setBackground(Color.WHITE);
-        this.content.setBackground(Color.WHITE);
-        this.actionButton.setBackground(Color.WHITE);
+        @Override
+        public void mouseExited(MouseEvent e) {
+            ArticleListItem.this.setBackground(Color.WHITE);
+            ArticleListItem.this.content.setBackground(Color.WHITE);
+            ArticleListItem.this.actionButton.setBackground(Color.WHITE);
+        }
     }
 }

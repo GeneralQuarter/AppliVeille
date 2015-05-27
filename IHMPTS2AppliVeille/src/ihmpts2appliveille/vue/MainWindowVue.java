@@ -5,14 +5,10 @@
  */
 package ihmpts2appliveille.vue;
 
-import ihmpts2appliveille.modele.Main;
-import ihmpts2appliveille.modele.Navigation;
-import ihmpts2appliveille.modele.Statut;
+import ihmpts2appliveille.controleur.MainControleur;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -25,24 +21,21 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author x1QG1x
  */
-public class MainWindowVue extends JFrame implements Observer{
-    private Main modele;
-    private Navigation nav;
+public class MainWindowVue extends JFrame{
+    private MainControleur mctrl;
     
-    private MainMenuBarVue mmb;
-    private FormAuthentificationVue fa;
-    private MainSessionVue ms;
+    private MenuBarVue mbv;
+    private FormAuthentificationVue fav;
+    private BodyContentVue bcv;
     
     private BorderLayout mainLayout;
     private JPanel currentMainFrame;
     
-    public MainWindowVue(Main modele, Navigation nav)
+    public MainWindowVue(MainControleur mctrl)
     {
-        // -- Setup Model --
-        this.modele = modele;
-        this.modele.addObserver(this);
-        
-        this.nav = nav;
+        // -- Setup Controleur --
+        this.mctrl = mctrl;
+        this.mctrl.setMainWindowVue(this);
         
         try {
             // -- Look and Feel --
@@ -62,15 +55,15 @@ public class MainWindowVue extends JFrame implements Observer{
         this.setLayout(mainLayout);
         
         // -- Setup Frames --
-        fa = new FormAuthentificationVue(this);
-        ms = new MainSessionVue(this);
-        mmb = new MainMenuBarVue(this);
+        fav = new FormAuthentificationVue(this.mctrl);
+        bcv = new BodyContentVue(this.mctrl);
+        mbv = new MenuBarVue(this.mctrl);
         
         // -- Setup currentMainFrame --
-        currentMainFrame = fa;
-        this.getContentPane().add(fa);
-        this.setJMenuBar(mmb);
-        mmb.setVisible(false);
+        currentMainFrame = fav;
+        this.getContentPane().add(fav);
+        this.setJMenuBar(mbv);
+        mbv.setVisible(false);
         
         this.revalidate();
         this.repaint();
@@ -90,64 +83,49 @@ public class MainWindowVue extends JFrame implements Observer{
             this.remove(currentMainFrame);
         this.getContentPane().add(mainFrame);
         currentMainFrame = mainFrame;
-        mmb.setVisible(menuVisible);
+        mbv.setVisible(menuVisible);
         this.revalidate();
         this.repaint();
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        
-        /*switch(modele.getAction())
-        {
-            case "CONNEXION":
-                changeMainFrame(ms, true);
-                break;
-            case "DECONNEXION":
-                changeMainFrame(fa, false);
-                break;
-            case "Nouveau Message":
-                break;
-            case "ENT":
-                try {
-                    Desktop.getDesktop().browse(URI.create("https://ent.univ-lr.fr"));
-                } catch (IOException ex) {
-                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
-            case "Moodle":
-                try {
-                    Desktop.getDesktop().browse(URI.create("https://moodle.univ-lr.fr"));
-                } catch (IOException ex) {
-                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
-            case "ACCUEIL":
-                break;
-            case "Tous les articles":
-                break;
-        }*/
-        if(modele.getStatut() == Statut.DECONNECTE)
-        {
-            changeMainFrame(fa, false);
-        }else if(modele.getStatut() == Statut.CONNECTE){
-            mmb.setProfilName(modele.getSession().getNom() + " " + modele.getSession().getPrenom());
-            changeMainFrame(ms, true);
-        }
-    }
-    
-    public Main getModele()
-    {
-        return modele;
-    }
-    
-    public Navigation getNavigation()
-    {
-        return nav;
-    }
-    
-    public FormAuthentificationVue getFormAuthentificationVue()
-    {
-        return fa;
-    }
+//    @Override
+//    public void update(Observable o, Object arg) {
+//        
+//        /*switch(modele.getAction())
+//        {
+//            case "CONNEXION":
+//                changeMainFrame(ms, true);
+//                break;
+//            case "DECONNEXION":
+//                changeMainFrame(fa, false);
+//                break;
+//            case "Nouveau Message":
+//                break;
+//            case "ENT":
+//                try {
+//                    Desktop.getDesktop().browse(URI.create("https://ent.univ-lr.fr"));
+//                } catch (IOException ex) {
+//                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                break;
+//            case "Moodle":
+//                try {
+//                    Desktop.getDesktop().browse(URI.create("https://moodle.univ-lr.fr"));
+//                } catch (IOException ex) {
+//                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                break;
+//            case "ACCUEIL":
+//                break;
+//            case "Tous les articles":
+//                break;
+//        }*/
+//        if(modele.getStatut() == Statut.DECONNECTE)
+//        {
+//            changeMainFrame(fa, false);
+//        }else if(modele.getStatut() == Statut.CONNECTE){
+//            mmb.setProfilName(modele.getSession().getNom() + " " + modele.getSession().getPrenom());
+//            changeMainFrame(ms, true);
+//        }
+//    }
 }

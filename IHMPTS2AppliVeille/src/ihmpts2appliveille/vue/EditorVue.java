@@ -5,6 +5,7 @@
  */
 package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.controleur.MainControleur;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -12,7 +13,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -26,9 +26,6 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
@@ -37,7 +34,7 @@ import javax.swing.text.html.HTMLEditorKit;
  * @author x1QG1x
  */
 public class EditorVue extends JPanel{
-    private MainSessionVue ms;
+    private MainControleur mctrl;
     
     private JPanel contentPanel;
     private SpringLayout sp;
@@ -65,12 +62,12 @@ public class EditorVue extends JPanel{
     
     private Font f;
             
-    public EditorVue(String title, MainSessionVue ms)
+    public EditorVue(String title, MainControleur mctrl) // Need to add other parameters ... (new message ?)
     {
-        this.setLayout(new BorderLayout());
+        this.mctrl = mctrl;
+        this.mctrl.setEditorVue(this);
         
-        // -- Setup MainSessionVue -- 
-        this.ms = ms;
+        this.setLayout(new BorderLayout());
         
         // -- Setup labels --
         f = new Font("Arial", Font.BOLD, 40);
@@ -239,9 +236,9 @@ public class EditorVue extends JPanel{
                 contentField.requestFocus();
             }
             
-            if(e.getSource().equals(addImageButton))
+            if(e.getSource().equals(addImageButton)) // Don't do it all here maybe ? call controleur...
             {
-                String url = JOptionPane.showInputDialog(ms, "Entrer l'url de l'image", "Ajouter une image", JOptionPane.QUESTION_MESSAGE);
+                String url = JOptionPane.showInputDialog(null, "Entrer l'url de l'image", "Ajouter une image", JOptionPane.QUESTION_MESSAGE);
                 if(url.matches("https?://.+\\..+\\..+\\.(png|jpeg|jpg|bmp)"))
                 {
                     HTMLDocument doc = (HTMLDocument) contentField.getDocument();
@@ -255,13 +252,13 @@ public class EditorVue extends JPanel{
                         Logger.getLogger(EditorVue.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }else{
-                    JOptionPane.showMessageDialog(ms, "URL : " + url + " invalide", "URL Invalide", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "URL : " + url + " invalide", "URL Invalide", JOptionPane.ERROR_MESSAGE);
                 }
             }
             
-            if(e.getSource().equals(linksButton))
+            if(e.getSource().equals(linksButton)) // Don't do it all here maybe ? call controleur...
             {
-                String url = JOptionPane.showInputDialog(ms, "Entrer l'url du lien", "Ajouter un lien", JOptionPane.QUESTION_MESSAGE);
+                String url = JOptionPane.showInputDialog(null, "Entrer l'url du lien", "Ajouter un lien", JOptionPane.QUESTION_MESSAGE);
                 if(url.matches("https?://.+\\..+\\..+"))
                 {
                     String sel = contentField.getSelectedText();
@@ -275,7 +272,7 @@ public class EditorVue extends JPanel{
                     String[] textSplit = contentField.getText().split(sale+sel);
                     contentField.setText(textSplit[0] + "<a href=\"" + url + "\">" + sel + "</a>" + textSplit[1]);
                 }else{
-                    JOptionPane.showMessageDialog(ms, "URL : " + url + " invalide", "URL Invalide", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "URL : " + url + " invalide", "URL Invalide", JOptionPane.ERROR_MESSAGE);
                 } 
             }
         } 

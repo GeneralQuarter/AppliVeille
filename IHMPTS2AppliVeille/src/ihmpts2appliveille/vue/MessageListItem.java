@@ -5,6 +5,7 @@
  */
 package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.modele.AppliColor;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -20,8 +21,7 @@ import javax.swing.JTextArea;
  *
  * @author x1QG1x
  */
-public class MessageListItem extends JPanel implements MouseListener{
-    private MessagerieVue m;
+public class MessageListItem extends JPanel{
     
     private JLabel objet;
     private JTextArea message;
@@ -31,12 +31,11 @@ public class MessageListItem extends JPanel implements MouseListener{
     private Font fObjet;
     private Font fBottom;
     
-    public MessageListItem(String objet, String message, String auteur, String date, MessagerieVue m)
+    public MessageListItem(String objet, String message, String auteur, String date)
     {
         this.objet = new JLabel(objet);
         this.message = new JTextArea(message);
         this.bottom = new JLabel(auteur + " à " + date);
-        this.m = m;
         
         fMessage = new Font("Arial", 0, 10);
         fObjet = new Font("Arial", 0, 18);
@@ -53,7 +52,7 @@ public class MessageListItem extends JPanel implements MouseListener{
         this.message.setWrapStyleWord(false);
         this.message.setFont(fMessage);
         this.message.setEditable(false);
-        this.message.addMouseListener(this);
+        this.message.addMouseListener(new EcouteurHover());
         
         this.objet.setFont(fObjet);
         
@@ -64,34 +63,35 @@ public class MessageListItem extends JPanel implements MouseListener{
         this.add(this.bottom);
         
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        this.addMouseListener(this);
+        this.addMouseListener(new EcouteurHover());
     }
+    
+    public class EcouteurHover implements MouseListener
+    {
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        //Go to Message
-        System.out.println(objet.getText());
-    }
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // Useless
-    }
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        // Useless
-    }
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        this.setBackground(new Color(33,150,243));
-        this.message.setBackground(new Color(33,150,243));
-    }
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            MessageListItem.this.setBackground(AppliColor.LIGHT_BLUE.getColor());
+            MessageListItem.this.message.setBackground(AppliColor.LIGHT_BLUE.getColor());
+        }
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-        this.setBackground(Color.white);
-        this.message.setBackground(Color.white);
+        @Override
+        public void mouseExited(MouseEvent e) {
+            MessageListItem.this.setBackground(Color.white);
+            MessageListItem.this.message.setBackground(Color.white);
+        }
+        
     }
 }

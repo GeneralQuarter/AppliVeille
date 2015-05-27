@@ -5,14 +5,16 @@
  */
 package ihmpts2appliveille.vue;
 
-import ihmpts2appliveille.vue.QGMenu;
-import ihmpts2appliveille.vue.QGButton;
+import ihmpts2appliveille.controleur.MainControleur;
+import ihmpts2appliveille.modele.AppliColor;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,8 +24,8 @@ import javax.swing.JMenuItem;
  *
  * @author x1QG1x
  */
-public class MainMenuBarVue extends JMenuBar{
-    private MainWindowVue mw;
+public class MenuBarVue extends JMenuBar{
+    private MainControleur mctrl;
     
     // -- Menus --
     private QGButton accueilButton;
@@ -54,43 +56,40 @@ public class MainMenuBarVue extends JMenuBar{
     
     private Font f;
     
-    private EcouteurConnexion ec;
-    private EcouteurNavigation en;
-    
-    public MainMenuBarVue(MainWindowVue mw)
+    public MenuBarVue(MainControleur mctrl)
     {
-        this.mw = mw;
         
-        ec = new EcouteurConnexion(this.mw);
-        en = new EcouteurNavigation(this.mw);
+        // -- Setup Controleur --
+        this.mctrl = mctrl;
+        this.mctrl.setMenuBarVue(this);
         
         f = new Font("Arial", Font.BOLD, 16);
         
         this.setPreferredSize(new Dimension(getWidth(),40));
         // -- Init Sub Menus --
         newArticleSubMenu = new JMenuItem("Nouvel article...");
-        newArticleSubMenu.addActionListener(en);
+        newArticleSubMenu.addActionListener(new EcouteurNavigation());
         myArticleSubMenu = new JMenuItem("Mes articles");
         allArticleSubMenu = new JMenuItem("Tous les articles");
-        allArticleSubMenu.addActionListener(en);
+        allArticleSubMenu.addActionListener(new EcouteurNavigation());
         editMyThemeSubMenu = new JMenuItem("Editer mon thème");
         listThemeSubMenu = new JMenuItem("Liste des thèmes");
         moodle = new JMenuItem("Moodle");
-        moodle.addActionListener(en);
+        moodle.addActionListener(new EcouteurLien());
         ent = new JMenuItem("ENT");
-        ent.addActionListener(en);
+        ent.addActionListener(new EcouteurLien());
         myProfilSubMenu = new JMenuItem("Mon profil");
         listUsersSubMenu = new JMenuItem("Liste des utilisateurs");
         
         // -- Init Menus --
-        accueilButton = new QGButton("ACCUEIL", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
+        accueilButton = new QGButton("ACCUEIL", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
         accueilButton.setMaximumSize(new Dimension(accueilButton.getPreferredSize().width, 40));
-        accueilButton.addActionListener(en);
-        articleMenu = new QGMenu("ARTICLE", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
-        themeMenu = new QGMenu("THEME", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
-        links = new QGMenu("LIENS", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
+        accueilButton.addActionListener(new EcouteurNavigation());
+        articleMenu = new QGMenu("ARTICLE", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
+        themeMenu = new QGMenu("THEME", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
+        links = new QGMenu("LIENS", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
         links.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        profilMenu = new QGMenu("Gangler Quentin", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
+        profilMenu = new QGMenu("Gangler Quentin", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
         profilMenu.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         
         // -- Adding sub menus --
@@ -110,9 +109,9 @@ public class MainMenuBarVue extends JMenuBar{
         profilMenu.addSeparator();
         profilMenu.add(listUsersSubMenu);
         
-        deconnexionButton = new QGButton("DECONNEXION", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
+        deconnexionButton = new QGButton("DECONNEXION", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
         deconnexionButton.setMaximumSize(new Dimension(deconnexionButton.getPreferredSize().width, 40));
-        deconnexionButton.addActionListener(ec);
+        deconnexionButton.addActionListener(new EcouteurDeconnexion());
         
         // -- Adding Menus --
         this.add(accueilButton);
@@ -131,6 +130,34 @@ public class MainMenuBarVue extends JMenuBar{
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(new Color(33,150,243));
         g2d.fillRect(0, 0, getWidth(), getHeight()-1);
+    }
+    
+    public class EcouteurLien implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mctrl.lienVersInternet(e.getActionCommand());
+        }
+        
+    }
+    
+    public class EcouteurNavigation implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mctrl.naviguerVers(e.getActionCommand());
+        }
+        
+    }
+    
+    public class EcouteurDeconnexion implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mctrl.deconnection();
+        }
+        
     }
     
     public void setProfilName(String nomPrenom)
