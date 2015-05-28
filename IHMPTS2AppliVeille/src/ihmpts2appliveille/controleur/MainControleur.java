@@ -35,12 +35,14 @@ public class MainControleur {
     private Session session;
     private LienExterne moodle;
     private LienExterne ent;
+    private LienExterne formadep;
     
     public MainControleur()
     {
         session = new Session();
         moodle = new LienExterne("https://moodle.univ-lr.fr");
         ent = new LienExterne("https://ent.univ-lr.fr");
+        formadep = new LienExterne("http://www.formadepetudiant.fr/?ref=19");
     }
     
     public void connection(String login, String mdp)
@@ -83,6 +85,9 @@ public class MainControleur {
             case "ENT":
                 ent.browse();
                 break;
+            case "Formadep":
+                formadep.browse();
+                break;
         }
     }
     
@@ -99,6 +104,11 @@ public class MainControleur {
                 bcv.changeMainContent(aav);
                 break;
             case "Nouvel article...":
+                ev.setTitle("Nouvel Article");
+                bcv.changeMainContent(ev);
+                break;
+            case "Nouveau Message":
+                ev.setTitle("Nouveau Message");
                 bcv.changeMainContent(ev);
                 break;
         }

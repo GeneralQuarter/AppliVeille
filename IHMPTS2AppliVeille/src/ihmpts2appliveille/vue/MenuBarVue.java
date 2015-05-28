@@ -49,6 +49,7 @@ public class MenuBarVue extends JMenuBar{
     // -- Links --
     private JMenuItem moodle;
     private JMenuItem ent;
+    private JMenuItem formadep;
     
     // -- Profil --
     private JMenuItem myProfilSubMenu;
@@ -78,6 +79,8 @@ public class MenuBarVue extends JMenuBar{
         moodle.addActionListener(new EcouteurLien());
         ent = new JMenuItem("ENT");
         ent.addActionListener(new EcouteurLien());
+        formadep = new JMenuItem("Formadep");
+        formadep.addActionListener(new EcouteurLien());
         myProfilSubMenu = new JMenuItem("Mon profil");
         listUsersSubMenu = new JMenuItem("Liste des utilisateurs");
         
@@ -104,6 +107,7 @@ public class MenuBarVue extends JMenuBar{
         
         links.add(moodle);
         links.add(ent);
+        links.add(formadep);
         
         profilMenu.add(myProfilSubMenu);
         profilMenu.addSeparator();

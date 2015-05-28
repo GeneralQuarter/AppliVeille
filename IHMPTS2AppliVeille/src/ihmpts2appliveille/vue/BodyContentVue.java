@@ -41,7 +41,7 @@ public class BodyContentVue extends JPanel{
         this.setBackground(Color.white);
         
         // -- Setup Messagerie --
-        mv = new MessagerieVue();
+        mv = new MessagerieVue(this.mctrl);
         this.add(mv, BorderLayout.EAST);
         
         // -- Setup MainContent --

@@ -5,10 +5,13 @@
  */
 package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.AppliColor;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,6 +25,7 @@ import javax.swing.SpringLayout;
  * @author x1QG1x
  */
 public class MessagerieVue extends JPanel{
+    private MainControleur mctrl;
     
     private SpringLayout layout;
     
@@ -33,9 +37,11 @@ public class MessagerieVue extends JPanel{
     
     private Font f;
     
-    public MessagerieVue()
+    public MessagerieVue(MainControleur mctrl)
     {
         super(); // Utile ??
+        this.mctrl = mctrl;
+        this.mctrl.setMessagerieVue(this);
         this.setBackground(AppliColor.GRAY_BG.getColor());
         this.setPreferredSize(new Dimension(380,100));
         this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.LIGHT_GRAY));
@@ -49,6 +55,7 @@ public class MessagerieVue extends JPanel{
         newMessage.setPreferredSize(new Dimension(370,50));
         
         add(newMessage);
+        newMessage.addActionListener(new EcouteurNouveauMessage());
         
         layout.putConstraint(SpringLayout.WEST, newMessage, 10, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, newMessage, 10, SpringLayout.NORTH, this);
@@ -91,5 +98,14 @@ public class MessagerieVue extends JPanel{
                     + "Ut enim ad minim veniam, quis nostrud", "Auteur " + (i+1), "05/12/2015"));
             messagesHolder.add(Box.createRigidArea(new Dimension(0,5)));
         }
+    }
+    
+    public class EcouteurNouveauMessage implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mctrl.naviguerVers(e.getActionCommand());
+        }
+        
     }
 }

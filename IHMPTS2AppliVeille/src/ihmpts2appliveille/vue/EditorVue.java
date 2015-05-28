@@ -239,7 +239,7 @@ public class EditorVue extends JPanel{
             if(e.getSource().equals(addImageButton)) // Don't do it all here maybe ? call controleur...
             {
                 String url = JOptionPane.showInputDialog(null, "Entrer l'url de l'image", "Ajouter une image", JOptionPane.QUESTION_MESSAGE);
-                if(url.matches("https?://.+\\..+\\..+\\.(png|jpeg|jpg|bmp)"))
+                if(url.matches("https?://.+\\..+\\.(png|jpeg|jpg|bmp)"))
                 {
                     HTMLDocument doc = (HTMLDocument) contentField.getDocument();
 
@@ -259,7 +259,7 @@ public class EditorVue extends JPanel{
             if(e.getSource().equals(linksButton)) // Don't do it all here maybe ? call controleur...
             {
                 String url = JOptionPane.showInputDialog(null, "Entrer l'url du lien", "Ajouter un lien", JOptionPane.QUESTION_MESSAGE);
-                if(url.matches("https?://.+\\..+\\..+"))
+                if(url.matches("https?://.+\\..+"))
                 {
                     String sel = contentField.getSelectedText();
                     HTMLDocument doc = (HTMLDocument) contentField.getDocument();
@@ -276,5 +276,10 @@ public class EditorVue extends JPanel{
                 } 
             }
         } 
+    }
+    
+    public void setTitle(String title)
+    {
+        this.title.setText(title);
     }
 }
