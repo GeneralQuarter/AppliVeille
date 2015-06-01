@@ -5,9 +5,11 @@
  */
 package ihmpts2appliveille.controleur;
 
+import ihmpts2appliveille.modele.Cryptage;
 import ihmpts2appliveille.modele.LienExterne;
-import ihmpts2appliveille.modele.Session;
 import ihmpts2appliveille.modele.Statut;
+import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
+import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import ihmpts2appliveille.vue.ActualiteArticleVue;
 import ihmpts2appliveille.vue.EditorVue;
 import ihmpts2appliveille.vue.MenuBarVue;
@@ -32,14 +34,17 @@ public class MainControleur {
     private BodyContentVue bcv;
     private FormAuthentificationVue fav;
     
-    private Session session;
     private LienExterne moodle;
     private LienExterne ent;
     private LienExterne formadep;
     
+    private RecuperationDonneesInitiales rdi;
+    
+    private Utilisateur utilisateurConnecte;
+    
     public MainControleur()
     {
-        session = new Session();
+        rdi = new RecuperationDonneesInitiales();
         moodle = new LienExterne("https://moodle.univ-lr.fr");
         ent = new LienExterne("https://ent.univ-lr.fr");
         formadep = new LienExterne("http://www.formadepetudiant.fr/?ref=19");
@@ -49,25 +54,28 @@ public class MainControleur {
     {
         if(!login.isEmpty() && !mdp.isEmpty())
         {
-            session.connection(login, mdp);
-            if(session.getStatut() == Statut.CONNECTE)
+            utilisateurConnecte = rdi.recupererUtilisateurEnConnection(login);
+            if(utilisateurConnecte != null)
             {
-                mmbv.setProfilName(session.getNomPrenom());
-                aav.setTitle("Actualités");
-                bcv.changeMainContent(aav);
-                mmv.changeMainFrame(bcv, true);
+                if(utilisateurConnecte.getMdp().equals(Cryptage.getEncodedPassword(mdp)))
+                {
+                    mmbv.setProfilName(utilisateurConnecte.getNom());
+                    aav.setTitle("Actualités");
+                    bcv.changeMainContent(aav);
+                    mmv.changeMainFrame(bcv, true);
+                }else{
+                     fav.afficherErreurIdentifiants();
+                }
             }else{
                 fav.afficherErreurIdentifiants();
-            } 
-        }else{
-            fav.afficherErreurIdentifiants();
+            }
         }
     }
     
     public void deconnection()
     {
-       if(session.getStatut() == Statut.CONNECTE){
-           session.deconnexion();
+       if(true){
+           utilisateurConnecte = null;
            fav.resetConnection();
            mmv.changeMainFrame(fav, false);
        }else{
@@ -110,6 +118,8 @@ public class MainControleur {
             case "Nouveau Message":
                 ev.setTitle("Nouveau Message");
                 bcv.changeMainContent(ev);
+                break;
+            case "Liste des thèmes":
                 break;
         }
     }

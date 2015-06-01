@@ -61,33 +61,4 @@ public class BodyContentVue extends JPanel{
         this.revalidate();
         this.repaint();
     }
-
-//    @Override
-//    public void update(Observable o, Object arg) {
-//        switch(this.mw.getNavigation().getCible())
-//        {
-//            case "Moodle":
-//                try {
-//                    Desktop.getDesktop().browse(URI.create("https://moodle.univ-lr.fr"));
-//                } catch (IOException ex) {
-//                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                break;
-//            case "ENT":
-//                try {
-//                    Desktop.getDesktop().browse(URI.create("https://ent.univ-lr.fr"));
-//                } catch (IOException ex) {
-//                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                break;
-//            case "Tous les articles":
-//                this.changeMainContent(aawArticle);
-//                break;
-//            case "ACCUEIL":
-//                this.changeMainContent(aaw);
-//                break;
-//            case "Nouvel article...":
-//                this.changeMainContent(ev);
-//        }
-//    }
 }

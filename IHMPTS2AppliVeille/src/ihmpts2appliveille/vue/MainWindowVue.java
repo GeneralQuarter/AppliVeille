@@ -87,45 +87,4 @@ public class MainWindowVue extends JFrame{
         this.revalidate();
         this.repaint();
     }
-
-//    @Override
-//    public void update(Observable o, Object arg) {
-//        
-//        /*switch(modele.getAction())
-//        {
-//            case "CONNEXION":
-//                changeMainFrame(ms, true);
-//                break;
-//            case "DECONNEXION":
-//                changeMainFrame(fa, false);
-//                break;
-//            case "Nouveau Message":
-//                break;
-//            case "ENT":
-//                try {
-//                    Desktop.getDesktop().browse(URI.create("https://ent.univ-lr.fr"));
-//                } catch (IOException ex) {
-//                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                break;
-//            case "Moodle":
-//                try {
-//                    Desktop.getDesktop().browse(URI.create("https://moodle.univ-lr.fr"));
-//                } catch (IOException ex) {
-//                    Logger.getLogger(MainWindowVue.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                break;
-//            case "ACCUEIL":
-//                break;
-//            case "Tous les articles":
-//                break;
-//        }*/
-//        if(modele.getStatut() == Statut.DECONNECTE)
-//        {
-//            changeMainFrame(fa, false);
-//        }else if(modele.getStatut() == Statut.CONNECTE){
-//            mmb.setProfilName(modele.getSession().getNom() + " " + modele.getSession().getPrenom());
-//            changeMainFrame(ms, true);
-//        }
-//    }
 }
