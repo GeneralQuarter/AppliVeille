@@ -7,9 +7,11 @@ package ihmpts2appliveille.modele.accesbd;
 
 import ihmpts2appliveille.modele.Droits;
 import ihmpts2appliveille.modele.Statut;
+import ihmpts2appliveille.modele.accesbd.entites.Article;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import iutlr.dutinfo.bd.AccesBD;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -22,6 +24,7 @@ import java.util.logging.Logger;
 public class RecuperationDonneesInitiales {
     private AccesBD acces;
     private Map<Integer, Utilisateur> utilisateurs;
+    private Map<Integer, Article> articles;
     
     public RecuperationDonneesInitiales(){
         this.acces = new AccesBD();
@@ -70,5 +73,32 @@ public class RecuperationDonneesInitiales {
         }
         
         return utilisateur;
+    }
+    
+    public Article recupererArticle(int idArticle){
+        Article article = null;
+        if(articles.containsKey(idArticle))
+            return articles.get(idArticle);
+        try{
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM ARTICLE WHERE ID_ARTICLE ='" + idArticle + "'");
+            List<String> row = resultats.get(0);
+            if(idArticle == Integer.parseInt(row.get(0)))
+            {
+                int idAuteur = Integer.parseInt(row.get(1));
+                int idTheme = Integer.parseInt(row.get(2));
+                int nbCommArt = Integer.parseInt(row.get(3));
+                String intitule = row.get(4);
+                String contenu = row.get(5);
+                Calendar datePubli = Calendar.getInstance(); // A MODIFIER
+                Calendar dateModif = Calendar.getInstance(); // A MODIFIER
+                float note = 0.0f; // A MODIFIER
+                article = new Article(idArticle, idAuteur, idTheme, nbCommArt, intitule, contenu, datePubli, dateModif, note);
+            }else{
+                //Erreur de selection ou article non existant
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return article;
     }
 }
