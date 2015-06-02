@@ -8,6 +8,10 @@ package ihmpts2appliveille.modele.accesbd;
 import ihmpts2appliveille.modele.Droits;
 import ihmpts2appliveille.modele.Statut;
 import ihmpts2appliveille.modele.accesbd.entites.Article;
+import ihmpts2appliveille.modele.accesbd.entites.Commentaire;
+import ihmpts2appliveille.modele.accesbd.entites.Correspondance;
+import ihmpts2appliveille.modele.accesbd.entites.Message;
+import ihmpts2appliveille.modele.accesbd.entites.Theme;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import iutlr.dutinfo.bd.AccesBD;
 import java.sql.SQLException;
@@ -25,6 +29,10 @@ public class RecuperationDonneesInitiales {
     private AccesBD acces;
     private Map<Integer, Utilisateur> utilisateurs;
     private Map<Integer, Article> articles;
+    private Map<Integer, Theme> themes;
+    private Map<Integer, Commentaire> commentaires;
+    private Map<Integer, Message> messages;
+    private Map<Integer, Correspondance> correspondances;
     
     public RecuperationDonneesInitiales(){
         this.acces = new AccesBD();
@@ -100,5 +108,79 @@ public class RecuperationDonneesInitiales {
             System.err.println(ex.getMessage());
         }
         return article;
+    }
+    
+    public Theme recupererTheme(int idTheme){
+        Theme theme = null;
+        if(themes.containsKey(idTheme))
+            return themes.get(idTheme);
+        try{
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM THEME WHERE ID_THEME = '" + idTheme + "'");
+            List<String> row = resultats.get(0);
+            if(idTheme == Integer.parseInt(row.get(0))){
+                int idProp = Integer.parseInt(row.get(1)); //Il peut être null
+                String intitule = row.get(2);
+                String description = row.get(3);
+                theme = new Theme(idTheme, idProp, intitule, description);
+            }else{
+                //Erreur de selection ou theme non existant
+            }
+        }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return theme;
+    }
+    
+    public Commentaire recupererCommentaire(int idCommentaire){
+        Commentaire commentaire = null;
+        if(commentaires.containsKey(idCommentaire))
+            return commentaires.get(idCommentaire);
+        try{
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM COMMENTAIRE WHERE ID_COMMENTAIRE = '"+ idCommentaire + "'");
+            List<String> row = resultats.get(0);
+            if(idCommentaire == Integer.parseInt(row.get(0))){
+                   int idAuteur = Integer.parseInt(row.get(1));
+                   int idArticle = Integer.parseInt(row.get(2));
+                   String intitule = row.get(3);
+                   String contenu = row.get(4);
+                   Calendar datePubli = Calendar.getInstance(); //A MODIFIER
+                   Calendar dateModif = Calendar.getInstance(); //A MODIFIER
+                   commentaire = new Commentaire(idCommentaire, idAuteur, idArticle, intitule, contenu, datePubli, dateModif);
+            }else{
+                //Erreur de selection ou commentaire inexistant
+
+            }
+        }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return commentaire;
+    }
+    
+    public Message recupererMessage(int idMessage){
+        Message message = null;
+        if(messages.containsKey(idMessage))
+            return messages.get(idMessage);
+        try{
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM COMMENTAIRE WHERE ID_MESSAGE = '"+ idMessage + "'");
+            List<String> row = resultats.get(0);
+            if(idMessage == Integer.parseInt(row.get(0))){
+                   int idAuteur = Integer.parseInt(row.get(1));
+                   String intitule = row.get(3);
+                   String contenu = row.get(4);
+                   Calendar dateEnvoi = Calendar.getInstance(); //A MODIFIER
+                   message = new Message(idMessage, idAuteur, intitule, contenu, dateEnvoi);
+            }else{
+                //Erreur de selection ou commentaire inexistant
+
+            }
+        }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return message;
+    }
+    
+    public Correspondance recupererCorrespondance(int idMessage, int idDestinataire){
+        Correspondance correspondance = null;
+        return correspondance;
     }
 }
