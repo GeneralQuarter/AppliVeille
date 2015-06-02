@@ -20,7 +20,8 @@ public class BodyContentVue extends JPanel{
     
     private MessagerieVue mv;
     private ActualiteArticleVue aav;
-    private EditorVue ev; 
+    private EditorVue ev;
+    private ListeVue lv;
     
     private JPanel currentMainContent;
     
@@ -47,6 +48,7 @@ public class BodyContentVue extends JPanel{
         // -- Setup MainContent --
         aav = new ActualiteArticleVue("Actualités", this.mctrl);
         ev = new EditorVue("Editer Article", this.mctrl);
+        lv = new ListeVue("Liste des thèmes", this.mctrl);
         
         currentMainContent = null;
         this.changeMainContent(ev);

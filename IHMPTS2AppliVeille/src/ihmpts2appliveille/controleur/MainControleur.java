@@ -7,7 +7,6 @@ package ihmpts2appliveille.controleur;
 
 import ihmpts2appliveille.modele.Cryptage;
 import ihmpts2appliveille.modele.LienExterne;
-import ihmpts2appliveille.modele.Statut;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import ihmpts2appliveille.vue.ActualiteArticleVue;
@@ -15,6 +14,7 @@ import ihmpts2appliveille.vue.EditorVue;
 import ihmpts2appliveille.vue.MenuBarVue;
 import ihmpts2appliveille.vue.BodyContentVue;
 import ihmpts2appliveille.vue.FormAuthentificationVue;
+import ihmpts2appliveille.vue.ListeVue;
 import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
 
@@ -33,6 +33,7 @@ public class MainControleur {
     private MenuBarVue mmbv;
     private BodyContentVue bcv;
     private FormAuthentificationVue fav;
+    private ListeVue lv;
     
     private LienExterne moodle;
     private LienExterne ent;
@@ -120,10 +121,15 @@ public class MainControleur {
                 bcv.changeMainContent(ev);
                 break;
             case "Liste des thèmes":
+                bcv.changeMainContent(lv);
                 break;
         }
     }
-    
+
+    public void setListeVue(ListeVue lv) {
+        this.lv = lv;
+    }
+
     public void setMainWindowVue(MainWindowVue mmv) {
         this.mmv = mmv;
     }
