@@ -84,6 +84,7 @@ public class MenuBarVue extends JMenuBar{
         formadep.addActionListener(new EcouteurLien());
         myProfilSubMenu = new JMenuItem("Mon profil");
         listUsersSubMenu = new JMenuItem("Liste des utilisateurs");
+        listUsersSubMenu.addActionListener(new EcouteurNavigation());
         
         // -- Init Menus --
         accueilButton = new QGButton("ACCUEIL", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);

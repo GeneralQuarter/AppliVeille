@@ -16,10 +16,9 @@ import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import iutlr.dutinfo.bd.AccesBD;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -36,6 +35,108 @@ public class RecuperationDonneesInitiales {
     
     public RecuperationDonneesInitiales(){
         this.acces = new AccesBD();
+        this.themes = new HashMap<>();
+        this.utilisateurs = new HashMap<>();
+    }
+    
+    public Map<Integer, Utilisateur> recupererUtilisateurs()
+    {
+        try {
+            List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur");
+            int idUtilisateur, nbConn, nbComm, nbArticle;
+            String nom, identifiant, mdp;
+            float note = 0.0f;
+            Droits typeProfil = null;
+            Statut etat = null;
+            List<String> row;
+            for(int i = 0; i < resultats.size();i++)
+            {
+                row = resultats.get(i);
+                idUtilisateur = Integer.parseInt(row.get(0));
+                if(!utilisateurs.containsKey(idUtilisateur))
+                {
+                    nom = row.get(1);
+                    //note = ?
+                    nbConn = Integer.parseInt(row.get(3));
+                    nbComm = Integer.parseInt(row.get(4));
+                    nbArticle = Integer.parseInt(row.get(5));
+                    identifiant = row.get(6);
+                    mdp = row.get(7);
+                    switch(row.get(8))
+                    {
+                        case "professeur":
+                            typeProfil = Droits.PROFESSEUR;
+                            break;
+                        case "eleve":
+                            typeProfil = Droits.ETUDIANT;
+                            break;
+                        case "admin":
+                            typeProfil = Droits.ADMINISTRATEUR;
+                            break;
+                    }      
+                    switch(row.get(9))
+                    {
+                        case "C":
+                            etat = Statut.CONNECTE;
+                            break;
+                        case "N":
+                            etat = Statut.CONNECTE;
+                            break;
+                    }
+                    utilisateurs.put(idUtilisateur, new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat));
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return utilisateurs;
+    }
+    
+    public Utilisateur recupererUtilisateur(int id)
+    {
+        if(utilisateurs.containsKey(id))
+            return utilisateurs.get(id);
+        Utilisateur utilisateur = null;
+        try {
+            List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where id_utilisateur=" + id);
+            List<String> row = resultats.get(0);
+            int idUtilisateur = Integer.parseInt(row.get(0));
+            String nom = row.get(1);
+            System.out.println(row.get(2));
+            float note = 0.0f;
+            int nbConn = Integer.parseInt(row.get(3));
+            int nbComm = Integer.parseInt(row.get(4));
+            int nbArticle = Integer.parseInt(row.get(5));
+            String identifiant = row.get(6);
+            String mdp = row.get(7);
+            Droits typeProfil = null;
+            switch(row.get(8))
+            {
+                case "professeur":
+                    typeProfil = Droits.PROFESSEUR;
+                    break;
+                case "eleve":
+                    typeProfil = Droits.ETUDIANT;
+                    break;
+                case "admin":
+                    typeProfil = Droits.ADMINISTRATEUR;
+                    break;
+            }      
+            Statut etat = null;
+            switch(row.get(9))
+            {
+                case "C":
+                    etat = Statut.CONNECTE;
+                    break;
+                case "N":
+                    etat = Statut.CONNECTE;
+                    break;
+            }
+            utilisateur = new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return utilisateur;
     }
     
     public Utilisateur recupererUtilisateurEnConnection(String identifiant)
@@ -108,6 +209,41 @@ public class RecuperationDonneesInitiales {
             System.err.println(ex.getMessage());
         }
         return article;
+    }
+    
+    public Map<Integer, Theme> recupererThemes()
+    {
+        try{
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM THEME");
+            List<String> row;
+            int idTheme, idProp;
+            String intitule, description;
+            for(int i = 0; i < resultats.size(); i++)
+            {
+                System.out.println(resultats.size());
+                row = resultats.get(i);
+                idTheme = Integer.parseInt(row.get(0));
+                if(!themes.containsKey(idTheme))
+                {
+                    if(row.get(1) == null){
+                        idProp = 0;
+                    }else{
+                        idProp = Integer.parseInt(row.get(1));
+                        recupererUtilisateur(idProp);
+                    }
+                    intitule = row.get(2);
+                    description = row.get(3);
+                    if(description == null)
+                    {
+                        description = "";
+                    }
+                    themes.put(idTheme, new Theme(idTheme, idProp, intitule, description));
+                }
+            }
+        }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return themes;
     }
     
     public Theme recupererTheme(int idTheme){

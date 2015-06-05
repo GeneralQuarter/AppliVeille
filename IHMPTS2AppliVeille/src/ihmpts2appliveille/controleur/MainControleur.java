@@ -7,6 +7,8 @@ package ihmpts2appliveille.controleur;
 
 import ihmpts2appliveille.modele.Cryptage;
 import ihmpts2appliveille.modele.LienExterne;
+import ihmpts2appliveille.modele.ModelListeTheme;
+import ihmpts2appliveille.modele.ModelListeUtilisateur;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import ihmpts2appliveille.vue.ActualiteArticleVue;
@@ -121,6 +123,15 @@ public class MainControleur {
                 bcv.changeMainContent(ev);
                 break;
             case "Liste des thèmes":
+                lv.setTitle("Liste des thèmes");
+                lv.setDonneesTable(new ModelListeTheme(rdi.recupererThemes(), rdi.recupererUtilisateurs()));
+                lv.setInterfaceUtilisateur(utilisateurConnecte.getTypeProfil());
+                bcv.changeMainContent(lv);
+                break;
+            case "Liste des utilisateurs":
+                lv.setTitle("Liste des utilisateurs");
+                lv.setDonneesTable(new ModelListeUtilisateur(rdi.recupererUtilisateurs()));
+                lv.setInterfaceUtilisateur(utilisateurConnecte.getTypeProfil());
                 bcv.changeMainContent(lv);
                 break;
         }
