@@ -30,5 +30,13 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void ajoutTheme(String intitule, String description){
+        try{
+            acces.interrogerBase("INSERT INTO theme(ID_THEME, ID_PROP, INTITULE, DESCRIPTION) VALUES ((select NVL(max(ID_THEME), 0)+1 from THEME),NULL,'" + intitule + "','" + description + "'");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     //public void ajoutArticle()
 }

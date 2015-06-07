@@ -149,6 +149,10 @@ public class MainControleur {
     public void ajoutUtilisateur(String nom, String identifiant, String mdp, String typeProfil) {
         ed.ajoutUtilisateur(nom, identifiant, mdp, typeProfil);
     }
+    
+    public void ajoutTheme(String intitule, String description){
+        ed.ajoutTheme(intitule, description);
+    }
 
     public void setListeVue(ListeVue lv) {
         this.lv = lv;
