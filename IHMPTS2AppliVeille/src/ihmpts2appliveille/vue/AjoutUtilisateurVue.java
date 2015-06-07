@@ -83,6 +83,11 @@ public class AjoutUtilisateurVue extends javax.swing.JPanel {
         });
 
         jButton2.setText("Annuler");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -158,7 +163,12 @@ public class AjoutUtilisateurVue extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ctrl.ajoutUtilisateur(jNom.getText(), jIdentifiant.getText(), jMdp.getText(), jCbTypeProfil.getSelectedItem().toString());
+        ctrl.naviguerVers("Liste des utilisateurs");
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ctrl.naviguerVers("Liste des utilisateurs");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
