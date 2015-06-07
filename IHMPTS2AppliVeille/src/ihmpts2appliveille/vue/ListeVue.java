@@ -9,10 +9,13 @@ import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.AppliColor;
 import ihmpts2appliveille.modele.Droits;
 import ihmpts2appliveille.modele.ModelListeTheme;
+import ihmpts2appliveille.modele.ModelListeUtilisateur;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -79,6 +82,7 @@ public class ListeVue extends JPanel{
         f = new Font("Arial", 0, 16);
         
         acceptButton = new QGButton("Demander", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
+        acceptButton.addActionListener(new EcouteurBouton());
         optionnalButton = new QGButton("Archiver", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
         
         addTitle = new JLabel("Proposer thème");
@@ -137,25 +141,56 @@ public class ListeVue extends JPanel{
     
     public void setInterfaceUtilisateur(Droits droits)
     {
-        switch(droits)
+        if(mainTable.getModel() instanceof ModelListeUtilisateur)
         {
-            case ETUDIANT:
-                acceptButton.setText("Demander");
-                optionnalButton.setText("Proposer");
-                break;
-            case PROFESSEUR:
-                acceptButton.setText("Attribuer");
-                optionnalButton.setText("Archiver");
-                break;
-            case ADMINISTRATEUR:
-                acceptButton.setText("Attribuer");
-                optionnalButton.setText("Supprimer");
-                break;
+            switch(droits)
+            {
+                case ETUDIANT:
+                case PROFESSEUR:
+                    acceptButton.setText("Consulter");
+                    optionnalButton.setText("Message");
+                    break;
+                case ADMINISTRATEUR:
+                    acceptButton.setText("Ajouter");
+                    optionnalButton.setText("Supprimer");
+                    break;
+            }
+        }else if(mainTable.getModel() instanceof ModelListeUtilisateur){
+            switch(droits)
+            {
+                case ETUDIANT:
+                    acceptButton.setText("Demander");
+                    optionnalButton.setText("Proposer");
+                    break;
+                case PROFESSEUR:
+                    acceptButton.setText("Attribuer");
+                    optionnalButton.setText("Archiver");
+                    break;
+                case ADMINISTRATEUR:
+                    acceptButton.setText("Attribuer");
+                    optionnalButton.setText("Supprimer");
+                    break;
+            }
         }
+        
     }
     
     public void setTitle(String text)
     {
         this.title.setText(text);
+    }
+    
+    public class EcouteurBouton implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            switch(e.getActionCommand())
+            {
+                case "Ajouter":
+                    mctrl.naviguerVers("Ajouter Utilisateur");
+                    break;
+            }
+        }
+        
     }
 }

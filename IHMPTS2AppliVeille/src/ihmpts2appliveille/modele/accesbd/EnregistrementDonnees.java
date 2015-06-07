@@ -24,7 +24,7 @@ public class EnregistrementDonnees {
         String mdpCrypte;
         mdpCrypte = Cryptage.getEncodedPassword(mdp);
         try{
-            acces.interrogerBase("INSERT INTO UTILISATEUR(ID_UTILISATEUR,NOM,NOTE,NBCONN,NBCOMM,NBARTICLE,IDENTIFIANT, MDP,TYPE_PROFIL,ETAT) VALUES(select NVL(max(ID_UTILISATEUR), 0)+1 from UTILISTATEUR),'"+ nom +"',NULL,0,0,0,'"+ identifiant +"','"+mdpCrypte+"','"+typeProfil+"','N');");
+            acces.interrogerBase("INSERT INTO utilisateur(ID_UTILISATEUR,NOM,NOTE,NBCONN,NBCOMM,NBARTICLE,IDENTIFIANT,MDP,TYPE_PROFIL,ETAT) VALUES ((select NVL(max(ID_UTILISATEUR), 0)+1 from utilisateur),'"+ nom +"',NULL,0,0,0,'"+identifiant +"','"+mdpCrypte+"','"+typeProfil+"','N')");
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }

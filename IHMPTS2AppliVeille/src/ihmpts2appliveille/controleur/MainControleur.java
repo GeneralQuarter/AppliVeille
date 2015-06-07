@@ -140,6 +140,9 @@ public class MainControleur {
                 lv.setInterfaceUtilisateur(utilisateurConnecte.getTypeProfil());
                 bcv.changeMainContent(lv);
                 break;
+            case "Ajouter Utilisateur":
+                bcv.changeMainContent(auv);
+                break;
         }
     }
     
