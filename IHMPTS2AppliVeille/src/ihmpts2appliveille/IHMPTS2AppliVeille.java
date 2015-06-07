@@ -6,6 +6,7 @@
 package ihmpts2appliveille;
 
 import ihmpts2appliveille.controleur.MainControleur;
+import ihmpts2appliveille.modele.Cryptage;
 import ihmpts2appliveille.vue.MainWindowVue;
 import javax.swing.SwingUtilities;
 
@@ -23,6 +24,8 @@ public class IHMPTS2AppliVeille {
 
             @Override
             public void run() {
+                
+                System.out.println(Cryptage.getEncodedPassword("mdp"));
                 MainControleur mctrl = new MainControleur();
                 MainWindowVue mwv = new MainWindowVue(mctrl);
             }
