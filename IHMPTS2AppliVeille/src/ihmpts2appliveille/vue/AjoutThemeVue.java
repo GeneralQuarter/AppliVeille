@@ -47,8 +47,12 @@ public class AjoutThemeVue extends javax.swing.JPanel {
         jLabel1.setText("Ajouter un thème");
 
         jDescription.setColumns(20);
+        jDescription.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        jDescription.setLineWrap(true);
         jDescription.setRows(5);
         jDescription.setText("Une petite déscription qui devra être rédigée par l'étudiant pour définir son thème.\n");
+        jDescription.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jDescription.setDragEnabled(true);
         jScrollPane1.setViewportView(jDescription);
 
         jIntitule.addActionListener(new java.awt.event.ActionListener() {
