@@ -42,7 +42,6 @@ public class RecuperationDonneesInitiales {
     public Map<Integer, Utilisateur> recupererUtilisateurs()
     {
         try {
-            System.out.println("c");
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur");
             int idUtilisateur, nbConn, nbComm, nbArticle;
             String nom, identifiant, mdp;
@@ -104,7 +103,6 @@ public class RecuperationDonneesInitiales {
             List<String> row = resultats.get(0);
             int idUtilisateur = Integer.parseInt(row.get(0));
             String nom = row.get(1);
-            System.out.println(row.get(2));
             float note = 0.0f;
             int nbConn = Integer.parseInt(row.get(3));
             int nbComm = Integer.parseInt(row.get(4));
@@ -146,11 +144,9 @@ public class RecuperationDonneesInitiales {
         Utilisateur utilisateur = null;
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where identifiant='" + identifiant + "'");
-            System.out.println(resultats.size());
             List<String> row = resultats.get(0);
             int idUtilisateur = Integer.parseInt(row.get(0));
             String nom = row.get(1);
-            System.out.println(row.get(2));
             float note = 0.0f;
             int nbConn = Integer.parseInt(row.get(3));
             int nbComm = Integer.parseInt(row.get(4));
@@ -223,7 +219,6 @@ public class RecuperationDonneesInitiales {
             String intitule, description;
             for(int i = 0; i < resultats.size(); i++)
             {
-                System.out.println(resultats.size());
                 row = resultats.get(i);
                 idTheme = Integer.parseInt(row.get(0));
                 if(!themes.containsKey(idTheme))

@@ -17,8 +17,9 @@ public class AjoutThemeVue extends javax.swing.JPanel {
     /**
      * Creates new form AjoutThemeVue
      */
-    public AjoutThemeVue() {
-        ctrl = new MainControleur();
+    public AjoutThemeVue(MainControleur ctrl) {
+        this.ctrl = ctrl;
+        this.ctrl.setAjoutThemeVue(this);
         initComponents();
     }
 

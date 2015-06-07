@@ -13,6 +13,7 @@ import ihmpts2appliveille.modele.accesbd.EnregistrementDonnees;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import ihmpts2appliveille.vue.ActualiteArticleVue;
+import ihmpts2appliveille.vue.AjoutThemeVue;
 import ihmpts2appliveille.vue.AjoutUtilisateurVue;
 import ihmpts2appliveille.vue.EditorVue;
 import ihmpts2appliveille.vue.MenuBarVue;
@@ -40,6 +41,7 @@ public class MainControleur {
     private FormAuthentificationVue fav;
     private ListeVue lv;
     private AjoutUtilisateurVue auv;
+    private AjoutThemeVue atv;
     
     private LienExterne moodle;
     private LienExterne ent;
@@ -143,6 +145,9 @@ public class MainControleur {
             case "Ajouter Utilisateur":
                 bcv.changeMainContent(auv);
                 break;
+            case "Ajouter Thème":
+                bcv.changeMainContent(atv);
+                break;
         }
     }
     
@@ -172,6 +177,11 @@ public class MainControleur {
     
     public void setAjoutUtilisateurVue(AjoutUtilisateurVue auv){
         this.auv = auv;
+    }
+    
+    public void setAjoutThemeVue(AjoutThemeVue atv)
+    {
+        this.atv = atv;
     }
 
     public void setMessagerieVue(MessagerieVue mv) {

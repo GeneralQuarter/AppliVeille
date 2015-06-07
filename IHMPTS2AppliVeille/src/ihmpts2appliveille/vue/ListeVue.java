@@ -155,7 +155,7 @@ public class ListeVue extends JPanel{
                     optionnalButton.setText("Supprimer");
                     break;
             }
-        }else if(mainTable.getModel() instanceof ModelListeUtilisateur){
+        }else if(mainTable.getModel() instanceof ModelListeTheme){
             switch(droits)
             {
                 case ETUDIANT:
@@ -167,7 +167,7 @@ public class ListeVue extends JPanel{
                     optionnalButton.setText("Archiver");
                     break;
                 case ADMINISTRATEUR:
-                    acceptButton.setText("Attribuer");
+                    acceptButton.setText("Ajouter");
                     optionnalButton.setText("Supprimer");
                     break;
             }
@@ -187,7 +187,11 @@ public class ListeVue extends JPanel{
             switch(e.getActionCommand())
             {
                 case "Ajouter":
-                    mctrl.naviguerVers("Ajouter Utilisateur");
+                    if(mainTable.getModel() instanceof ModelListeUtilisateur){
+                        mctrl.naviguerVers("Ajouter Utilisateur");
+                    }else if(mainTable.getModel() instanceof ModelListeTheme){
+                        mctrl.naviguerVers("Ajouter Thème");
+                    }
                     break;
             }
         }
