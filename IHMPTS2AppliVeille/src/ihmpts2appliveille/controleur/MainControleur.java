@@ -9,9 +9,11 @@ import ihmpts2appliveille.modele.Cryptage;
 import ihmpts2appliveille.modele.LienExterne;
 import ihmpts2appliveille.modele.ModelListeTheme;
 import ihmpts2appliveille.modele.ModelListeUtilisateur;
+import ihmpts2appliveille.modele.accesbd.EnregistrementDonnees;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import ihmpts2appliveille.vue.ActualiteArticleVue;
+import ihmpts2appliveille.vue.AjoutUtilisateurVue;
 import ihmpts2appliveille.vue.EditorVue;
 import ihmpts2appliveille.vue.MenuBarVue;
 import ihmpts2appliveille.vue.BodyContentVue;
@@ -19,6 +21,7 @@ import ihmpts2appliveille.vue.FormAuthentificationVue;
 import ihmpts2appliveille.vue.ListeVue;
 import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
+import java.sql.Statement;
 
 /**
  *
@@ -36,18 +39,21 @@ public class MainControleur {
     private BodyContentVue bcv;
     private FormAuthentificationVue fav;
     private ListeVue lv;
+    private AjoutUtilisateurVue auv;
     
     private LienExterne moodle;
     private LienExterne ent;
     private LienExterne formadep;
     
     private RecuperationDonneesInitiales rdi;
+    private EnregistrementDonnees ed;
     
     private Utilisateur utilisateurConnecte;
     
     public MainControleur()
     {
         rdi = new RecuperationDonneesInitiales();
+        ed = new EnregistrementDonnees();
         moodle = new LienExterne("https://moodle.univ-lr.fr");
         ent = new LienExterne("https://ent.univ-lr.fr");
         formadep = new LienExterne("http://www.formadepetudiant.fr/?ref=19");
@@ -136,6 +142,10 @@ public class MainControleur {
                 break;
         }
     }
+    
+    public void ajoutUtilisateur(String nom, String identifiant, String mdp, String typeProfil) {
+        ed.ajoutUtilisateur(nom, identifiant, mdp, typeProfil);
+    }
 
     public void setListeVue(ListeVue lv) {
         this.lv = lv;
@@ -151,6 +161,10 @@ public class MainControleur {
 
     public void setEditorVue(EditorVue ev) {
         this.ev = ev;
+    }
+    
+    public void setAjoutUtilisateurVue(AjoutUtilisateurVue auv){
+        this.auv = auv;
     }
 
     public void setMessagerieVue(MessagerieVue mv) {

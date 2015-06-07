@@ -42,6 +42,7 @@ public class RecuperationDonneesInitiales {
     public Map<Integer, Utilisateur> recupererUtilisateurs()
     {
         try {
+            System.out.println("c");
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur");
             int idUtilisateur, nbConn, nbComm, nbArticle;
             String nom, identifiant, mdp;
@@ -84,6 +85,7 @@ public class RecuperationDonneesInitiales {
                             break;
                     }
                     utilisateurs.put(idUtilisateur, new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat));
+                    
                 }
             }
         } catch (SQLException ex) {
@@ -144,6 +146,7 @@ public class RecuperationDonneesInitiales {
         Utilisateur utilisateur = null;
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where identifiant='" + identifiant + "'");
+            System.out.println(resultats.size());
             List<String> row = resultats.get(0);
             int idUtilisateur = Integer.parseInt(row.get(0));
             String nom = row.get(1);
