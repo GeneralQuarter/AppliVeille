@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  *
@@ -144,6 +145,10 @@ public class RecuperationDonneesInitiales {
         Utilisateur utilisateur = null;
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where identifiant='" + identifiant + "'");
+            if(resultats.isEmpty())
+            {
+                return null;
+            }
             List<String> row = resultats.get(0);
             int idUtilisateur = Integer.parseInt(row.get(0));
             String nom = row.get(1);
@@ -316,5 +321,16 @@ public class RecuperationDonneesInitiales {
     public Correspondance recupererCorrespondance(int idMessage, int idDestinataire){
         Correspondance correspondance = null;
         return correspondance;
+    }
+    
+    public void retirerUtilisateurListe(String nom)
+    {
+        for(Entry<Integer, Utilisateur> u : utilisateurs.entrySet())
+        {
+            if(u.getValue().getNom().equals(nom))
+            {
+                utilisateurs.remove(u.getKey());
+            }
+        }
     }
 }

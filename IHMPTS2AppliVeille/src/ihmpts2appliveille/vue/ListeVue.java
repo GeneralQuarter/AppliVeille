@@ -84,6 +84,7 @@ public class ListeVue extends JPanel{
         acceptButton = new QGButton("Demander", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
         acceptButton.addActionListener(new EcouteurBouton());
         optionnalButton = new QGButton("Archiver", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
+        optionnalButton.addActionListener(new EcouteurBouton());
         
         addTitle = new JLabel("Proposer thème");
         addField = new JTextField();
@@ -191,6 +192,13 @@ public class ListeVue extends JPanel{
                         mctrl.naviguerVers("Ajouter Utilisateur");
                     }else if(mainTable.getModel() instanceof ModelListeTheme){
                         mctrl.naviguerVers("Ajouter Thème");
+                    }
+                    break;
+                case "Supprimer":
+                    if(mainTable.getModel() instanceof ModelListeUtilisateur){
+                        mctrl.supprimerUtilisateur((String) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 0));
+                    }else if(mainTable.getModel() instanceof ModelListeTheme){
+                        mctrl.naviguerVers("Supprimer Thème");
                     }
                     break;
             }

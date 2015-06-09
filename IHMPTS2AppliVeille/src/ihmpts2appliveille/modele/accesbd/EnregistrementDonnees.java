@@ -38,5 +38,14 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void supprimmerUtilisateur(String nom)
+    {
+        try{
+            acces.interrogerBase("DELETE FROM utilisateur WHERE NOM='" + nom + "'");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     //public void ajoutArticle()
 }

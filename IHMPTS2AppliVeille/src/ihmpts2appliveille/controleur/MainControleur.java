@@ -23,6 +23,7 @@ import ihmpts2appliveille.vue.ListeVue;
 import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -157,6 +158,22 @@ public class MainControleur {
     
     public void ajoutTheme(String intitule, String description){
         ed.ajoutTheme(intitule, description);
+    }
+    
+    public void supprimerUtilisateur(String login)
+    {
+        if(!login.equals(utilisateurConnecte.getIdentifiant()))
+        {
+            int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + login, "Supprimer Utilisateur", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if(choix == JOptionPane.YES_OPTION)
+            {
+                ed.supprimmerUtilisateur(login);
+                rdi.retirerUtilisateurListe(login);
+                naviguerVers("Liste des utilisateurs");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Vous ne pouvez pas vous supprimer", "Suppression impossible", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void setListeVue(ListeVue lv) {

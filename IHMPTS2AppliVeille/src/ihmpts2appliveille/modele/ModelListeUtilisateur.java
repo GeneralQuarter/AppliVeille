@@ -6,7 +6,9 @@
 package ihmpts2appliveille.modele;
 
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -41,15 +43,23 @@ public class ModelListeUtilisateur extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch(columnIndex)
-        {
-            case 0: return utilisateurs.get(rowIndex+1).getNom();
-            case 1: return utilisateurs.get(rowIndex+1).getTypeProfil();
-            case 2: return utilisateurs.get(rowIndex+1).getNbArticle();
-            case 3: return utilisateurs.get(rowIndex+1).getNbComm();
-            case 4: return utilisateurs.get(rowIndex+1).getEtat();
-            default: return null;
+        Iterator<Entry<Integer, Utilisateur>> it = utilisateurs.entrySet().iterator();
+        for (int i = 0; i < utilisateurs.size(); i++) {
+            Entry<Integer, Utilisateur> u = it.next();
+            if(i == rowIndex)
+            {
+                switch(columnIndex)
+                {
+                    case 0: return u.getValue().getNom();
+                    case 1: return u.getValue().getTypeProfil();
+                    case 2: return u.getValue().getNbArticle();
+                    case 3: return u.getValue().getNbComm();
+                    case 4: return u.getValue().getEtat();
+                    default: return null;
+                }
+            }
         }
+        return null;
     }
     
 }
