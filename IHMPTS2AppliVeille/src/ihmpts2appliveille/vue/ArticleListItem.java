@@ -31,6 +31,8 @@ public class ArticleListItem extends JPanel{
     private JLabel date;
     private JLabel nbComments;
     
+    private Etoile etoiles;
+    
     private SpringLayout sp;
     
     private JButton actionButton;
@@ -40,7 +42,7 @@ public class ArticleListItem extends JPanel{
     private Font fContent;
     private Font fInfo;
     
-    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments)
+    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, int note)
     {
         this.theme = new JLabel("[" + theme + "]");
         this.title = new JLabel(title);
@@ -48,6 +50,7 @@ public class ArticleListItem extends JPanel{
         this.auteur = new JLabel(auteur);
         this.date = new JLabel("Publié le " + date);
         this.nbComments = new JLabel(nbComments + " Commentaires");
+        this.etoiles = new Etoile(note);
         
         // -- Setup This --
         this.setBackground(Color.white);
@@ -98,6 +101,7 @@ public class ArticleListItem extends JPanel{
         {
             this.add(this.theme);
             this.add(this.nbComments);
+            this.add(this.etoiles);
             
             sp.putConstraint(SpringLayout.NORTH, this.theme, 20, SpringLayout.NORTH, this);
             sp.putConstraint(SpringLayout.WEST, this.theme, 5, SpringLayout.WEST, this);
@@ -106,6 +110,9 @@ public class ArticleListItem extends JPanel{
             
             sp.putConstraint(SpringLayout.WEST, this.nbComments, 20, SpringLayout.EAST, this.date);
             sp.putConstraint(SpringLayout.SOUTH, this.nbComments, -20, SpringLayout.SOUTH, this);
+            
+            sp.putConstraint(SpringLayout.EAST, this.etoiles, 5, SpringLayout.EAST, this);
+            sp.putConstraint(SpringLayout.SOUTH, this.etoiles, -5, SpringLayout.SOUTH, this);
         }else{
             sp.putConstraint(SpringLayout.WEST, this.title, 10, SpringLayout.WEST, this);
         }
@@ -145,6 +152,7 @@ public class ArticleListItem extends JPanel{
             ArticleListItem.this.setBackground(AppliColor.GRAY.getColor());
             ArticleListItem.this.content.setBackground(AppliColor.GRAY.getColor());
             ArticleListItem.this.actionButton.setBackground(AppliColor.GRAY.getColor());
+            ArticleListItem.this.etoiles.setBackground(AppliColor.GRAY.getColor());
         }
 
         @Override
@@ -152,6 +160,7 @@ public class ArticleListItem extends JPanel{
             ArticleListItem.this.setBackground(Color.WHITE);
             ArticleListItem.this.content.setBackground(Color.WHITE);
             ArticleListItem.this.actionButton.setBackground(Color.WHITE);
+            ArticleListItem.this.etoiles.setBackground(Color.WHITE);
         }
     }
 }

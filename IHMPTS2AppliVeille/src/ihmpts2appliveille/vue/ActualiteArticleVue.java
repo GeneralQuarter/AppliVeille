@@ -6,11 +6,11 @@
 package ihmpts2appliveille.vue;
 
 import ihmpts2appliveille.controleur.MainControleur;
-import ihmpts2appliveille.vue.ArticleListItem;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -76,6 +76,7 @@ public class ActualiteArticleVue extends JPanel{
     
     private void testInsert()
     {
+        Random rand = new Random();
         for(int i = 0; i < 50; i++)
         {
             this.ajouterArticle(new ArticleListItem("Google","Les Google Glass au RDV" + (i+1), 
@@ -86,7 +87,7 @@ public class ActualiteArticleVue extends JPanel{
                         + "in there. Now, for loading I took a completely "
                         + "different route. I decided to use ImageIO instead "
                         + "of default loading. To load the image, you use this code:",
-            "GANGLER Quentin", "01/02/12", 40+i));
+            "GANGLER Quentin", "01/02/12", rand.nextInt(50), rand.nextInt(5)+1));
         }
     }
 }
