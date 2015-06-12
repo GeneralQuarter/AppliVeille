@@ -7,6 +7,8 @@ package ihmpts2appliveille.vue;
 
 import ihmpts2appliveille.controleur.MainControleur;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -48,7 +50,15 @@ public class MainWindowVue extends JFrame{
         this.setLocation(100, 100);
         this.setSize(1280,720);
         this.setTitle("Appli Veille");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent)
+            {
+                MainWindowVue.this.mctrl.fermerFenetre();
+            }
+        });
+        
         
         // -- Setup Layout --
         mainLayout = new BorderLayout();

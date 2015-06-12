@@ -9,6 +9,7 @@ import ihmpts2appliveille.modele.Cryptage;
 import ihmpts2appliveille.modele.LienExterne;
 import ihmpts2appliveille.modele.ModelListeTheme;
 import ihmpts2appliveille.modele.ModelListeUtilisateur;
+import ihmpts2appliveille.modele.Statut;
 import ihmpts2appliveille.modele.accesbd.EnregistrementDonnees;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
@@ -22,7 +23,6 @@ import ihmpts2appliveille.vue.FormAuthentificationVue;
 import ihmpts2appliveille.vue.ListeVue;
 import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
-import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
@@ -71,28 +71,37 @@ public class MainControleur {
             {
                 if(utilisateurConnecte.getMdp().equals(Cryptage.getEncodedPassword(mdp)))
                 {
-                    mmbv.setProfilName(utilisateurConnecte.getNom());
-                    aav.setTitle("Actualités");
-                    bcv.changeMainContent(aav);
-                    mmv.changeMainFrame(bcv, true);
+                    if(rdi.recupererUtilisateur(utilisateurConnecte.getIdUtilisateur()).getEtat() == Statut.DECONNECTE)
+                    {
+                        mmbv.setProfilName(utilisateurConnecte.getNom());
+                        aav.setTitle("Actualités");
+                        bcv.changeMainContent(aav);
+                        mmv.changeMainFrame(bcv, true);
+                        ed.setUtilisateurConnecte(utilisateurConnecte.getIdUtilisateur());
+                    }else{
+                        fav.afficherErreur("Vous êtes déjà connecté sur un autre poste");
+                    }
                 }else{
-                     fav.afficherErreurIdentifiants();
+                     fav.afficherErreur("Login ou mot de passe incorrect");
                 }
             }else{
-                fav.afficherErreurIdentifiants();
+                fav.afficherErreur("Login ou mot de passe incorrect");
             }
         }
     }
     
+    public void fermerFenetre()
+    {
+        deconnection();
+        mmv.dispose();
+    }
+    
     public void deconnection()
     {
-       if(true){
+           ed.setUtilisateurDeconnecte(utilisateurConnecte.getIdUtilisateur());
            utilisateurConnecte = null;
            fav.resetConnection();
            mmv.changeMainFrame(fav, false);
-       }else{
-           //Message erreur
-       }
     }
     
     public void lienVersInternet(String nom)
@@ -125,10 +134,12 @@ public class MainControleur {
                 break;
             case "Nouvel article...":
                 ev.setTitle("Nouvel Article");
+                ev.setAcceptBoutonAction("Publier");
                 bcv.changeMainContent(ev);
                 break;
             case "Nouveau Message":
                 ev.setTitle("Nouveau Message");
+                ev.setAcceptBoutonAction("Envoyer");
                 bcv.changeMainContent(ev);
                 break;
             case "Liste des thèmes":

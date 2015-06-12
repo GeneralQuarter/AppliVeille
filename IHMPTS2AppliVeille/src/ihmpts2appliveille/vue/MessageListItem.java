@@ -9,13 +9,20 @@ import ihmpts2appliveille.modele.AppliColor;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.SpringLayout;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 /**
  *
@@ -25,45 +32,57 @@ public class MessageListItem extends JPanel{
     
     private JLabel objet;
     private JTextArea message;
-    private JLabel bottom;
+    private JLabel auteur;
+    private JLabel date;
     
     private Font fMessage;
     private Font fObjet;
     private Font fBottom;
     
+    private SpringLayout sp;
+    
     public MessageListItem(String objet, String message, String auteur, String date)
     {
         this.objet = new JLabel(objet);
-        this.message = new JTextArea(message);
-        this.bottom = new JLabel(auteur + " à " + date);
-        
+        this.auteur = new JLabel(auteur);
+        this.date = new JLabel(date);
         fMessage = new Font("Arial", 0, 10);
         fObjet = new Font("Arial", 0, 18);
         fBottom = new Font("Arial", Font.ITALIC, 10);
-        
         this.setBackground(Color.white);
-        this.setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.setPreferredSize(new Dimension(350,100));
-        this.setMaximumSize(this.getPreferredSize());
-        
-        this.message.setPreferredSize(new Dimension(320,40));
-        this.message.setColumns(1);
+        sp = new SpringLayout();
+        this.setLayout(sp);
+        this.message = new JTextArea();
+        this.message.setText(message);
         this.message.setLineWrap(true);
-        this.message.setWrapStyleWord(false);
-        this.message.setFont(fMessage);
-        this.message.setEditable(false);
         this.message.addMouseListener(new EcouteurHover());
-        
+        this.message.setEditable(false);
+        this.message.setFont(fMessage);
         this.objet.setFont(fObjet);
-        
-        this.bottom.setFont(fBottom);
-        
+        this.auteur.setFont(fBottom);
+        this.date.setFont(fBottom);
         this.add(this.objet);
         this.add(this.message);
-        this.add(this.bottom);
-        
+        this.add(this.auteur);
+        this.add(this.date);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.addMouseListener(new EcouteurHover());
+        
+        sp.putConstraint(SpringLayout.NORTH, this.objet, 5, SpringLayout.NORTH, this);
+        sp.putConstraint(SpringLayout.WEST, this.objet, 5, SpringLayout.WEST, this);
+        
+        sp.putConstraint(SpringLayout.NORTH, this.message, 5, SpringLayout.SOUTH, this.objet);
+        sp.putConstraint(SpringLayout.WEST, this.message, 5, SpringLayout.WEST, this);
+        sp.putConstraint(SpringLayout.EAST, this.message, -5, SpringLayout.EAST, this);
+        sp.putConstraint(SpringLayout.SOUTH, this.message, -5, SpringLayout.NORTH, this.auteur);
+        
+        sp.putConstraint(SpringLayout.WEST, this.auteur, 5, SpringLayout.WEST, this);
+        sp.putConstraint(SpringLayout.SOUTH, this.auteur, -5, SpringLayout.SOUTH, this);
+        
+        sp.putConstraint(SpringLayout.EAST, this.date, -5, SpringLayout.EAST, this);
+        sp.putConstraint(SpringLayout.SOUTH, this.date, -5, SpringLayout.SOUTH, this);
+        
+        this.setPreferredSize(new Dimension(300,100));
     }
     
     public class EcouteurHover implements MouseListener

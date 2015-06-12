@@ -168,10 +168,10 @@ public class FormAuthentificationVue extends JPanel{
         
     }
     
-    public void afficherErreurIdentifiants()
+    public void afficherErreur(String text)
     {
         infoLabel.setVisible(true);
-        infoLabel.setText("Identifiant ou mot de passe incorrect");
+        infoLabel.setText(text);
     }
     
     public void resetConnection()

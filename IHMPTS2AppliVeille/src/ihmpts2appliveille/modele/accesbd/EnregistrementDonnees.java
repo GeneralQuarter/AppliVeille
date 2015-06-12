@@ -47,5 +47,23 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void setUtilisateurConnecte(int idUtilisateur)
+    {
+        try{
+            acces.mettreAjourBase("UPDATE utilisateur SET ETAT='C' WHERE ID_UTILISATEUR=" + idUtilisateur + "");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    public void setUtilisateurDeconnecte(int idUtilisateur)
+    {
+        try{
+            acces.mettreAjourBase("UPDATE utilisateur SET ETAT='N' WHERE ID_UTILISATEUR=" + idUtilisateur + "");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     //public void ajoutArticle()
 }

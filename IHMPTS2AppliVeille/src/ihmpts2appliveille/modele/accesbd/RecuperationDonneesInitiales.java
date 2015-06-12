@@ -54,39 +54,35 @@ public class RecuperationDonneesInitiales {
             {
                 row = resultats.get(i);
                 idUtilisateur = Integer.parseInt(row.get(0));
-                if(!utilisateurs.containsKey(idUtilisateur))
+                nom = row.get(1);
+                //note = ?
+                nbConn = Integer.parseInt(row.get(3));
+                nbComm = Integer.parseInt(row.get(4));
+                nbArticle = Integer.parseInt(row.get(5));
+                identifiant = row.get(6);
+                mdp = row.get(7);
+                switch(row.get(8))
                 {
-                    nom = row.get(1);
-                    //note = ?
-                    nbConn = Integer.parseInt(row.get(3));
-                    nbComm = Integer.parseInt(row.get(4));
-                    nbArticle = Integer.parseInt(row.get(5));
-                    identifiant = row.get(6);
-                    mdp = row.get(7);
-                    switch(row.get(8))
-                    {
-                        case "professeur":
-                            typeProfil = Droits.PROFESSEUR;
-                            break;
-                        case "eleve":
-                            typeProfil = Droits.ETUDIANT;
-                            break;
-                        case "admin":
-                            typeProfil = Droits.ADMINISTRATEUR;
-                            break;
-                    }      
-                    switch(row.get(9))
-                    {
-                        case "C":
-                            etat = Statut.CONNECTE;
-                            break;
-                        case "N":
-                            etat = Statut.CONNECTE;
-                            break;
-                    }
-                    utilisateurs.put(idUtilisateur, new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat));
-                    
+                    case "professeur":
+                        typeProfil = Droits.PROFESSEUR;
+                        break;
+                    case "eleve":
+                        typeProfil = Droits.ETUDIANT;
+                        break;
+                    case "admin":
+                        typeProfil = Droits.ADMINISTRATEUR;
+                        break;
+                }      
+                switch(row.get(9))
+                {
+                    case "C":
+                        etat = Statut.CONNECTE;
+                        break;
+                    case "N":
+                        etat = Statut.DECONNECTE;
+                        break;
                 }
+                utilisateurs.put(idUtilisateur, new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat));        
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -130,7 +126,7 @@ public class RecuperationDonneesInitiales {
                     etat = Statut.CONNECTE;
                     break;
                 case "N":
-                    etat = Statut.CONNECTE;
+                    etat = Statut.DECONNECTE;
                     break;
             }
             utilisateur = new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat);

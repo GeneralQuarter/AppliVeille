@@ -123,6 +123,7 @@ public class EditorVue extends JPanel{
         addImageButton.setFont(f);
         acceptEditButton = new QGButton("Publier", new Color(33, 150, 243), new Color(66, 165, 245), Color.white, f);
         acceptEditButton.setPreferredSize(new Dimension(100, 30));
+        acceptEditButton.addActionListener(new EcouteurBoutonControle());
         cancelEditButton = new QGButton("Annuler", new Color(189, 189, 189), Color.white, Color.black, f);
         cancelEditButton.setPreferredSize(new Dimension(100, 30));
         optionnalActionButton = new QGButton("Brouillon", new Color(189, 189, 189), Color.white, Color.black, f);
@@ -278,8 +279,47 @@ public class EditorVue extends JPanel{
         } 
     }
     
+    public class EcouteurBoutonControle implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            switch(e.getActionCommand())
+            {
+                case "Publier":
+                    break;
+                case "Envoyer":
+                    break;
+            }
+            
+            System.out.println(contentField.getText());
+        }
+        
+    }
+    
     public void setTitle(String title)
     {
         this.title.setText(title);
+    }
+    
+    public void setAcceptBoutonAction(String action)
+    {
+        this.acceptEditButton.setText(action);
+        
+        switch(action)
+        {
+            case "Publier":
+                //Article
+                contentField.setContentType("text/html");
+                String bodyRule = "body { font-family:\"Arial\";font-size:14pt;}";
+                ((HTMLDocument)contentField.getDocument()).getStyleSheet().addRule(bodyRule);
+                ((HTMLEditorKit)contentField.getEditorKit()).setDefaultCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+                break;
+            case "Envoyer":
+                //Messagerie
+                contentField.setContentType("text/plain");
+                f = new Font("Arial", 0, 14);
+                contentField.setFont(f);
+                break;
+        }
     }
 }
