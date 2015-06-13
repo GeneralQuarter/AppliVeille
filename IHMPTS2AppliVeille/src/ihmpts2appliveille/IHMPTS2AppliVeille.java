@@ -25,7 +25,7 @@ public class IHMPTS2AppliVeille {
             @Override
             public void run() {
                 
-                System.out.println(Cryptage.getEncodedPassword("mdp"));
+                System.out.println(Cryptage.getEncodedPassword("invite"));
                 MainControleur mctrl = new MainControleur();
                 MainWindowVue mwv = new MainWindowVue(mctrl);
             }

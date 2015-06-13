@@ -70,6 +70,17 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void setDescriptionTheme(int idTheme, String description)
+    {
+        try{
+            description = description.replaceAll("'", "''");
+            acces.mettreAjourBase("UPDATE THEME SET DESCRIPTION='" + description + "'WHERE ID_THEME='" + idTheme + "'");
+            donnees.updateDescriptionTheme(idTheme, description);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     public void setUtilisateurConnecte(int idUtilisateur)
     {
         try{

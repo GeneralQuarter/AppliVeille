@@ -46,6 +46,14 @@ public class Donnees {
         themes.put(idTheme, t);
     }
     
+    public void updateDescriptionTheme(int idTheme, String description)
+    {
+        Theme t = themes.get(idTheme);
+        t.setDescritpion(description);
+        themes.remove(idTheme);
+        themes.put(idTheme, t);
+    }
+    
     public void ajouterUtilisateur(Utilisateur u)
     {
         if(!utilisateurs.containsKey(u.getIdUtilisateur()))

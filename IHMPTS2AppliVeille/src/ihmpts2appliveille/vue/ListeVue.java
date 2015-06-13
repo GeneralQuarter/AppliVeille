@@ -16,6 +16,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -88,7 +90,6 @@ public class ListeVue extends JPanel{
         
         addTitle = new JLabel("Proposer thème");
         addField = new JTextField();
-        confirmAddButton = new QGButton("Valider", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
         
         sp = new SpringLayout();
         
@@ -179,6 +180,22 @@ public class ListeVue extends JPanel{
     public void setTitle(String text)
     {
         this.title.setText(text);
+    }
+    
+    public class EcouteurClicCase extends MouseAdapter{
+        
+        @Override
+        public void mouseClicked(MouseEvent evt)
+        {
+            if(mainTable.getSelectedRow() != -1)
+            {
+                acceptButton.setEnabled(true);
+                optionnalButton.setEnabled(true);
+            }else{
+                acceptButton.setEnabled(false);
+                optionnalButton.setEnabled(false);
+            }
+        }
     }
     
     public class EcouteurBouton implements ActionListener{

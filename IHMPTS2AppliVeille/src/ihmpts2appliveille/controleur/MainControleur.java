@@ -233,7 +233,13 @@ public class MainControleur {
         }else{
              JOptionPane.showMessageDialog(null, "Tout les étudiants ont un thème", "Attribution impossible", JOptionPane.ERROR_MESSAGE);
         }
-        
+    }
+    
+    public void modifierDescriptionTheme(int idTheme, String description)
+    {
+        if(description.isEmpty())
+            description = null;
+        ed.setDescriptionTheme(idTheme, description);
     }
     
     public void allerVersProfil(int idUtilisateur)

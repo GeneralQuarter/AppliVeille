@@ -14,6 +14,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -105,6 +107,7 @@ public class ProfilVue extends JPanel{
             if(u.getIdUtilisateur() == mctrl.getUtilisateurConnecte().getIdUtilisateur())
             {
                 changeDescription = new QGButton("Changer", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
+                changeDescription.addActionListener(new EcouteurBouton());
                 themeDescription.setEditable(true);
                 themeDescription.setBorder(BorderFactory.createLineBorder(AppliColor.BLUE.getColor()));
             }else{
@@ -209,5 +212,21 @@ public class ProfilVue extends JPanel{
                 sp.putConstraint(SpringLayout.WEST, changeDescription, 20, SpringLayout.WEST, this);
             }
         }
+    }
+    
+    public class EcouteurBouton implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            switch(e.getActionCommand())
+            {
+                case "Voir":
+                    break;
+                case "Changer":
+                    mctrl.modifierDescriptionTheme(t.getIdTheme(), themeDescription.getText());
+                    break;
+            }
+        }
+        
     }
 }
