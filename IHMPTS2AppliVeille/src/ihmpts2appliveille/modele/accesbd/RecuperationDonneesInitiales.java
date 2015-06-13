@@ -19,7 +19,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  *
@@ -266,6 +265,30 @@ public class RecuperationDonneesInitiales {
         return theme;
     }
     
+    public Theme recupererThemeUtilisateur(int idUtilisateur)
+    {
+        Theme theme = null;
+        for(Theme t : themes.values())
+        {
+            if(t.getIdProp() == idUtilisateur)
+                return t;
+        }
+        try{
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM THEME WHERE ID_PROP = '" + idUtilisateur + "'");
+            List<String> row = resultats.get(0);
+                int idTheme = Integer.parseInt(row.get(0));
+                int idProp = Integer.parseInt(row.get(1));
+                String intitule = row.get(2);
+                String description = row.get(3);
+                theme = new Theme(idTheme, idProp, intitule, description);
+                if(!themes.containsKey(idTheme))
+                    themes.put(idTheme, theme);
+        }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return theme;
+    }
+    
     public Commentaire recupererCommentaire(int idCommentaire){
         Commentaire commentaire = null;
         if(commentaires.containsKey(idCommentaire))
@@ -319,14 +342,8 @@ public class RecuperationDonneesInitiales {
         return correspondance;
     }
     
-    public void retirerUtilisateurListe(String nom)
+    public void retirerUtilisateurListe(int idUtilisateur)
     {
-        for(Entry<Integer, Utilisateur> u : utilisateurs.entrySet())
-        {
-            if(u.getValue().getNom().equals(nom))
-            {
-                utilisateurs.remove(u.getKey());
-            }
-        }
+        utilisateurs.remove(idUtilisateur);
     }
 }

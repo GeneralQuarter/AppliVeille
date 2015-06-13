@@ -83,6 +83,7 @@ public class MenuBarVue extends JMenuBar{
         formadep = new JMenuItem("Formadep");
         formadep.addActionListener(new EcouteurLien());
         myProfilSubMenu = new JMenuItem("Mon profil");
+        myProfilSubMenu.addActionListener(new EcouteurNavigation());
         listUsersSubMenu = new JMenuItem("Liste des utilisateurs");
         listUsersSubMenu.addActionListener(new EcouteurNavigation());
         

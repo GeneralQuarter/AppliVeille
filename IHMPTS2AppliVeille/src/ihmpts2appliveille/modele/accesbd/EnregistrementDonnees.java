@@ -38,10 +38,10 @@ public class EnregistrementDonnees {
         }
     }
     
-    public void supprimmerUtilisateur(String nom)
+    public void supprimmerUtilisateur(int idUtilisateur)
     {
         try{
-            acces.mettreAjourBase("DELETE FROM utilisateur WHERE NOM='" + nom + "'");
+            acces.mettreAjourBase("DELETE FROM utilisateur WHERE ID_UTILISATEUR='" + idUtilisateur + "'");
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }

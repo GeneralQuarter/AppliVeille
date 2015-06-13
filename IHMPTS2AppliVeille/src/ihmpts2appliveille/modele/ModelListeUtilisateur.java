@@ -55,6 +55,7 @@ public class ModelListeUtilisateur extends AbstractTableModel{
                     case 2: return u.getValue().getNbArticle();
                     case 3: return u.getValue().getNbComm();
                     case 4: return u.getValue().getEtat();
+                    case 5: return u.getValue().getIdUtilisateur();
                     default: return null;
                 }
             }

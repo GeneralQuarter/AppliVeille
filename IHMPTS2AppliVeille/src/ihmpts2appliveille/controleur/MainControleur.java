@@ -23,6 +23,7 @@ import ihmpts2appliveille.vue.FormAuthentificationVue;
 import ihmpts2appliveille.vue.ListeVue;
 import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
+import ihmpts2appliveille.vue.ProfilVue;
 import javax.swing.JOptionPane;
 
 /**
@@ -85,14 +86,15 @@ public class MainControleur {
                      fav.afficherErreur("Login ou mot de passe incorrect");
                 }
             }else{
-                fav.afficherErreur("Login ou mot de passe incorrect");
+                fav.afficherErreur("Login ou mot de passe incorrect (ou connexion impossible)");
             }
         }
     }
     
     public void fermerFenetre()
     {
-        deconnection();
+        if(utilisateurConnecte != null)
+            deconnection();
         mmv.dispose();
     }
     
@@ -160,6 +162,9 @@ public class MainControleur {
             case "Ajouter Thème":
                 bcv.changeMainContent(atv);
                 break;
+            case "Mon profil":
+                bcv.changeMainContent(new ProfilVue(utilisateurConnecte, rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()), this));
+                break;
         }
     }
     
@@ -171,20 +176,30 @@ public class MainControleur {
         ed.ajoutTheme(intitule, description);
     }
     
-    public void supprimerUtilisateur(String login)
+    public void supprimerUtilisateur(int idUtilisateur)
     {
-        if(!login.equals(utilisateurConnecte.getIdentifiant()))
+        if(idUtilisateur != utilisateurConnecte.getIdUtilisateur())
         {
-            int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + login, "Supprimer Utilisateur", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + rdi.recupererUtilisateur(idUtilisateur).getNom(), "Supprimer Utilisateur", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if(choix == JOptionPane.YES_OPTION)
             {
-                ed.supprimmerUtilisateur(login);
-                rdi.retirerUtilisateurListe(login);
+                ed.supprimmerUtilisateur(idUtilisateur);
+                rdi.retirerUtilisateurListe(idUtilisateur);
                 naviguerVers("Liste des utilisateurs");
             }
         }else{
             JOptionPane.showMessageDialog(null, "Vous ne pouvez pas vous supprimer", "Suppression impossible", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public void allerVersProfil(int idUtilisateur)
+    {
+        bcv.changeMainContent(new ProfilVue(rdi.recupererUtilisateur(idUtilisateur), rdi.recupererThemeUtilisateur(idUtilisateur), this));
+    }
+    
+    public Utilisateur getUtilisateurConnecte()
+    {
+        return utilisateurConnecte;
     }
 
     public void setListeVue(ListeVue lv) {
