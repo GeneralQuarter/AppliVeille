@@ -8,17 +8,19 @@ package ihmpts2appliveille.modele.accesbd;
 import ihmpts2appliveille.modele.Droits;
 import ihmpts2appliveille.modele.Statut;
 import ihmpts2appliveille.modele.accesbd.entites.Article;
-import ihmpts2appliveille.modele.accesbd.entites.Commentaire;
-import ihmpts2appliveille.modele.accesbd.entites.Correspondance;
-import ihmpts2appliveille.modele.accesbd.entites.Message;
 import ihmpts2appliveille.modele.accesbd.entites.Theme;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import iutlr.dutinfo.bd.AccesBD;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -199,9 +201,24 @@ public class RecuperationDonneesInitiales {
                 int nbCommArt = Integer.parseInt(row.get(3));
                 String intitule = row.get(4);
                 String contenu = row.get(5);
-                Calendar datePubli = Calendar.getInstance(); // A MODIFIER
-                Calendar dateModif = Calendar.getInstance(); // A MODIFIER
-                float note = 0.0f; // A MODIFIER
+                System.out.println(row.get(6));
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.s");
+                Date datePubli = null; 
+                try {
+                    datePubli = df.parse(row.get(6)); // A MODIFIER
+                } catch (ParseException ex) {
+                    System.err.println(ex.getMessage());
+                }
+                Date dateModif = null; // A MODIFIER
+                if(row.get(7) != null)
+                {
+                   try {
+                        dateModif = df.parse(row.get(7)); // A MODIFIER
+                    } catch (ParseException ex) {
+                        System.err.println(ex.getMessage());
+                    } 
+                }
+                float note = 0.0f;
                 boolean visible = true;
                 switch(row.get(9)){
                     case "V" : visible = true; break ; 
@@ -300,5 +317,52 @@ public class RecuperationDonneesInitiales {
             System.err.println(ex.getMessage());
         }
         return theme;
+    }
+
+    public Map<Integer, Article> recupererArticles() {
+        try{
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM ARTICLE");
+            if(resultats.isEmpty())
+            {
+                return null;
+            }
+            for(List<String> row : resultats)
+            {
+                int idArticle = Integer.parseInt(row.get(0));
+                int idAuteur = Integer.parseInt(row.get(1));
+                int idTheme = Integer.parseInt(row.get(2));
+                int nbCommArt = Integer.parseInt(row.get(3));
+                String intitule = row.get(4);
+                String contenu = row.get(5);
+                System.out.println(row.get(6));
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.s");
+                Date datePubli = null; 
+                try {
+                    datePubli = df.parse(row.get(6)); // A MODIFIER
+                } catch (ParseException ex) {
+                    System.err.println(ex.getMessage());
+                }
+                Date dateModif = null; // A MODIFIER
+                if(row.get(7) != null)
+                {
+                   try {
+                        dateModif = df.parse(row.get(7)); // A MODIFIER
+                    } catch (ParseException ex) {
+                        System.err.println(ex.getMessage());
+                    } 
+                }
+                float note = 0.0f;
+                boolean visible = true;
+                switch(row.get(9)){
+                    case "V" : visible = true; break ; 
+                    case "N" : visible = false; break;
+                    default : break ;
+                }
+                donnees.ajouterArticle(new Article(idArticle, idAuteur, idTheme, nbCommArt, intitule, contenu, datePubli, dateModif, note, visible));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return donnees.getArticles();
     }
 }

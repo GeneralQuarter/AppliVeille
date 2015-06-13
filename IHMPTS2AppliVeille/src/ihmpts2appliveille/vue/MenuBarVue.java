@@ -71,9 +71,11 @@ public class MenuBarVue extends JMenuBar{
         newArticleSubMenu = new JMenuItem("Nouvel article...");
         newArticleSubMenu.addActionListener(new EcouteurNavigation());
         myArticleSubMenu = new JMenuItem("Mes articles");
+        myArticleSubMenu.addActionListener(new EcouteurNavigation());
         allArticleSubMenu = new JMenuItem("Tous les articles");
         allArticleSubMenu.addActionListener(new EcouteurNavigation());
         editMyThemeSubMenu = new JMenuItem("Editer mon thème");
+        editMyThemeSubMenu.addActionListener(new EcouteurNavigation());
         listThemeSubMenu = new JMenuItem("Liste des thèmes");
         listThemeSubMenu.addActionListener(new EcouteurNavigation());
         moodle = new JMenuItem("Moodle");

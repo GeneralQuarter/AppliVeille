@@ -7,6 +7,7 @@
 package ihmpts2appliveille.modele.accesbd.entites;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Classe Article : Un article est posté par un étudiant et noté par les professeurs et commenté par les professeurs ainsi que les autres étudiants.
@@ -19,8 +20,8 @@ public class Article {
     private int nbCommArt;
     private String intitule;
     private String contenu;
-    private Calendar datePubli;
-    private Calendar dateModif;
+    private Date datePubli;
+    private Date dateModif;
     private float note;
     private boolean visible;
     
@@ -37,7 +38,7 @@ public class Article {
      * @param note la note de l'article attribué par un professeur
      * @param visible la visibilité de l'article sur l'interface
      */
-    public Article(int idArticle, int idAuteur, int idTheme, int nbCommArt, String intitule, String contenu, Calendar datePubli, Calendar dateModif, float note, boolean visible) {
+    public Article(int idArticle, int idAuteur, int idTheme, int nbCommArt, String intitule, String contenu, Date datePubli, Date dateModif, float note, boolean visible) {
         this.idArticle = idArticle;
         this.idAuteur = idAuteur;
         this.idTheme = idTheme;
@@ -102,7 +103,7 @@ public class Article {
      * Getter sur la date de publication de l'article
      * @return la datePubli : date de publication
      */
-    public Calendar getDatePubli() {
+    public Date getDatePubli() {
         return datePubli;
     }
 
@@ -110,7 +111,7 @@ public class Article {
      * Getter sur la date de modification de l'article
      * @return la dateModif : date de modification
      */
-    public Calendar getDateModif() {
+    public Date getDateModif() {
         return dateModif;
     }
 

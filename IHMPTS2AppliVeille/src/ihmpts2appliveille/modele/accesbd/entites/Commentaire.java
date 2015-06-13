@@ -6,6 +6,7 @@
 package ihmpts2appliveille.modele.accesbd.entites;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Classe Commentaire : un commentaire est une remarque qui peut être postée par un étudiant ou par un professeur sous un article séléctionné
@@ -17,8 +18,8 @@ public class Commentaire {
    private int idArticle;
    private String intitule;
    private String contenu;
-   private Calendar datePubli;
-   private Calendar dateModif;
+   private Date datePubli;
+   private Date dateModif;
    private boolean visible;
 
    /**
@@ -32,7 +33,7 @@ public class Commentaire {
      * @param dateModif la date de modification du commentaire
      * @param visible la visibilité du commentaire sur l'interface
      */
-   public Commentaire(int idCommentaire, int idAuteur, int idArticle, String intitule, String contenu, Calendar datePubli, Calendar dateModif, boolean visible) {
+   public Commentaire(int idCommentaire, int idAuteur, int idArticle, String intitule, String contenu, Date datePubli, Date dateModif, boolean visible) {
         this.idCommentaire = idCommentaire;
         this.idAuteur = idAuteur;
         this.idArticle = idArticle;
@@ -87,7 +88,7 @@ public class Commentaire {
      * Getter sur la date de publication du commentaire
      * @return la datePublic : la date de publication
      */
-    public Calendar getDatePubli() {
+    public Date getDatePubli() {
         return datePubli;
     }
 
@@ -95,7 +96,7 @@ public class Commentaire {
      * Getter sur la date de modification du commentaire
      * @return la dateModif : la date de modification
      */
-    public Calendar getDateModif() {
+    public Date getDateModif() {
         return dateModif;
     }
     

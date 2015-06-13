@@ -286,8 +286,7 @@ public class EditorVue extends JPanel{
             switch(e.getActionCommand())
             {
                 case "Publier":
-                    break;
-                case "Envoyer":
+                    mctrl.ajouterArticle(articleTitleField.getText(), contentField.getText());
                     break;
             }
             

@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -111,7 +113,8 @@ public class ProfilVue extends JPanel{
                 changeDescription.addActionListener(new EcouteurBouton());
                 themeDescription.setEditable(true);
                 themeDescription.setBorder(BorderFactory.createLineBorder(AppliColor.BLUE.getColor()));
-                messageConfirmation = new JLabel("Changement enregistrés");
+                themeDescription.getDocument().addDocumentListener(new EcouteurDocument());
+                messageConfirmation = new JLabel("Changements enregistrés");
                 messageConfirmation.setForeground(new Color(76,175,80));
                 messageConfirmation.setVisible(false);
                 messageConfirmation.setFont(f);
@@ -240,6 +243,23 @@ public class ProfilVue extends JPanel{
                     break;
             }
         }
-        
+    }
+    
+    public class EcouteurDocument implements DocumentListener{
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            messageConfirmation.setVisible(false);
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            messageConfirmation.setVisible(false);
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            //JTextArea ne lance pas cet evenement.
+        }
     }
 }

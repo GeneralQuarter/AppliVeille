@@ -5,6 +5,7 @@
  */
 package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.AppliColor;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -13,9 +14,9 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 
 /**
@@ -23,10 +24,13 @@ import javax.swing.SpringLayout;
  * @author x1QG1x
  */
 public class ArticleListItem extends JPanel{
+    private MainControleur mctrl;
+    
+    private int idArticle;
     
     private JLabel theme;
     private JLabel title;
-    private JTextArea content;
+    private JEditorPane content;
     private JLabel auteur;
     private JLabel date;
     private JLabel nbComments;
@@ -42,15 +46,19 @@ public class ArticleListItem extends JPanel{
     private Font fContent;
     private Font fInfo;
     
-    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, int note)
+    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, int note, int idArticle, MainControleur mctrl)
     {
+        this.mctrl = mctrl;
         this.theme = new JLabel("[" + theme + "]");
         this.title = new JLabel(title);
-        this.content = new JTextArea(content);
+        this.content = new JEditorPane();
+        this.content.setContentType("text/html");
+        this.content.setText(content);
         this.auteur = new JLabel(auteur);
-        this.date = new JLabel("Publié le " + date);
+        this.date = new JLabel(date);
         this.nbComments = new JLabel(nbComments + " Commentaires");
         this.etoiles = new Etoile(note);
+        this.idArticle = idArticle;
         
         // -- Setup This --
         this.setBackground(Color.white);
@@ -82,9 +90,7 @@ public class ArticleListItem extends JPanel{
         this.add(actionButton);
         this.setLayout(sp);
         
-        this.content.setLineWrap(true);
         this.content.setEditable(false);
-        this.content.setWrapStyleWord(true);
         
         sp.putConstraint(SpringLayout.WEST, this.auteur, 5, SpringLayout.WEST, this);
         sp.putConstraint(SpringLayout.SOUTH, this.auteur, -20, SpringLayout.SOUTH, this);
@@ -134,9 +140,7 @@ public class ArticleListItem extends JPanel{
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            // Go to article
-            // Go to theme
-            // Go to profil
+            mctrl.consulterArticle(idArticle);
         }
 
         @Override

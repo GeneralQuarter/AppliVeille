@@ -14,10 +14,12 @@ import ihmpts2appliveille.modele.Statut;
 import ihmpts2appliveille.modele.accesbd.Donnees;
 import ihmpts2appliveille.modele.accesbd.EnregistrementDonnees;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
+import ihmpts2appliveille.modele.accesbd.entites.Article;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import ihmpts2appliveille.vue.ActualiteArticleVue;
 import ihmpts2appliveille.vue.AjoutThemeVue;
 import ihmpts2appliveille.vue.AjoutUtilisateurVue;
+import ihmpts2appliveille.vue.ArticleCommentairesVue;
 import ihmpts2appliveille.vue.EditorVue;
 import ihmpts2appliveille.vue.MenuBarVue;
 import ihmpts2appliveille.vue.BodyContentVue;
@@ -27,7 +29,9 @@ import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
 import ihmpts2appliveille.vue.ProfilVue;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,6 +52,7 @@ public class MainControleur {
     private ListeVue lv;
     private AjoutUtilisateurVue auv;
     private AjoutThemeVue atv;
+    private ArticleCommentairesVue acv;
     
     private LienExterne moodle;
     private LienExterne ent;
@@ -139,10 +144,12 @@ public class MainControleur {
         {
             case "ACCUEIL":
                 aav.setTitle("Actualités");
+                aav.setArticles(rdi.recupererArticles(), rdi.recupererThemes(), rdi.recupererUtilisateurs());
                 bcv.changeMainContent(aav);
                 break;
             case "Tous les articles":
                 aav.setTitle("Articles");
+                aav.setArticles(rdi.recupererArticles(), rdi.recupererThemes(), rdi.recupererUtilisateurs());
                 bcv.changeMainContent(aav);
                 break;
             case "Nouvel article...":
@@ -176,6 +183,13 @@ public class MainControleur {
             case "Mon profil":
                 bcv.changeMainContent(new ProfilVue(utilisateurConnecte, rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()), this));
                 break;
+            case "Editer mon thème":
+                bcv.changeMainContent(new ArticleCommentairesVue(rdi.recupererArticle(1), utilisateurConnecte, rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()), null, this));
+                break;
+            case "Mes articles":
+                aav.setTitle("Mes articles");
+                aav.setArticleUtilisateur(recupererArticleUtilisateur(), rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()), utilisateurConnecte);
+                bcv.changeMainContent(aav);
         }
     }
     
@@ -185,6 +199,36 @@ public class MainControleur {
     
     public void ajoutTheme(String intitule, String description){
         ed.ajoutTheme(intitule, description);
+    }
+    
+    public void ajouterArticle(String titre, String content)
+    {
+        if(content.length() <= 4000)
+        {
+            if (!titre.isEmpty()) {
+                if (rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()) != null) {
+                    ed.ajoutArticle(utilisateurConnecte.getIdUtilisateur(), rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()).getIdTheme(), titre, content);
+                }
+            }
+        }
+    }
+    
+    public void consulterArticle(int idArticle)
+    {
+        bcv.changeMainContent(new ArticleCommentairesVue(rdi.recupererArticle(idArticle), rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()), rdi.recupererThemeUtilisateur(rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()).getIdUtilisateur()), null, this));
+    }
+    
+    public Map<Integer, Article> recupererArticleUtilisateur()
+    {
+        Map<Integer, Article> articles = new HashMap<>();
+        for(Article u : rdi.recupererArticles().values())
+        {
+            if(u.getIdAuteur() == utilisateurConnecte.getIdUtilisateur())
+            {
+                articles.put(u.getIdArticle(), u);
+            }
+        }
+        return articles;
     }
     
     public void supprimerUtilisateur(int idUtilisateur)

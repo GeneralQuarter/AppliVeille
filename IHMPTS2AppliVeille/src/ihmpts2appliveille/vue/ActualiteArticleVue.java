@@ -6,10 +6,18 @@
 package ihmpts2appliveille.vue;
 
 import ihmpts2appliveille.controleur.MainControleur;
+import ihmpts2appliveille.modele.accesbd.entites.Article;
+import ihmpts2appliveille.modele.accesbd.entites.Theme;
+import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -59,8 +67,6 @@ public class ActualiteArticleVue extends JPanel{
         this.add(this.title, BorderLayout.NORTH);
         this.add(this.articleScroller, BorderLayout.CENTER);
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // WTF !! remove that ! ASAP 
-        
-        this.testInsert(); // TO REMOVE !!
     }
     
     public void ajouterArticle(ArticleListItem ali)
@@ -74,20 +80,43 @@ public class ActualiteArticleVue extends JPanel{
         this.title.setText(title);
     }
     
-    private void testInsert()
+    private void removeArticles()
     {
-        Random rand = new Random();
-        for(int i = 0; i < 50; i++)
+        this.articleHolder.removeAll();
+        this.validate();
+    }
+    
+    public void setArticles(Map<Integer, Article> articles, Map<Integer, Theme> themes, Map<Integer, Utilisateur> utilisateurs)
+    {
+        removeArticles();
+        for(Article a : articles.values())
         {
-            this.ajouterArticle(new ArticleListItem("Google","Les Google Glass au RDV" + (i+1), 
-                "EDIT: After you told me that that didn't work then I decided "
-                        + "to take a second crack at it... First, put your "
-                        + "images into a completely separate folder. "
-                        + "I usually call this /res. Next, put your image "
-                        + "in there. Now, for loading I took a completely "
-                        + "different route. I decided to use ImageIO instead "
-                        + "of default loading. To load the image, you use this code:",
-            "GANGLER Quentin", "01/02/12", rand.nextInt(50), rand.nextInt(5)+1));
+            DateFormat df = new SimpleDateFormat("dd/MM/yyy à HH:mm");
+            String date = null;
+            if(a.getDateModif() == null)
+                date = "Publié le " + df.format(a.getDatePubli());
+            else
+                date = "Modifié le " + df.format(a.getDateModif());
+            float note = a.getNote();
+            this.ajouterArticle(new ArticleListItem(themes.get(a.getIdTheme()).getIntitule(), a.getIntitule(), a.getContenu(), utilisateurs.get(a.getIdAuteur()).getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), mctrl));
         }
+        this.validate();
+    }
+    
+    public void setArticleUtilisateur(Map<Integer, Article> articles, Theme theme, Utilisateur utilisateur)
+    {
+        removeArticles();
+        for(Article a : articles.values())
+        {
+            DateFormat df = new SimpleDateFormat("dd/MM/yyy à HH:mm");
+            String date = null;
+            if(a.getDateModif() == null)
+                date = "Publié le " + df.format(a.getDatePubli());
+            else
+                date = "Modifié le " + df.format(a.getDateModif());
+            float note = a.getNote();
+            this.ajouterArticle(new ArticleListItem(theme.getIntitule(), a.getIntitule(), a.getContenu(), utilisateur.getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), mctrl));
+        }
+        this.validate();
     }
 }

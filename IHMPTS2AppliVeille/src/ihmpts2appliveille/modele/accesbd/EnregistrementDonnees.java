@@ -97,5 +97,16 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void ajoutArticle(int idUtilisateur, int idTheme, String titre, String content)
+    {
+        try{
+            titre = titre.replaceAll("'", "''");
+            content = content.replaceAll("'", "''");
+            acces.mettreAjourBase("INSERT INTO ARTICLE(ID_ARTICLE,ID_AUTEUR,ID_THEME,NB_COMM_ART,INTITULE,CONTENU,DATEPUBLI,DATEMODIF,NOTE,VISIBLE) VALUES ((select NVL(max(ID_ARTICLE), 0)+1 from ARTICLE)," + idUtilisateur + ", " + idTheme + ", 0, '"+ titre + "', '" + content + "', SYSDATE, NULL, NULL, 'V')");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     //public void ajoutArticle()
 }
