@@ -131,6 +131,11 @@ public class Utilisateur {
         return etat;
     }
     
+    public void setNbConn(int nbConn)
+    {
+        this.nbConn = nbConn;
+    }
+    
     @Override
     public String toString()
     {

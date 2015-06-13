@@ -9,6 +9,8 @@ import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -16,6 +18,8 @@ import javax.swing.table.AbstractTableModel;
  * @author x1QG1x
  */
 public class ModelListeUtilisateur extends AbstractTableModel{
+    private final ImageIcon connected = new ImageIcon("connected.png");
+    private final ImageIcon deconnected = new ImageIcon("deconnected.png");
     private final String[] titres = {"Nom", "Type de profil", "Nombre articles", "Nombre commentaires", "Statut"};
     private final Map<Integer, Utilisateur> utilisateurs;
     
@@ -40,6 +44,23 @@ public class ModelListeUtilisateur extends AbstractTableModel{
     {
         return titres[columnIndex];
     }
+    
+    @Override
+    public Class getColumnClass(int columnIndex)
+    {
+        switch(columnIndex)
+        {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                return String.class;
+            case 4:
+                return JLabel.class;
+            default:
+                return String.class;
+        }
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -54,7 +75,20 @@ public class ModelListeUtilisateur extends AbstractTableModel{
                     case 1: return u.getValue().getTypeProfil();
                     case 2: return u.getValue().getNbArticle();
                     case 3: return u.getValue().getNbComm();
-                    case 4: return u.getValue().getEtat();
+                    case 4: 
+                        switch(u.getValue().getEtat())
+                        {
+                            case CONNECTE:
+                                JLabel l = new JLabel(connected);
+                                l.setOpaque(true);
+                                l.setToolTipText("Connecté");
+                                return l;
+                            case DECONNECTE:
+                                JLabel l1 = new JLabel(deconnected);
+                                l1.setOpaque(true);
+                                l1.setToolTipText("Déonnecté");
+                                return l1;
+                        }
                     case 5: return u.getValue().getIdUtilisateur();
                     default: return null;
                 }

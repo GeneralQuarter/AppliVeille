@@ -59,6 +59,9 @@ public class Donnees {
         if(!utilisateurs.containsKey(u.getIdUtilisateur()))
         {
             utilisateurs.put(u.getIdUtilisateur(), u);
+        }else{
+            utilisateurs.remove(u.getIdUtilisateur());
+            utilisateurs.put(u.getIdUtilisateur(), u);
         }
     }
     
@@ -66,6 +69,9 @@ public class Donnees {
     {
         if(!articles.containsKey(a.getIdArticle()))
         {
+            articles.put(a.getIdArticle(), a);
+        }else{
+            articles.remove(a.getIdArticle());
             articles.put(a.getIdArticle(), a);
         }
     }
@@ -75,6 +81,9 @@ public class Donnees {
         if(!themes.containsKey(t.getIdTheme()))
         {
             themes.put(t.getIdTheme(), t);
+        }else{
+            themes.remove(t.getIdTheme());
+            themes.put(t.getIdTheme(), t);
         }
     }
     
@@ -82,6 +91,9 @@ public class Donnees {
     {
         if(!commentaires.containsKey(c.getIdCommentaire()))
         {
+            commentaires.put(c.getIdCommentaire(), c);
+        }else{
+            commentaires.remove(c.getIdCommentaire());
             commentaires.put(c.getIdCommentaire(), c);
         }
     }
@@ -91,6 +103,9 @@ public class Donnees {
         if(!messages.containsKey(m.getIdMessage()))
         {
             messages.put(m.getIdMessage(), m);
+        }else{
+            messages.remove(m.getIdMessage());
+            messages.put(m.getIdMessage(), m);
         }
     }
     
@@ -98,6 +113,9 @@ public class Donnees {
     {
         if(!correspondances.contains(c))
         {
+            correspondances.add(c);
+        }else{
+            correspondances.remove(c);
             correspondances.add(c);
         }
     }

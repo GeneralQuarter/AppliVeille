@@ -85,6 +85,8 @@ public class MainControleur {
                         bcv.changeMainContent(aav);
                         mmv.changeMainFrame(bcv, true);
                         ed.setUtilisateurConnecte(utilisateurConnecte.getIdUtilisateur());
+                        utilisateurConnecte.setNbConn(utilisateurConnecte.getNbConn()+1);
+                        d.ajouterUtilisateur(utilisateurConnecte);
                     }else{
                         fav.afficherErreur("Vous êtes déjà connecté sur un autre poste");
                     }

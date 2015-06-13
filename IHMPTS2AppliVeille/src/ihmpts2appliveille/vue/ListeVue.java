@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -69,7 +70,17 @@ public class ListeVue extends JPanel{
         centerPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, new Color(33,33,33)));
         
         // -- Setup JTable --       
-        mainTable = new JTable();
+        mainTable = new JTable(){
+          @Override
+          public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
+              Component c = super.prepareRenderer(renderer, row, column);
+              if(isRowSelected(row))
+                  c.setBackground(AppliColor.LIGHT_BLUE.getColor());
+              else
+                  c.setBackground(Color.white);
+              return c;
+          }     
+        };
         mainTable.getTableHeader().setReorderingAllowed(false);
         f = new Font("Arial", 0, 14);
         mainTable.setFont(f);
@@ -126,6 +137,8 @@ public class ListeVue extends JPanel{
           {
               super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
               setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+              if(value instanceof JLabel)
+                  return (JLabel) value;
               return this;
           }
         };
@@ -213,16 +226,20 @@ public class ListeVue extends JPanel{
                     break;
                 case "Supprimer":
                     if(mainTable.getModel() instanceof ModelListeUtilisateur){
-                        mctrl.supprimerUtilisateur((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 5));
+                        if(mainTable.getSelectedRow() != -1)
+                            mctrl.supprimerUtilisateur((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 5));
                     }else if(mainTable.getModel() instanceof ModelListeTheme){
-                        mctrl.supprimerTheme((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 3));
+                        if(mainTable.getSelectedRow() != -1)
+                            mctrl.supprimerTheme((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 3));
                     }
                     break;
                 case "Attribuer":
-                    mctrl.attribuerTheme((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 3));
+                    if(mainTable.getSelectedRow() != -1)
+                        mctrl.attribuerTheme((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 3));
                     break;
                 case "Consulter":
-                    mctrl.allerVersProfil((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 5));
+                    if(mainTable.getSelectedRow() != -1)
+                        mctrl.allerVersProfil((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 5));
                     break;
             }
         }

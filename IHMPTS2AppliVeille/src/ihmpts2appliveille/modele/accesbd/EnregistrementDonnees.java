@@ -64,7 +64,6 @@ public class EnregistrementDonnees {
     {
         try{
             acces.mettreAjourBase("UPDATE THEME SET ID_PROP='" + idUtilisateur + "'WHERE ID_THEME='" + idTheme + "'");
-            donnees.updateProprietaireTheme(idTheme, idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -75,7 +74,6 @@ public class EnregistrementDonnees {
         try{
             description = description.replaceAll("'", "''");
             acces.mettreAjourBase("UPDATE THEME SET DESCRIPTION='" + description + "'WHERE ID_THEME='" + idTheme + "'");
-            donnees.updateDescriptionTheme(idTheme, description);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -84,7 +82,7 @@ public class EnregistrementDonnees {
     public void setUtilisateurConnecte(int idUtilisateur)
     {
         try{
-            acces.mettreAjourBase("UPDATE utilisateur SET ETAT='C' WHERE ID_UTILISATEUR=" + idUtilisateur + "");
+            acces.mettreAjourBase("UPDATE utilisateur SET ETAT='C', NBCONN=((select NBCONN FROM UTILISATEUR WHERE ID_UTILISATEUR=" + idUtilisateur + ")+1) WHERE ID_UTILISATEUR=" + idUtilisateur + "");
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
