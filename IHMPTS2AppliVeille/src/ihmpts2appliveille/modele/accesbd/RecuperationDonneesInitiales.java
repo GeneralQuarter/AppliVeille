@@ -202,7 +202,13 @@ public class RecuperationDonneesInitiales {
                 Calendar datePubli = Calendar.getInstance(); // A MODIFIER
                 Calendar dateModif = Calendar.getInstance(); // A MODIFIER
                 float note = 0.0f; // A MODIFIER
-                article = new Article(idArticle, idAuteur, idTheme, nbCommArt, intitule, contenu, datePubli, dateModif, note);
+                boolean visible = true;
+                switch(row.get(9)){
+                    case "V" : visible = true; break ; 
+                    case "N" : visible = false; break;
+                    default : break ;
+                }
+                article = new Article(idArticle, idAuteur, idTheme, nbCommArt, intitule, contenu, datePubli, dateModif, note, visible);
             }else{
                 //Erreur de selection ou article non existant
             }

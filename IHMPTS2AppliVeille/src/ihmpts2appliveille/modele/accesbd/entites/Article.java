@@ -22,6 +22,7 @@ public class Article {
     private Calendar datePubli;
     private Calendar dateModif;
     private float note;
+    private boolean visible;
     
     /**
      * Constructeur de la classe
@@ -34,8 +35,9 @@ public class Article {
      * @param datePubli la date de publication de l'article
      * @param dateModif la date de modification de l'article
      * @param note la note de l'article attribué par un professeur
+     * @param visible la visibilité de l'article sur l'interface
      */
-    public Article(int idArticle, int idAuteur, int idTheme, int nbCommArt, String intitule, String contenu, Calendar datePubli, Calendar dateModif, float note) {
+    public Article(int idArticle, int idAuteur, int idTheme, int nbCommArt, String intitule, String contenu, Calendar datePubli, Calendar dateModif, float note, boolean visible) {
         this.idArticle = idArticle;
         this.idAuteur = idAuteur;
         this.idTheme = idTheme;
@@ -45,6 +47,7 @@ public class Article {
         this.datePubli = datePubli;
         this.dateModif = dateModif;
         this.note = note;
+        this.visible = visible;
     }
 
     /**
@@ -117,6 +120,14 @@ public class Article {
      */
     public float getNote() {
         return note;
+    }
+    
+    /**
+     * Getter sur la visibilité de l'article
+     * @return visible
+     */
+    public boolean getVisible(){
+        return visible;
     }
 
     

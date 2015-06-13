@@ -19,6 +19,7 @@ public class Commentaire {
    private String contenu;
    private Calendar datePubli;
    private Calendar dateModif;
+   private boolean visible;
 
    /**
      * Constructeur de la classe
@@ -29,8 +30,9 @@ public class Commentaire {
      * @param contenu le contenu du commentaire
      * @param datePubli la date de publication du commentaire
      * @param dateModif la date de modification du commentaire
+     * @param visible la visibilité du commentaire sur l'interface
      */
-   public Commentaire(int idCommentaire, int idAuteur, int idArticle, String intitule, String contenu, Calendar datePubli, Calendar dateModif) {
+   public Commentaire(int idCommentaire, int idAuteur, int idArticle, String intitule, String contenu, Calendar datePubli, Calendar dateModif, boolean visible) {
         this.idCommentaire = idCommentaire;
         this.idAuteur = idAuteur;
         this.idArticle = idArticle;
@@ -38,6 +40,7 @@ public class Commentaire {
         this.contenu = contenu;
         this.datePubli = datePubli;
         this.dateModif = dateModif;
+        this.visible = visible;
     }
    
    /**
@@ -96,5 +99,13 @@ public class Commentaire {
         return dateModif;
     }
     
+    /**
+     * Getter sur la visibilité du commentaire
+     * @return visible
+     */
+    public boolean getVisible(){
+        return visible;
+    }
+
 }
 
