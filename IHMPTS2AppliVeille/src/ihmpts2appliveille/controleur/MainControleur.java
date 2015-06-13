@@ -6,6 +6,7 @@
 package ihmpts2appliveille.controleur;
 
 import ihmpts2appliveille.modele.Cryptage;
+import ihmpts2appliveille.modele.Droits;
 import ihmpts2appliveille.modele.LienExterne;
 import ihmpts2appliveille.modele.ModelListeTheme;
 import ihmpts2appliveille.modele.ModelListeUtilisateur;
@@ -212,20 +213,27 @@ public class MainControleur {
         List<Utilisateur> utilisateursSansTheme = new ArrayList<>();
         for(Utilisateur ut : rdi.recupererUtilisateurs().values())
         {
-            if(rdi.recupererThemeUtilisateur(ut.getIdUtilisateur()) == null)
+            if(rdi.recupererThemeUtilisateur(ut.getIdUtilisateur()) == null && ut.getTypeProfil() == Droits.ETUDIANT)
             {
                utilisateursSansTheme.add(ut);
             }
         }
-        Utilisateur[] values = new Utilisateur[utilisateursSansTheme.size()];
-        for(int i = 0; i < utilisateursSansTheme.size(); i++)
+        if(!utilisateursSansTheme.isEmpty())
         {
-            values[i] = utilisateursSansTheme.get(i);
+            Utilisateur[] values = new Utilisateur[utilisateursSansTheme.size()];
+            for(int i = 0; i < utilisateursSansTheme.size(); i++)
+            {
+                values[i] = utilisateursSansTheme.get(i);
+            }
+            Object u = JOptionPane.showInputDialog(null, "Choisissez un etudiant pour le thème " + rdi.recupererTheme(idTheme).getIntitule(), "Attribuer un thème", JOptionPane.QUESTION_MESSAGE, null, values, values[0]);
+            Utilisateur choix = (Utilisateur) u;
+            System.out.println(choix.getIdUtilisateur());
+            ed.attribuerTheme(idTheme, choix.getIdUtilisateur());
+            naviguerVers("Liste des thèmes");
+        }else{
+             JOptionPane.showMessageDialog(null, "Tout les étudiants ont un thème", "Attribution impossible", JOptionPane.ERROR_MESSAGE);
         }
-        Object u = JOptionPane.showInputDialog(null, "Choisissez un etudiant pour le thème " + rdi.recupererTheme(idTheme).getIntitule(), "Attribuer un thème", JOptionPane.QUESTION_MESSAGE, null, values, values[0]);
-        Utilisateur choix = (Utilisateur) u;
-        ed.attribuerTheme(idTheme, choix.getIdUtilisateur());
-        naviguerVers("Liste des thèmes");
+        
     }
     
     public void allerVersProfil(int idUtilisateur)

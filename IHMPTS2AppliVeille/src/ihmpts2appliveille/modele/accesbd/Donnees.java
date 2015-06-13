@@ -42,7 +42,8 @@ public class Donnees {
     {
         Theme t = themes.get(idTheme);
         t.setIdProp(idUtilisateur);
-        themes.replace(idTheme, t);
+        themes.remove(idTheme);
+        themes.put(idTheme, t);
     }
     
     public void ajouterUtilisateur(Utilisateur u)

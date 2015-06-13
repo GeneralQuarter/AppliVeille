@@ -45,26 +45,26 @@ public class ModelListeTheme extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Iterator<Map.Entry<Integer, Theme>> it = donnees.entrySet().iterator();
-        for(int i=0;i < donnees.size();i++)
+        int i = -1;
+        for(Theme t : donnees.values())
         {
-            Entry<Integer, Theme> t = it.next();
+            i++;
             if(i == rowIndex)
             {
                 switch(columnIndex)
                 {
-                    case 0: return t.getValue().getIntitule();
+                    case 0: return t.getIntitule();
                     case 1:
-                        if(t.getValue().getIdProp() != 0)
-                            return utilisateurs.get(t.getKey()).getNom();
-                        else
+                        if(t.getIdProp() != 0){
+                            return utilisateurs.get(t.getIdProp()).getNom();
+                        }else
                             return "<Libre>";
                     case 2:
-                        if(!t.getValue().getDescritpion().isEmpty())
-                            return t.getValue().getDescritpion();
+                        if(!t.getDescritpion().isEmpty())
+                            return t.getDescritpion();
                         else
                             return "<Aucune description>";
-                    case 3: return t.getKey();
+                    case 3: return t.getIdTheme();
                     default: return null;
                 }
             }
