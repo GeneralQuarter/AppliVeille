@@ -8,7 +8,7 @@ package ihmpts2appliveille.modele.accesbd.entites;
 import java.util.Calendar;
 
 /**
- *
+ * Classe Commentaire : un commentaire est une remarque qui peut être postée par un étudiant ou par un professeur sous un article séléctionné
  * @author vpivet
  */
 public class Commentaire {
@@ -20,35 +20,17 @@ public class Commentaire {
    private Calendar datePubli;
    private Calendar dateModif;
 
-    public int getIdCommentaire() {
-        return idCommentaire;
-    }
-
-    public int getIdAuteur() {
-        return idAuteur;
-    }
-
-    public int getIdArticle() {
-        return idArticle;
-    }
-
-    public String getIntitule() {
-        return intitule;
-    }
-
-    public String getContenu() {
-        return contenu;
-    }
-
-    public Calendar getDatePubli() {
-        return datePubli;
-    }
-
-    public Calendar getDateModif() {
-        return dateModif;
-    }
-
-    public Commentaire(int idCommentaire, int idAuteur, int idArticle, String intitule, String contenu, Calendar datePubli, Calendar dateModif) {
+   /**
+     * Constructeur de la classe
+     * @param idCommentaire l'identifiant du commentaire
+     * @param idAuteur l'identitfiant de l'auteur du commentaire
+     * @param idArticle l'identifiant de l'article auquel le commentaire est attribué
+     * @param intitule l'intitulé ou le titre du commentaire
+     * @param contenu le contenu du commentaire
+     * @param datePubli la date de publication du commentaire
+     * @param dateModif la date de modification du commentaire
+     */
+   public Commentaire(int idCommentaire, int idAuteur, int idArticle, String intitule, String contenu, Calendar datePubli, Calendar dateModif) {
         this.idCommentaire = idCommentaire;
         this.idAuteur = idAuteur;
         this.idArticle = idArticle;
@@ -57,4 +39,62 @@ public class Commentaire {
         this.datePubli = datePubli;
         this.dateModif = dateModif;
     }
+   
+   /**
+     * Getter sur l'identifiant du commentaire
+     * @return l'idCommentaire
+     */
+    public int getIdCommentaire() {
+        return idCommentaire;
+    }
+    
+    /**
+     * Getter sur l'identifiant de l'auteur du commentaire
+     * @return l'idAuteur
+     */
+    public int getIdAuteur() {
+        return idAuteur;
+    }
+
+    /**
+     * Getter sur l'identifiant de l'article auquel le commentaire est affilié
+     * @return l'idArticle
+     */
+    public int getIdArticle() {
+        return idArticle;
+    }
+
+    /**
+     * Getter sur l'intitulé du commentaire
+     * @return l'intitule
+     */
+    public String getIntitule() {
+        return intitule;
+    }
+
+    /**
+     * Getter sur le contenu du commentaire
+     * @return le contenu
+     */
+    public String getContenu() {
+        return contenu;
+    }
+
+    /**
+     * Getter sur la date de publication du commentaire
+     * @return la datePublic : la date de publication
+     */
+    public Calendar getDatePubli() {
+        return datePubli;
+    }
+
+    /**
+     * Getter sur la date de modification du commentaire
+     * @return la dateModif : la date de modification
+     */
+    public Calendar getDateModif() {
+        return dateModif;
+    }
+    
 }
+
