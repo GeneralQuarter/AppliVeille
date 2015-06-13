@@ -15,9 +15,11 @@ import java.sql.SQLException;
  */
 public class EnregistrementDonnees {
     private AccesBD acces;
+    private Donnees donnees;
 
-    public EnregistrementDonnees() {
+    public EnregistrementDonnees(Donnees donnees) {
         this.acces = new AccesBD();
+        this.donnees = donnees;
     }
     
     public void ajoutUtilisateur(String nom, String identifiant, String mdp, String typeProfil){
@@ -41,7 +43,8 @@ public class EnregistrementDonnees {
     
     public void supprimerTheme(int idTheme){
         try{
-            acces.mettreAjourBase("DELETE FROM THEME WHERE ID-THEME='" + idTheme + "'");
+            acces.mettreAjourBase("DELETE FROM THEME WHERE ID_THEME='" + idTheme + "'");
+            donnees.supprimerTheme(idTheme);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -51,6 +54,7 @@ public class EnregistrementDonnees {
     {
         try{
             acces.mettreAjourBase("DELETE FROM utilisateur WHERE ID_UTILISATEUR='" + idUtilisateur + "'");
+            donnees.supprimerUtilisateur(idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }

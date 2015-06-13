@@ -10,6 +10,7 @@ import ihmpts2appliveille.modele.LienExterne;
 import ihmpts2appliveille.modele.ModelListeTheme;
 import ihmpts2appliveille.modele.ModelListeUtilisateur;
 import ihmpts2appliveille.modele.Statut;
+import ihmpts2appliveille.modele.accesbd.Donnees;
 import ihmpts2appliveille.modele.accesbd.EnregistrementDonnees;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
@@ -49,6 +50,7 @@ public class MainControleur {
     private LienExterne ent;
     private LienExterne formadep;
     
+    private Donnees d;
     private RecuperationDonneesInitiales rdi;
     private EnregistrementDonnees ed;
     
@@ -56,8 +58,9 @@ public class MainControleur {
     
     public MainControleur()
     {
-        rdi = new RecuperationDonneesInitiales();
-        ed = new EnregistrementDonnees();
+        d = new Donnees();
+        rdi = new RecuperationDonneesInitiales(d);
+        ed = new EnregistrementDonnees(d);
         moodle = new LienExterne("https://moodle.univ-lr.fr");
         ent = new LienExterne("https://ent.univ-lr.fr");
         formadep = new LienExterne("http://www.formadepetudiant.fr/?ref=19");
@@ -184,7 +187,6 @@ public class MainControleur {
             if(choix == JOptionPane.YES_OPTION)
             {
                 ed.supprimerUtilisateur(idUtilisateur);
-                rdi.retirerUtilisateurListe(idUtilisateur);
                 naviguerVers("Liste des utilisateurs");
             }
         }else{

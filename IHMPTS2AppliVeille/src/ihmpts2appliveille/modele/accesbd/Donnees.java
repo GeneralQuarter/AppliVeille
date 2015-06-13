@@ -62,7 +62,7 @@ public class Donnees {
         }
     }
     
-    public void ajouterCommentaires(Commentaire c)
+    public void ajouterCommentaire(Commentaire c)
     {
         if(!commentaires.containsKey(c.getIdCommentaire()))
         {
@@ -84,5 +84,159 @@ public class Donnees {
         {
             correspondances.add(c);
         }
+    }
+    
+    public void supprimerUtilisateur(int idUtilisateur)
+    {
+        if(utilisateurs.containsKey(idUtilisateur))
+        {
+            utilisateurs.remove(idUtilisateur);
+        }
+    }
+    
+    public void supprimerArticle(int idArticle)
+    {
+        if(articles.containsKey(idArticle))
+        {
+            articles.remove(idArticle);
+        }
+    }
+    
+    public void supprimerTheme(int idTheme)
+    {
+        if(themes.containsKey(idTheme))
+        {
+            themes.remove(idTheme);
+        }
+    }
+    
+    public void supprimerCommentaire(int idCommentaire)
+    {
+        if(commentaires.containsKey(idCommentaire))
+        {
+            commentaires.remove(idCommentaire);
+        }
+    }
+    
+    public void supprimerMessage(int idMessage)
+    {
+        if(messages.containsKey(idMessage))
+        {
+            messages.remove(idMessage);
+        }
+    }
+    
+    public void supprimerCorrespondance(Correspondance c)
+    {
+        if(correspondances.contains(c))
+        {
+            correspondances.remove(c);
+        }
+    }
+    
+    public boolean containsUtilisateur(int idUtilisateur)
+    {
+        return utilisateurs.containsKey(idUtilisateur);
+    }
+    
+    public boolean containsArticle(int idArticle)
+    {
+        return articles.containsKey(idArticle);
+    }
+    
+    public boolean containsTheme(int idTheme)
+    {
+        return themes.containsKey(idTheme);
+    }
+    
+    public boolean containsCommentaire(int idCommentaire)
+    {
+        return commentaires.containsKey(idCommentaire);
+    }
+    
+    public boolean containsMessage(int idMessage)
+    {
+        return messages.containsKey(idMessage);
+    }
+    
+    public boolean containsCorrespondance(Correspondance c)
+    {
+        return correspondances.contains(c);
+    }
+    
+    public Utilisateur getUtilisateur(int idUtilisateur)
+    {
+        if(containsUtilisateur(idUtilisateur))
+            return utilisateurs.get(idUtilisateur);
+        else
+            return null;
+    }
+    
+    public Article getArticle(int idArticle)
+    {
+        if(containsArticle(idArticle))
+            return articles.get(idArticle);
+        else
+            return null;
+    }
+    
+    public Theme getTheme(int idTheme)
+    {
+        if(containsTheme(idTheme))
+            return themes.get(idTheme);
+        else
+            return null;
+    }
+    
+    public Commentaire getCommentaire(int idCommentaire)
+    {
+        if(containsCommentaire(idCommentaire))
+            return commentaires.get(idCommentaire);
+        else
+            return null;
+    }
+    
+    public Message getMessage(int idMessage)
+    {
+        if(containsMessage(idMessage))
+            return messages.get(idMessage);
+        else
+            return null;
+    }
+    
+    public Correspondance getCorrespondance(int idMessage, int idDest)
+    {
+        for(Correspondance c : correspondances)
+        {
+            if(c.getIdMessage() == idMessage && c.getIdDestinataire() == idDest)
+            {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public Map<Integer, Utilisateur> getUtilisateurs() {
+        return utilisateurs;
+    }
+
+    public Map<Integer, Article> getArticles() {
+        return articles;
+    }
+
+    public Map<Integer, Theme> getThemes() {
+        return themes;
+    }
+
+    public Map<Integer, Commentaire> getCommentaires() {
+        return commentaires;
+    }
+
+    public Map<Integer, Message> getMessages() {
+        return messages;
+    }
+
+    public List<Correspondance> getCorrespondances() {
+        return correspondances;
     }
 }

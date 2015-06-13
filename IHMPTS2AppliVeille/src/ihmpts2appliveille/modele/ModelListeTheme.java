@@ -5,10 +5,11 @@
  */
 package ihmpts2appliveille.modele;
 
-import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.accesbd.entites.Theme;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -44,24 +45,30 @@ public class ModelListeTheme extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch(columnIndex)
+        Iterator<Map.Entry<Integer, Theme>> it = donnees.entrySet().iterator();
+        for(int i=0;i < donnees.size();i++)
         {
-            case 0:
-                return donnees.get(rowIndex+1).getIntitule();
-            case 1:
-                if(donnees.get(rowIndex+1).getIdProp() != 0)
-                    return utilisateurs.get(donnees.get(rowIndex+1).getIdProp()).getNom();
-                else
-                    return "<Libre>";
-            case 2:
-                if(!donnees.get(rowIndex+1).getDescritpion().isEmpty())
-                    return donnees.get(rowIndex+1).getDescritpion();
-                else
-                    return "<Aucune description>";
-            case 3 : 
-                
-            default:
-                return donnees.get(rowIndex+1).getIdTheme();
+            Entry<Integer, Theme> t = it.next();
+            if(i == rowIndex)
+            {
+                switch(columnIndex)
+                {
+                    case 0: return t.getValue().getIntitule();
+                    case 1:
+                        if(t.getValue().getIdProp() != 0)
+                            return utilisateurs.get(t.getKey()).getNom();
+                        else
+                            return "<Libre>";
+                    case 2:
+                        if(!t.getValue().getDescritpion().isEmpty())
+                            return t.getValue().getDescritpion();
+                        else
+                            return "<Aucune description>";
+                    case 3: return t.getKey();
+                    default: return null;
+                }
+            }
         }
+        return null;
     }
 }

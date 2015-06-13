@@ -26,17 +26,11 @@ import java.util.Map;
  */
 public class RecuperationDonneesInitiales {
     private AccesBD acces;
-    private Map<Integer, Utilisateur> utilisateurs;
-    private Map<Integer, Article> articles;
-    private Map<Integer, Theme> themes;
-    private Map<Integer, Commentaire> commentaires;
-    private Map<Integer, Message> messages;
-    private Map<Integer, Correspondance> correspondances;
+    private Donnees donnees;
     
-    public RecuperationDonneesInitiales(){
+    public RecuperationDonneesInitiales(Donnees donnees){
         this.acces = new AccesBD();
-        this.themes = new HashMap<>();
-        this.utilisateurs = new HashMap<>();
+        this.donnees = donnees;
     }
     
     public Map<Integer, Utilisateur> recupererUtilisateurs()
@@ -81,18 +75,18 @@ public class RecuperationDonneesInitiales {
                         etat = Statut.DECONNECTE;
                         break;
                 }
-                utilisateurs.put(idUtilisateur, new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat));        
+                donnees.ajouterUtilisateur(new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat));        
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        return utilisateurs;
+        return donnees.getUtilisateurs();
     }
     
     public Utilisateur recupererUtilisateur(int id)
     {
-        if(utilisateurs.containsKey(id))
-            return utilisateurs.get(id);
+        if(donnees.containsUtilisateur(id))
+            return donnees.getUtilisateur(id);
         Utilisateur utilisateur = null;
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where id_utilisateur=" + id);
@@ -189,8 +183,8 @@ public class RecuperationDonneesInitiales {
     
     public Article recupererArticle(int idArticle){
         Article article = null;
-        if(articles.containsKey(idArticle))
-            return articles.get(idArticle);
+        if(donnees.containsArticle(idArticle))
+            return donnees.getArticle(idArticle);
         try{
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM ARTICLE WHERE ID_ARTICLE ='" + idArticle + "'");
             if(resultats.isEmpty())
@@ -229,7 +223,7 @@ public class RecuperationDonneesInitiales {
             {
                 row = resultats.get(i);
                 idTheme = Integer.parseInt(row.get(0));
-                if(!themes.containsKey(idTheme))
+                if(!donnees.containsTheme(idTheme))
                 {
                     if(row.get(1) == null){
                         idProp = 0;
@@ -243,19 +237,19 @@ public class RecuperationDonneesInitiales {
                     {
                         description = "";
                     }
-                    themes.put(idTheme, new Theme(idTheme, idProp, intitule, description));
+                    donnees.ajouterTheme(new Theme(idTheme, idProp, intitule, description));
                 }
             }
         }catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        return themes;
+        return donnees.getThemes();
     }
     
     public Theme recupererTheme(int idTheme){
         Theme theme = null;
-        if(themes.containsKey(idTheme))
-            return themes.get(idTheme);
+        if(donnees.containsTheme(idTheme))
+            return donnees.getTheme(idTheme);
         try{
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM THEME WHERE ID_THEME = '" + idTheme + "'");
             if(resultats.isEmpty())
@@ -280,7 +274,7 @@ public class RecuperationDonneesInitiales {
     public Theme recupererThemeUtilisateur(int idUtilisateur)
     {
         Theme theme = null;
-        for(Theme t : themes.values())
+        for(Theme t : donnees.getThemes().values())
         {
             if(t.getIdProp() == idUtilisateur)
                 return t;
@@ -297,16 +291,11 @@ public class RecuperationDonneesInitiales {
             String intitule = row.get(2);
             String description = row.get(3);
             theme = new Theme(idTheme, idProp, intitule, description);
-            if(!themes.containsKey(idTheme))
-                themes.put(idTheme, theme);
+            if(!donnees.containsTheme(idTheme))
+                donnees.ajouterTheme(theme);
         }catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
         return theme;
-    }
-    
-    public void retirerUtilisateurListe(int idUtilisateur)
-    {
-        utilisateurs.remove(idUtilisateur);
     }
 }
