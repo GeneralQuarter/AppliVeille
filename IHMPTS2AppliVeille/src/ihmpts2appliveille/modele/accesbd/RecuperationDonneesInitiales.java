@@ -223,22 +223,19 @@ public class RecuperationDonneesInitiales {
             {
                 row = resultats.get(i);
                 idTheme = Integer.parseInt(row.get(0));
-                if(!donnees.containsTheme(idTheme))
-                {
-                    if(row.get(1) == null){
-                        idProp = 0;
-                    }else{
-                        idProp = Integer.parseInt(row.get(1));
-                        recupererUtilisateur(idProp);
-                    }
-                    intitule = row.get(2);
-                    description = row.get(3);
-                    if(description == null)
-                    {
-                        description = "";
-                    }
-                    donnees.ajouterTheme(new Theme(idTheme, idProp, intitule, description));
+                if(row.get(1) == null){
+                    idProp = 0;
+                }else{
+                    idProp = Integer.parseInt(row.get(1));
+                    recupererUtilisateur(idProp);
                 }
+                intitule = row.get(2);
+                description = row.get(3);
+                if(description == null)
+                {
+                    description = "";
+                }
+                donnees.ajouterTheme(new Theme(idTheme, idProp, intitule, description));
             }
         }catch (SQLException ex) {
             System.err.println(ex.getMessage());

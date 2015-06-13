@@ -130,5 +130,11 @@ public class Utilisateur {
     public Statut getEtat() {
         return etat;
     }
+    
+    @Override
+    public String toString()
+    {
+        return getNom();
+    }
             
 }

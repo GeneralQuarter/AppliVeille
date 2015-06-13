@@ -201,6 +201,9 @@ public class ListeVue extends JPanel{
                         mctrl.supprimerTheme((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 3));
                     }
                     break;
+                case "Attribuer":
+                    mctrl.attribuerTheme((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 3));
+                    break;
                 case "Consulter":
                     mctrl.allerVersProfil((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 5));
                     break;

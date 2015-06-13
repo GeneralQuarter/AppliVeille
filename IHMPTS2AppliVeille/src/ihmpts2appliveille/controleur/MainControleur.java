@@ -25,6 +25,8 @@ import ihmpts2appliveille.vue.ListeVue;
 import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
 import ihmpts2appliveille.vue.ProfilVue;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -105,6 +107,9 @@ public class MainControleur {
     {
            ed.setUtilisateurDeconnecte(utilisateurConnecte.getIdUtilisateur());
            utilisateurConnecte = null;
+           d = new Donnees();
+           rdi = new RecuperationDonneesInitiales(d);
+           ed = new EnregistrementDonnees(d);
            fav.resetConnection();
            mmv.changeMainFrame(fav, false);
     }
@@ -200,6 +205,27 @@ public class MainControleur {
             ed.supprimerTheme(idTheme);
             naviguerVers("Liste des thèmes");
         }
+    }
+    
+    public void attribuerTheme(int idTheme)
+    {
+        List<Utilisateur> utilisateursSansTheme = new ArrayList<>();
+        for(Utilisateur ut : rdi.recupererUtilisateurs().values())
+        {
+            if(rdi.recupererThemeUtilisateur(ut.getIdUtilisateur()) == null)
+            {
+               utilisateursSansTheme.add(ut);
+            }
+        }
+        Utilisateur[] values = new Utilisateur[utilisateursSansTheme.size()];
+        for(int i = 0; i < utilisateursSansTheme.size(); i++)
+        {
+            values[i] = utilisateursSansTheme.get(i);
+        }
+        Object u = JOptionPane.showInputDialog(null, "Choisissez un etudiant pour le thème " + rdi.recupererTheme(idTheme).getIntitule(), "Attribuer un thème", JOptionPane.QUESTION_MESSAGE, null, values, values[0]);
+        Utilisateur choix = (Utilisateur) u;
+        ed.attribuerTheme(idTheme, choix.getIdUtilisateur());
+        naviguerVers("Liste des thèmes");
     }
     
     public void allerVersProfil(int idUtilisateur)

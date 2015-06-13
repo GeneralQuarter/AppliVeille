@@ -61,4 +61,11 @@ public class Theme {
         return descritpion;
     }
 
+    public void setIdProp(int idProp) {
+        this.idProp = idProp;
+    }
+
+    public void setDescritpion(String descritpion) {
+        this.descritpion = descritpion;
+    }
 }

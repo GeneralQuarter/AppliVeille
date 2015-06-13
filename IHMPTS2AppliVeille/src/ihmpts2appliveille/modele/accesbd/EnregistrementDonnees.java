@@ -60,6 +60,16 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void attribuerTheme(int idTheme, int idUtilisateur)
+    {
+        try{
+            acces.mettreAjourBase("UPDATE THEME SET ID_PROP='" + idUtilisateur + "'WHERE ID_THEME='" + idTheme + "'");
+            donnees.updateProprietaireTheme(idTheme, idUtilisateur);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     public void setUtilisateurConnecte(int idUtilisateur)
     {
         try{

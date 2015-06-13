@@ -38,6 +38,13 @@ public class Donnees {
         correspondances = new ArrayList<>();
     }
     
+    public void updateProprietaireTheme(int idTheme, int idUtilisateur)
+    {
+        Theme t = themes.get(idTheme);
+        t.setIdProp(idUtilisateur);
+        themes.replace(idTheme, t);
+    }
+    
     public void ajouterUtilisateur(Utilisateur u)
     {
         if(!utilisateurs.containsKey(u.getIdUtilisateur()))
