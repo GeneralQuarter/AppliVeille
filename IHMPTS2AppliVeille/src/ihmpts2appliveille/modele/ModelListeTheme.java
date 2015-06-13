@@ -58,6 +58,8 @@ public class ModelListeTheme extends AbstractTableModel{
                     return donnees.get(rowIndex+1).getDescritpion();
                 else
                     return "<Aucune description>";
+            case 3 : 
+                
             default:
                 return donnees.get(rowIndex+1).getIdTheme();
         }

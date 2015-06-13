@@ -39,6 +39,14 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void supprimerTheme(int idTheme){
+        try{
+            acces.mettreAjourBase("DELETE FROM THEME WHERE ID-THEME='" + idTheme + "'");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     public void supprimerUtilisateur(int idUtilisateur)
     {
         try{

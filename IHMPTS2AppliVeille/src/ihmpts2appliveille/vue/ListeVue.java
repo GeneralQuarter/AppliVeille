@@ -198,7 +198,7 @@ public class ListeVue extends JPanel{
                     if(mainTable.getModel() instanceof ModelListeUtilisateur){
                         mctrl.supprimerUtilisateur((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 5));
                     }else if(mainTable.getModel() instanceof ModelListeTheme){
-                        mctrl.naviguerVers("Supprimer Thème");
+                        mctrl.supprimerTheme((int) mainTable.getModel().getValueAt(mainTable.getSelectedRow(), 3));
                     }
                     break;
                 case "Consulter":

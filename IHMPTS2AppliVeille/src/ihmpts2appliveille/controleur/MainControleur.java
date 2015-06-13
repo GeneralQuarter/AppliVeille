@@ -192,6 +192,14 @@ public class MainControleur {
         }
     }
     
+    public void supprimerTheme(int idTheme){
+        int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer le thème " + rdi.recupererTheme(idTheme).getIntitule(), "Supprimer Theme", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(choix == JOptionPane.YES_OPTION){
+            ed.supprimerTheme(idTheme);
+            naviguerVers("Liste des thèmes");
+        }
+    }
+    
     public void allerVersProfil(int idUtilisateur)
     {
         bcv.changeMainContent(new ProfilVue(rdi.recupererUtilisateur(idUtilisateur), rdi.recupererThemeUtilisateur(idUtilisateur), this));
