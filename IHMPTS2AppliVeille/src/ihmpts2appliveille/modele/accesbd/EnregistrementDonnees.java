@@ -38,7 +38,7 @@ public class EnregistrementDonnees {
         }
     }
     
-    public void supprimmerUtilisateur(int idUtilisateur)
+    public void supprimerUtilisateur(int idUtilisateur)
     {
         try{
             acces.mettreAjourBase("DELETE FROM utilisateur WHERE ID_UTILISATEUR='" + idUtilisateur + "'");

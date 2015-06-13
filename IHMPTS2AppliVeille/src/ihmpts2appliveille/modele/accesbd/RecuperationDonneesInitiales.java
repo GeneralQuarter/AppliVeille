@@ -96,6 +96,10 @@ public class RecuperationDonneesInitiales {
         Utilisateur utilisateur = null;
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where id_utilisateur=" + id);
+            if(resultats.isEmpty())
+            {
+                return null;
+            }
             List<String> row = resultats.get(0);
             int idUtilisateur = Integer.parseInt(row.get(0));
             String nom = row.get(1);
@@ -189,6 +193,10 @@ public class RecuperationDonneesInitiales {
             return articles.get(idArticle);
         try{
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM ARTICLE WHERE ID_ARTICLE ='" + idArticle + "'");
+            if(resultats.isEmpty())
+            {
+                return null;
+            }
             List<String> row = resultats.get(0);
             if(idArticle == Integer.parseInt(row.get(0)))
             {
@@ -250,6 +258,10 @@ public class RecuperationDonneesInitiales {
             return themes.get(idTheme);
         try{
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM THEME WHERE ID_THEME = '" + idTheme + "'");
+            if(resultats.isEmpty())
+            {
+                return null;
+            }
             List<String> row = resultats.get(0);
             if(idTheme == Integer.parseInt(row.get(0))){
                 int idProp = Integer.parseInt(row.get(1)); //Il peut être null
@@ -275,71 +287,22 @@ public class RecuperationDonneesInitiales {
         }
         try{
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM THEME WHERE ID_PROP = '" + idUtilisateur + "'");
+            if(resultats.isEmpty())
+            {
+                return null;
+            }
             List<String> row = resultats.get(0);
-                int idTheme = Integer.parseInt(row.get(0));
-                int idProp = Integer.parseInt(row.get(1));
-                String intitule = row.get(2);
-                String description = row.get(3);
-                theme = new Theme(idTheme, idProp, intitule, description);
-                if(!themes.containsKey(idTheme))
-                    themes.put(idTheme, theme);
+            int idTheme = Integer.parseInt(row.get(0));
+            int idProp = Integer.parseInt(row.get(1));
+            String intitule = row.get(2);
+            String description = row.get(3);
+            theme = new Theme(idTheme, idProp, intitule, description);
+            if(!themes.containsKey(idTheme))
+                themes.put(idTheme, theme);
         }catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
         return theme;
-    }
-    
-    public Commentaire recupererCommentaire(int idCommentaire){
-        Commentaire commentaire = null;
-        if(commentaires.containsKey(idCommentaire))
-            return commentaires.get(idCommentaire);
-        try{
-            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM COMMENTAIRE WHERE ID_COMMENTAIRE = '"+ idCommentaire + "'");
-            List<String> row = resultats.get(0);
-            if(idCommentaire == Integer.parseInt(row.get(0))){
-                   int idAuteur = Integer.parseInt(row.get(1));
-                   int idArticle = Integer.parseInt(row.get(2));
-                   String intitule = row.get(3);
-                   String contenu = row.get(4);
-                   Calendar datePubli = Calendar.getInstance(); //A MODIFIER
-                   Calendar dateModif = Calendar.getInstance(); //A MODIFIER
-                   commentaire = new Commentaire(idCommentaire, idAuteur, idArticle, intitule, contenu, datePubli, dateModif);
-            }else{
-                //Erreur de selection ou commentaire inexistant
-
-            }
-        }catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        }
-        return commentaire;
-    }
-    
-    public Message recupererMessage(int idMessage){
-        Message message = null;
-        if(messages.containsKey(idMessage))
-            return messages.get(idMessage);
-        try{
-            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM COMMENTAIRE WHERE ID_MESSAGE = '"+ idMessage + "'");
-            List<String> row = resultats.get(0);
-            if(idMessage == Integer.parseInt(row.get(0))){
-                   int idAuteur = Integer.parseInt(row.get(1));
-                   String intitule = row.get(3);
-                   String contenu = row.get(4);
-                   Calendar dateEnvoi = Calendar.getInstance(); //A MODIFIER
-                   message = new Message(idMessage, idAuteur, intitule, contenu, dateEnvoi);
-            }else{
-                //Erreur de selection ou commentaire inexistant
-
-            }
-        }catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        }
-        return message;
-    }
-    
-    public Correspondance recupererCorrespondance(int idMessage, int idDestinataire){
-        Correspondance correspondance = null;
-        return correspondance;
     }
     
     public void retirerUtilisateurListe(int idUtilisateur)

@@ -183,7 +183,7 @@ public class MainControleur {
             int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + rdi.recupererUtilisateur(idUtilisateur).getNom(), "Supprimer Utilisateur", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if(choix == JOptionPane.YES_OPTION)
             {
-                ed.supprimmerUtilisateur(idUtilisateur);
+                ed.supprimerUtilisateur(idUtilisateur);
                 rdi.retirerUtilisateurListe(idUtilisateur);
                 naviguerVers("Liste des utilisateurs");
             }
