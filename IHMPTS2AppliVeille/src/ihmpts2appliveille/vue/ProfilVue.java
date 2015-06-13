@@ -57,6 +57,7 @@ public class ProfilVue extends JPanel{
     private QGButton voirArticles;
     private JLabel nbCommentaires;
     private JLabel nbCommentairesTitle;
+    private JLabel messageConfirmation;
     
     public ProfilVue(Utilisateur u, Theme t, MainControleur mctrl)
     {
@@ -110,10 +111,15 @@ public class ProfilVue extends JPanel{
                 changeDescription.addActionListener(new EcouteurBouton());
                 themeDescription.setEditable(true);
                 themeDescription.setBorder(BorderFactory.createLineBorder(AppliColor.BLUE.getColor()));
+                messageConfirmation = new JLabel("Changement enregistrés");
+                messageConfirmation.setForeground(new Color(76,175,80));
+                messageConfirmation.setVisible(false);
+                messageConfirmation.setFont(f);
             }else{
                 changeDescription = null;
                 themeDescription.setEditable(false);
                 themeDescription.setBorder(null);
+                messageConfirmation = null;
             }
         }else{
             themeIntitule = new JLabel("Aucun");
@@ -127,7 +133,7 @@ public class ProfilVue extends JPanel{
         if(u.getNbArticle() > 0)
         {
             f = new Font("Arial", 0, 16);
-            voirArticles = new QGButton("Voir", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);
+            voirArticles = new QGButton("Voir", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);            
         }else{
             voirArticles = null;
         }
@@ -135,6 +141,7 @@ public class ProfilVue extends JPanel{
         nbCommentaires.setFont(fNumbers);
         nbCommentairesTitle = new JLabel("Commentaires");
         nbCommentairesTitle.setFont(fTitles);
+        
         
         this.setLayout(sp);
         this.setBackground(Color.white);
@@ -156,7 +163,9 @@ public class ProfilVue extends JPanel{
         if(voirArticles != null)
             this.add(voirArticles);
         this.add(nbCommentaires);
-        this.add(nbCommentairesTitle);       
+        this.add(nbCommentairesTitle); 
+        if(messageConfirmation != null)
+            this.add(messageConfirmation);
         
         sp.putConstraint(SpringLayout.NORTH, nom, 5, SpringLayout.NORTH, this);
         sp.putConstraint(SpringLayout.WEST, nom, 5, SpringLayout.WEST, this);
@@ -210,6 +219,9 @@ public class ProfilVue extends JPanel{
             {
                 sp.putConstraint(SpringLayout.NORTH, changeDescription, 5, SpringLayout.SOUTH, themeDescription);
                 sp.putConstraint(SpringLayout.WEST, changeDescription, 20, SpringLayout.WEST, this);
+                
+                sp.putConstraint(SpringLayout.NORTH, messageConfirmation, 10, SpringLayout.SOUTH, themeDescription);
+                sp.putConstraint(SpringLayout.WEST, messageConfirmation, 10, SpringLayout.EAST, changeDescription);
             }
         }
     }
@@ -224,6 +236,7 @@ public class ProfilVue extends JPanel{
                     break;
                 case "Changer":
                     mctrl.modifierDescriptionTheme(t.getIdTheme(), themeDescription.getText());
+                    messageConfirmation.setVisible(true);
                     break;
             }
         }
