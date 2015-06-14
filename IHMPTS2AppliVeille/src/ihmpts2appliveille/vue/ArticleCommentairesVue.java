@@ -20,8 +20,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -42,7 +45,8 @@ public class ArticleCommentairesVue extends JPanel{
     private Article a;
     private Utilisateur u;
     private Theme t;
-    private Map<Integer, Commentaire> cs;
+    private List<Commentaire> cs;
+    private Map<Integer, Utilisateur> utilisateurs;
     
     private SpringLayout sp;
     private DateFormat df;
@@ -67,19 +71,23 @@ public class ArticleCommentairesVue extends JPanel{
     private JLabel posterCommTitle;
     private JTextField posterCommTitleField;
     private JTextArea posterCommContentField;
+    private JScrollPane posterCommScroller;
     private QGButton sendComm;
     private JTextField noteField;
     private QGButton noteButton;
+    private JPanel commentairesHolder;
     
-    public ArticleCommentairesVue(Article a, Utilisateur u, Theme t, Map<Integer, Commentaire> cs, MainControleur mctrl)
+    public ArticleCommentairesVue(Article a, Utilisateur u, Theme t, List<Commentaire> cs, Map<Integer, Utilisateur> utilisateurs, MainControleur mctrl)
     {
         this.mctrl = mctrl;
         this.a = a;
         this.u = u;
         this.t = t;
         this.cs = cs;
+        this.utilisateurs = utilisateurs;
         
         initComponents();
+        initCommentaires();
     }
     
     private void initComponents()
@@ -97,7 +105,7 @@ public class ArticleCommentairesVue extends JPanel{
         auteur.setFont(fSmall);
         if(a.getNote() >= 0.0f){
             note = new Etoile((int) a.getNote());
-            note.setToolTipText("" + note);
+            note.setToolTipText("" + a.getNote());
             note.setBackground(this.getBackground());
         }else
             note = new JPanel();
@@ -142,18 +150,25 @@ public class ArticleCommentairesVue extends JPanel{
         posterCommTitleField.setFont(fSmall);
         posterCommTitleField.setToolTipText("Intitulé");
         posterCommContentField = new JTextArea();
-        posterCommContentField.setPreferredSize(new Dimension(1000, 200));
+        posterCommScroller = new JScrollPane(posterCommContentField);
+        posterCommScroller.setPreferredSize(new Dimension(100, 150));
         posterCommContentField.setFont(fSmall);
         posterCommContentField.setToolTipText("Contenu");
-        posterCommContentField.setBorder(posterCommTitleField.getBorder());
+        posterCommScroller.setBorder(posterCommTitleField.getBorder());
         sendComm = new QGButton("Envoyer", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
+        sendComm.addActionListener(new EcouteurBouton());
+        commentairesHolder = new JPanel();
+        commentairesHolder.setLayout(new BoxLayout(commentairesHolder, BoxLayout.Y_AXIS));
         
         this.setLayout(new BorderLayout());
         
         body = new JPanel();
         sp = new SpringLayout();
         body.setLayout(sp);
-        body.setPreferredSize(new Dimension(100, 850));
+        if(cs != null)
+            body.setPreferredSize(new Dimension(100, 800+240*cs.size()));
+        else
+            body.setPreferredSize(new Dimension(100, 850));
         
         body.add(articleTitre);
         body.add(themeTitre);
@@ -171,8 +186,9 @@ public class ArticleCommentairesVue extends JPanel{
         }
         body.add(posterCommTitle);
         body.add(posterCommTitleField);
-        body.add(posterCommContentField);
+        body.add(posterCommScroller);
         body.add(sendComm);
+        body.add(commentairesHolder);
         
         sp.putConstraint(SpringLayout.NORTH, articleTitre, 0, SpringLayout.NORTH, body);
         sp.putConstraint(SpringLayout.WEST, articleTitre, 5, SpringLayout.WEST, body);
@@ -222,17 +238,39 @@ public class ArticleCommentairesVue extends JPanel{
         sp.putConstraint(SpringLayout.WEST, posterCommTitleField, 5, SpringLayout.WEST, body);
         sp.putConstraint(SpringLayout.EAST, posterCommTitleField, -5, SpringLayout.EAST, body);
         
-        sp.putConstraint(SpringLayout.NORTH, posterCommContentField, 5, SpringLayout.SOUTH, posterCommTitleField);
-        sp.putConstraint(SpringLayout.WEST, posterCommContentField, 5, SpringLayout.WEST, body);
-        sp.putConstraint(SpringLayout.EAST, posterCommContentField, -5, SpringLayout.EAST, body);
+        sp.putConstraint(SpringLayout.NORTH, posterCommScroller, 5, SpringLayout.SOUTH, posterCommTitleField);
+        sp.putConstraint(SpringLayout.WEST, posterCommScroller, 5, SpringLayout.WEST, body);
+        sp.putConstraint(SpringLayout.EAST, posterCommScroller, -5, SpringLayout.EAST, body);
         
-        sp.putConstraint(SpringLayout.NORTH, sendComm, 5, SpringLayout.SOUTH, posterCommContentField);
+        sp.putConstraint(SpringLayout.NORTH, sendComm, 5, SpringLayout.SOUTH, posterCommScroller);
         sp.putConstraint(SpringLayout.EAST, sendComm, -5, SpringLayout.EAST, body);
+        
+        sp.putConstraint(SpringLayout.NORTH, commentairesHolder, 5, SpringLayout.SOUTH, sendComm);
+        sp.putConstraint(SpringLayout.WEST, commentairesHolder, 5, SpringLayout.WEST, body);
+        sp.putConstraint(SpringLayout.EAST, commentairesHolder, -5, SpringLayout.EAST, body);
 
         mainScroller = new JScrollPane(body);
         mainScroller.setBorder(null);
         mainScroller.getVerticalScrollBar().setUnitIncrement(16);
         this.add(mainScroller, BorderLayout.CENTER);
+    }
+    
+    private void initCommentaires()
+    {
+        if(cs != null)
+        {
+            for(Commentaire c : cs)
+            {
+                ajouterCommentaire(c, utilisateurs.get(c.getIdAuteur()));
+            }
+        }
+    }
+    
+    public void ajouterCommentaire(Commentaire c, Utilisateur u)
+    {
+        CommentaireVue cv = new CommentaireVue(c, u, mctrl);
+        commentairesHolder.add(cv);
+        commentairesHolder.add(Box.createRigidArea(new Dimension(0, 5)));
     }
     
     private class EcouteurBouton implements ActionListener{
@@ -245,14 +283,15 @@ public class ArticleCommentairesVue extends JPanel{
                     mctrl.allerVersModificationArticle(ArticleCommentairesVue.this.a.getIdArticle());
                     break;
                 case "Noter":
-                    if(Float.parseFloat(noteField.getText()) > 0.0f)
+                    if(Float.parseFloat(noteField.getText()) >= 0.0f)
                         mctrl.miseAjourNoteArticle(ArticleCommentairesVue.this.a.getIdArticle(), Float.parseFloat(noteField.getText()));
                     else
                         JOptionPane.showMessageDialog(null, "La note " + noteField.getText() + " est invalide (ex : 4.5)", "Note invalide", JOptionPane.ERROR_MESSAGE);
                     break;
+                case "Envoyer":
+                    mctrl.posterCommentaire(ArticleCommentairesVue.this.a.getIdArticle(), posterCommTitleField.getText(), posterCommContentField.getText());
+                    break;
             }
-            
         }
-        
     }
 }

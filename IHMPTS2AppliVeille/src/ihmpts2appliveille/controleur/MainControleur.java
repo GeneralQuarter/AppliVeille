@@ -15,6 +15,7 @@ import ihmpts2appliveille.modele.accesbd.Donnees;
 import ihmpts2appliveille.modele.accesbd.EnregistrementDonnees;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
 import ihmpts2appliveille.modele.accesbd.entites.Article;
+import ihmpts2appliveille.modele.accesbd.entites.Commentaire;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import ihmpts2appliveille.vue.ActualiteArticleVue;
 import ihmpts2appliveille.vue.AjoutThemeVue;
@@ -29,11 +30,8 @@ import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
 import ihmpts2appliveille.vue.ProfilVue;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -222,9 +220,14 @@ public class MainControleur {
     
     public void supprimerArticle(int idArticle)
     {
-        int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + rdi.recupererArticle(idArticle).getIntitule(), "Supprimer article", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        List<Commentaire> commentairesASupprimer = rdi.recupererCommentaires(idArticle);
+        int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + rdi.recupererArticle(idArticle).getIntitule() + " et ses " + commentairesASupprimer.size() + " commentaires", "Supprimer article", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if(choix == JOptionPane.YES_OPTION)
         {
+            for(Commentaire c : commentairesASupprimer)
+            {
+                ed.supprimerCommentaire(c.getIdCommentaire(), c.getIdArticle(), c.getIdAuteur());
+            }
             ed.supprimerArticle(idArticle, rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()).getIdUtilisateur());
             aav.supprimerArticle(idArticle);
         }
@@ -271,7 +274,31 @@ public class MainControleur {
     
     public void consulterArticle(int idArticle)
     {
-        bcv.changeMainContent(new ArticleCommentairesVue(rdi.recupererArticle(idArticle), rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()), rdi.recupererThemeUtilisateur(rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()).getIdUtilisateur()), null, this));
+        bcv.changeMainContent(new ArticleCommentairesVue(rdi.recupererArticle(idArticle), 
+                rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()), 
+                rdi.recupererThemeUtilisateur(rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()).getIdUtilisateur()), 
+                rdi.recupererCommentaires(idArticle), rdi.recupererUtilisateurs(), this));
+    }
+    
+    public void posterCommentaire(int idArticle, String intitule, String content)
+    {
+        if(!intitule.isEmpty())
+        {
+            if(!content.isEmpty())
+            {
+                ed.ajouterCommenatire(idArticle, utilisateurConnecte.getIdUtilisateur(), intitule, content);
+                consulterArticle(idArticle);
+            }
+        }
+    }
+    
+    public void modifierCommentaire(int idCommentaire, int idArticle, String contenu)
+    {
+        if(!contenu.isEmpty())
+        {
+            ed.modifierCommentaire(idCommentaire, contenu);
+            consulterArticle(idArticle);
+        }
     }
     
     public List<Article> recupererArticleUtilisateur(int idUtilisateur)
@@ -307,11 +334,37 @@ public class MainControleur {
     }
     
     public void supprimerTheme(int idTheme){
-        int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer le thème " + rdi.recupererTheme(idTheme).getIntitule(), "Supprimer Theme", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        List<Article> articlesASupprimer = recupererArticleUtilisateur(rdi.recupererTheme(idTheme).getIdProp());
+        List<Commentaire> commentairesASupprimer = new ArrayList<>();
+        if(articlesASupprimer != null)
+        {
+            for(Article a : articlesASupprimer)
+            {
+                if(rdi.recupererCommentaires(a.getIdArticle()) != null)
+                {
+                    commentairesASupprimer.addAll(rdi.recupererCommentaires(a.getIdArticle()));
+                }
+            }
+        }
+        int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer le thème " + rdi.recupererTheme(idTheme).getIntitule() + " ("+ articlesASupprimer.size() + " article(s) et " + commentairesASupprimer.size() + " commentaire(s))", "Supprimer Theme", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if(choix == JOptionPane.YES_OPTION){
+            for(Commentaire c : commentairesASupprimer)
+            {
+                ed.supprimerCommentaire(c.getIdCommentaire(), c.getIdArticle(), c.getIdAuteur());
+            }
+            for(Article a : articlesASupprimer)
+            {
+                ed.supprimerArticle(a.getIdArticle(), a.getIdAuteur());
+            }
             ed.supprimerTheme(idTheme);
             naviguerVers("Liste des thèmes");
         }
+    }
+    
+    public void supprimerCommentaire(int idCommentaire, int idArticle, int idUtilisateur)
+    {
+        ed.supprimerCommentaire(idCommentaire, idArticle, idUtilisateur);
+        consulterArticle(idArticle);
     }
     
     public void attribuerTheme(int idTheme)

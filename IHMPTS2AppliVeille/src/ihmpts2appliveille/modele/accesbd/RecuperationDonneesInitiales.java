@@ -8,6 +8,7 @@ package ihmpts2appliveille.modele.accesbd;
 import ihmpts2appliveille.modele.Droits;
 import ihmpts2appliveille.modele.Statut;
 import ihmpts2appliveille.modele.accesbd.entites.Article;
+import ihmpts2appliveille.modele.accesbd.entites.Commentaire;
 import ihmpts2appliveille.modele.accesbd.entites.Theme;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import iutlr.dutinfo.bd.AccesBD;
@@ -16,7 +17,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -355,7 +355,7 @@ public class RecuperationDonneesInitiales {
                 }
                 boolean visible = true;
                 switch(row.get(9)){
-                    case "V" : visible = true; break ; 
+                    case "V" : visible = true; break; 
                     case "N" : visible = false; break;
                     default : break ;
                 }
@@ -366,5 +366,49 @@ public class RecuperationDonneesInitiales {
             System.err.println(ex.getMessage());
         }
         return articlesOrdonnes;
+    }
+    
+    public List<Commentaire> recupererCommentaires(int idArticle){
+        List<Commentaire> res = new ArrayList<>();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.s");
+        try{
+            List<List<String>> resultats = acces.interrogerBase("SELECT ID_COMMENTAIRE, ID_AUTEUR, ID_ARTICLE, INTITULE, CONTENU, DATEPUBLI, DATEMODIF, VISIBLE FROM COMMENTAIRE WHERE ID_ARTICLE=" + idArticle + " ORDER BY 6 DESC");
+            System.out.println("Nombre de commentaires : " + resultats.size());
+            if(resultats.isEmpty())
+                return null;
+            for(List<String> row : resultats)
+            {
+                int idCommentaire = Integer.parseInt(row.get(0));
+                int idAuteur = Integer.parseInt(row.get(1));
+                idArticle = Integer.parseInt(row.get(2));
+                String intitule = row.get(3);
+                String contenu = row.get(4);
+                Date datePubli = null;
+                try {
+                    datePubli = df.parse(row.get(5));
+                } catch (ParseException ex) {
+                    System.err.println(ex.getMessage());
+                }
+                Date dateModif = null;
+                if(row.get(6) != null)
+                {
+                    try {
+                        dateModif = df.parse(row.get(6));
+                    } catch (ParseException ex) {
+                        System.err.println(ex.getMessage());
+                    }
+                }
+                boolean visible = true;
+                switch(row.get(7))
+                {
+                    case "V": visible = true;break;
+                    case "N": visible = false;break;
+                }
+                res.add(new Commentaire(idCommentaire, idAuteur, idArticle, intitule, contenu, datePubli, dateModif, visible));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return res;
     }
 }

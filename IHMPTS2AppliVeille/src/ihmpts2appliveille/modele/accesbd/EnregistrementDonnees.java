@@ -41,6 +41,19 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void ajouterCommenatire(int idArticle, int idUtilisateur, String intitutle, String contenu)
+    {
+        try{
+            intitutle = intitutle.replaceAll("'", "''");
+            contenu = contenu.replaceAll("'", "''");           
+            acces.mettreAjourBase("INSERT INTO commentaire VALUES((select NVL(max(ID_COMMENTAIRE), 0)+1 from commentaire), " + idUtilisateur + ", " + idArticle + ", '" + intitutle + "', '" + contenu + "', SYSDATE, NULL, 'V')");
+            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=(select NB_COMM_ART FROM article where id_article=" + idArticle + ")+1 where id_article = " + idArticle);
+            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=(select NBCOMM FROM utilisateur where id_utilisateur=" + idUtilisateur + ")+1 where id_utilisateur= " + idUtilisateur);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     public void supprimerTheme(int idTheme){
         try{
             acces.mettreAjourBase("DELETE FROM THEME WHERE ID_THEME='" + idTheme + "'");
@@ -67,6 +80,17 @@ public class EnregistrementDonnees {
             acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=(select nbarticle from utilisateur where id_utilisateur=" + idAuteur + ")-1 WHERE ID_UTILISATEUR = " + idAuteur);
             donnees.supprimerArticle(idArticle);
         }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    public void supprimerCommentaire(int idCommentaire, int idArticle, int idUtilisateur)
+    {
+        try{       
+            acces.mettreAjourBase("DELETE commentaire where id_commentaire = " + idCommentaire);
+            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=(select NB_COMM_ART FROM article where id_article=" + idArticle + ")-1 where id_article = " + idArticle);
+            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=(select NBCOMM FROM utilisateur where id_utilisateur=" + idUtilisateur + ")-1 where id_utilisateur= " + idUtilisateur);
+        } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
@@ -126,6 +150,16 @@ public class EnregistrementDonnees {
             titre = titre.replaceAll("'", "''");
             content = content.replaceAll("'", "''");
             acces.mettreAjourBase("UPDATE ARTICLE SET INTITULE='" + titre + "', CONTENU='" + content + "', DATEMODIF=SYSDATE WHERE ID_ARTICLE=" + idArticle);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    public void modifierCommentaire(int idCommentaire, String contenu)
+    {
+        try{
+            contenu = contenu.replaceAll("'", "''");
+            acces.mettreAjourBase("UPDATE COMMENTAIRE SET CONTENU='" + contenu + "', DATEMODIF=SYSDATE WHERE ID_COMMENTAIRE=" + idCommentaire);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
