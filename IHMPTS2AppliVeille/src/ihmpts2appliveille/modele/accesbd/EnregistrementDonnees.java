@@ -109,5 +109,16 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void modifierArticle(int idArticle, String titre, String content)
+    {
+        try{
+            titre = titre.replaceAll("'", "''");
+            content = content.replaceAll("'", "''");
+            acces.mettreAjourBase("UPDATE ARTICLE SET INTITULE='" + titre + "', CONTENU='" + content + "', DATEMODIF=SYSDATE WHERE ID_ARTICLE=" + idArticle);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     //public void ajoutArticle()
 }

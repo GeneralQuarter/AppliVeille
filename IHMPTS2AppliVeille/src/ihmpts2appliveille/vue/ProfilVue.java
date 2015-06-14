@@ -136,7 +136,8 @@ public class ProfilVue extends JPanel{
         if(u.getNbArticle() > 0)
         {
             f = new Font("Arial", 0, 16);
-            voirArticles = new QGButton("Voir", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f);            
+            voirArticles = new QGButton("Voir", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, f); 
+            voirArticles.addActionListener(new EcouteurBouton());
         }else{
             voirArticles = null;
         }
@@ -236,6 +237,7 @@ public class ProfilVue extends JPanel{
             switch(e.getActionCommand())
             {
                 case "Voir":
+                    mctrl.consulterArticleUtilisateur(u.getIdUtilisateur());
                     break;
                 case "Changer":
                     mctrl.modifierDescriptionTheme(t.getIdTheme(), themeDescription.getText());

@@ -153,8 +153,7 @@ public class MainControleur {
                 bcv.changeMainContent(aav);
                 break;
             case "Nouvel article...":
-                ev.setTitle("Nouvel Article");
-                ev.setAcceptBoutonAction("Publier");
+                ev.nouvelArticle();
                 bcv.changeMainContent(ev);
                 break;
             case "Nouveau Message":
@@ -188,7 +187,7 @@ public class MainControleur {
                 break;
             case "Mes articles":
                 aav.setTitle("Mes articles");
-                aav.setArticleUtilisateur(recupererArticleUtilisateur(), rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()), utilisateurConnecte);
+                aav.setArticleUtilisateur(recupererArticleUtilisateur(utilisateurConnecte.getIdUtilisateur()), rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()), utilisateurConnecte);
                 bcv.changeMainContent(aav);
         }
     }
@@ -213,21 +212,59 @@ public class MainControleur {
         }
     }
     
+    public void modifierArticle(int idArticle, String titre, String content)
+    {
+        if(content.length() <= 4000)
+        {
+            if (!titre.isEmpty()) {
+                if (rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()) != null) {
+                    ed.modifierArticle(idArticle, titre, content);
+                }
+            }
+        }
+    }
+    
+    public void allerVersModificationArticle(int idArticle, String titre, String content)
+    {
+        ev.editerArticle(idArticle, titre, content);
+        bcv.changeMainContent(ev);
+    }
+    
+    public void consulterArticleUtilisateur(int idUtilisateur)
+    {
+        if(idUtilisateur != utilisateurConnecte.getIdUtilisateur())
+        {
+            Utilisateur u = rdi.recupererUtilisateur(idUtilisateur);
+            aav.setTitle("Articles de " + u.getNom());
+            aav.setArticleUtilisateur(recupererArticleUtilisateur(u.getIdUtilisateur()), rdi.recupererThemeUtilisateur(u.getIdUtilisateur()), u);
+            bcv.changeMainContent(aav);
+        }else
+            naviguerVers("Mes articles");
+    }
+    
+    public void editerArticle(int idArticle)
+    {
+        ev.setTitle("Edition");
+        ev.setAcceptBoutonAction("Valider");
+        bcv.changeMainContent(ev);
+    }
+    
     public void consulterArticle(int idArticle)
     {
         bcv.changeMainContent(new ArticleCommentairesVue(rdi.recupererArticle(idArticle), rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()), rdi.recupererThemeUtilisateur(rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()).getIdUtilisateur()), null, this));
     }
     
-    public List<Article> recupererArticleUtilisateur()
+    public List<Article> recupererArticleUtilisateur(int idUtilisateur)
     {
         List<Article> articles = new ArrayList<>();
+        Utilisateur u = rdi.recupererUtilisateur(idUtilisateur);
         if(rdi.recupererArticles() != null)
         {
-            for(Article u : rdi.recupererArticles())
+            for(Article a : rdi.recupererArticles())
             {
-                if(u.getIdAuteur() == utilisateurConnecte.getIdUtilisateur())
+                if(a.getIdAuteur() == u.getIdUtilisateur())
                 {
-                    articles.add(u);
+                    articles.add(a);
                 }
             }
         }

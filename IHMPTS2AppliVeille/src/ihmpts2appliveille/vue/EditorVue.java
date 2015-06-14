@@ -60,6 +60,8 @@ public class EditorVue extends JPanel{
     private QGButton acceptEditButton;
     private QGButton optionnalActionButton;
     
+    private int articleModfie;
+    
     private Font f;
             
     public EditorVue(String title, MainControleur mctrl) // Need to add other parameters ... (new message ?)
@@ -126,6 +128,7 @@ public class EditorVue extends JPanel{
         acceptEditButton.addActionListener(new EcouteurBoutonControle());
         cancelEditButton = new QGButton("Annuler", new Color(189, 189, 189), Color.white, Color.black, f);
         cancelEditButton.setPreferredSize(new Dimension(100, 30));
+        cancelEditButton.addActionListener(new EcouteurBoutonControle());
         optionnalActionButton = new QGButton("Brouillon", new Color(189, 189, 189), Color.white, Color.black, f);
         
         // -- Setup ComboBox --
@@ -288,9 +291,20 @@ public class EditorVue extends JPanel{
                 case "Publier":
                     mctrl.ajouterArticle(articleTitleField.getText(), contentField.getText());
                     break;
+                case "Valider":
+                    mctrl.modifierArticle(articleModfie, articleTitleField.getText(), contentField.getText());
+                    break;
+                case "Annuler":
+                    switch(acceptEditButton.getText())
+                    {
+                        case "Publier":
+                            mctrl.naviguerVers("Mes articles");
+                            break;
+                        case "Valider":
+                            mctrl.consulterArticle(articleModfie);
+                            break;
+                    }
             }
-            
-            System.out.println(contentField.getText());
         }
         
     }
@@ -303,22 +317,32 @@ public class EditorVue extends JPanel{
     public void setAcceptBoutonAction(String action)
     {
         this.acceptEditButton.setText(action);
-        
-        switch(action)
-        {
-            case "Publier":
-                //Article
-                contentField.setContentType("text/html");
-                String bodyRule = "body { font-family:\"Arial\";font-size:14pt;}";
-                ((HTMLDocument)contentField.getDocument()).getStyleSheet().addRule(bodyRule);
-                ((HTMLEditorKit)contentField.getEditorKit()).setDefaultCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-                break;
-            case "Envoyer":
-                //Messagerie
-                contentField.setContentType("text/plain");
-                f = new Font("Arial", 0, 14);
-                contentField.setFont(f);
-                break;
-        }
+    }
+    
+    public void setArticleModifie(int idArticle)
+    {
+        articleModfie = idArticle;
+    }
+    
+    public void resetFields()
+    {
+        articleTitleField.setText("");
+        contentField.setText("");
+    }
+    
+    public void editerArticle(int idArticle, String titre, String content)
+    {
+        articleTitleField.setText(titre);
+        contentField.setText(content);
+        setArticleModifie(idArticle);
+        setTitle("Edition de l'article");
+        setAcceptBoutonAction("Valider");
+    }
+    
+    public void nouvelArticle()
+    {
+        resetFields();
+        setTitle("Nouvel article");
+        setAcceptBoutonAction("Publier");
     }
 }

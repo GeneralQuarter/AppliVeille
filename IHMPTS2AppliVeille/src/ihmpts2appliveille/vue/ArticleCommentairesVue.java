@@ -15,6 +15,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -111,9 +113,10 @@ public class ArticleCommentairesVue extends JPanel{
         
         articleScroller = new JScrollPane(articleContent);
         articleScroller.setPreferredSize(new Dimension(1000, 400));
-        if(u.getIdUtilisateur() == mctrl.getUtilisateurConnecte().getIdUtilisateur())
+        if(u.getIdUtilisateur() == mctrl.getUtilisateurConnecte().getIdUtilisateur()){
             editArticle = new QGButton("Editer", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
-        else
+            editArticle.addActionListener(new EcouteurBouton());
+        }else
             editArticle = null;
         posterCommTitle = new JLabel("Poster un commentaire");
         posterCommTitle.setFont(fMedium);
@@ -166,7 +169,7 @@ public class ArticleCommentairesVue extends JPanel{
         
         if(modifieLe != null)
         {
-            sp.putConstraint(SpringLayout.NORTH, modifieLe, 5, SpringLayout.NORTH, publieLe);
+            sp.putConstraint(SpringLayout.NORTH, modifieLe, 15, SpringLayout.NORTH, publieLe);
             sp.putConstraint(SpringLayout.EAST, modifieLe, -5, SpringLayout.EAST, body);
         }
         
@@ -198,5 +201,20 @@ public class ArticleCommentairesVue extends JPanel{
         mainScroller.setBorder(null);
         mainScroller.getVerticalScrollBar().setUnitIncrement(16);
         this.add(mainScroller, BorderLayout.CENTER);
+    }
+    
+    private class EcouteurBouton implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            switch(e.getActionCommand())
+            {
+                case "Editer":
+                    mctrl.allerVersModificationArticle(ArticleCommentairesVue.this.a.getIdArticle(), ArticleCommentairesVue.this.a.getIntitule(), ArticleCommentairesVue.this.a.getContenu());
+                    break;
+            }
+            
+        }
+        
     }
 }

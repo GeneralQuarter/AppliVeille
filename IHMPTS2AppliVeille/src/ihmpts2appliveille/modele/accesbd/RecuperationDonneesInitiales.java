@@ -88,8 +88,6 @@ public class RecuperationDonneesInitiales {
     
     public Utilisateur recupererUtilisateur(int id)
     {
-        if(donnees.containsUtilisateur(id))
-            return donnees.getUtilisateur(id);
         Utilisateur utilisateur = null;
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where id_utilisateur=" + id);
@@ -130,6 +128,7 @@ public class RecuperationDonneesInitiales {
                     break;
             }
             utilisateur = new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat);
+            donnees.ajouterUtilisateur(new Utilisateur(idUtilisateur, nom, note, nbConn, nbComm, nbArticle, identifiant, mdp, typeProfil, etat));
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
