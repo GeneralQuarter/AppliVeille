@@ -212,6 +212,16 @@ public class MainControleur {
         }
     }
     
+    public void supprimerArticle(int idArticle)
+    {
+        int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + rdi.recupererArticle(idArticle).getIntitule(), "Supprimer article", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(choix == JOptionPane.YES_OPTION)
+        {
+            ed.supprimerArticle(idArticle, rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()).getIdUtilisateur());
+            aav.supprimerArticle(idArticle);
+        }
+    }
+    
     public void modifierArticle(int idArticle, String titre, String content)
     {
         if(content.length() <= 4000)
@@ -224,9 +234,10 @@ public class MainControleur {
         }
     }
     
-    public void allerVersModificationArticle(int idArticle, String titre, String content)
+    public void allerVersModificationArticle(int idArticle)
     {
-        ev.editerArticle(idArticle, titre, content);
+        Article a = rdi.recupererArticle(idArticle);
+        ev.editerArticle(idArticle, a.getIntitule(), a.getContenu());
         bcv.changeMainContent(ev);
     }
     
@@ -240,13 +251,6 @@ public class MainControleur {
             bcv.changeMainContent(aav);
         }else
             naviguerVers("Mes articles");
-    }
-    
-    public void editerArticle(int idArticle)
-    {
-        ev.setTitle("Edition");
-        ev.setAcceptBoutonAction("Valider");
-        bcv.changeMainContent(ev);
     }
     
     public void consulterArticle(int idArticle)

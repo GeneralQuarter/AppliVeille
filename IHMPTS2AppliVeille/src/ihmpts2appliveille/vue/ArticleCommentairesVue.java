@@ -210,7 +210,7 @@ public class ArticleCommentairesVue extends JPanel{
             switch(e.getActionCommand())
             {
                 case "Editer":
-                    mctrl.allerVersModificationArticle(ArticleCommentairesVue.this.a.getIdArticle(), ArticleCommentairesVue.this.a.getIntitule(), ArticleCommentairesVue.this.a.getContenu());
+                    mctrl.allerVersModificationArticle(ArticleCommentairesVue.this.a.getIdArticle());
                     break;
             }
             

@@ -40,6 +40,12 @@ public class ActualiteArticleVue extends JPanel{
     
     private Font fTitle;
     
+    private List<Article> articles;
+    private Map<Integer, Theme> themes;
+    private Map<Integer, Utilisateur> utilisateurs;
+    private Theme themeUtilisateur;
+    private Utilisateur utilisateur;
+    
     public ActualiteArticleVue(String title, MainControleur mctrl)
     {
         // -- Setup Controleur --
@@ -84,14 +90,22 @@ public class ActualiteArticleVue extends JPanel{
     private void removeArticles()
     {
         this.articleHolder.removeAll();
+        this.articles = null;
+        this.themes = null;
+        this.utilisateurs = null;
+        this.themeUtilisateur = null;
+        this.utilisateur = null;
         this.validate();
     }
     
     public void setArticles(List<Article> articles, Map<Integer, Theme> themes, Map<Integer, Utilisateur> utilisateurs)
     {
         removeArticles();
-        if(articles != null)
+        if(articles != null && themes != null && utilisateurs != null)
         {
+            this.articles = articles;
+            this.themes = themes;
+            this.utilisateurs = utilisateurs;
             for(Article a : articles)
             {
                 DateFormat df = new SimpleDateFormat("dd/MM/yyy à HH:mm");
@@ -101,7 +115,7 @@ public class ActualiteArticleVue extends JPanel{
                 else
                     date = "Modifié le " + df.format(a.getDateModif());
                 float note = a.getNote();
-                this.ajouterArticle(new ArticleListItem(themes.get(a.getIdTheme()).getIntitule(), a.getIntitule(), a.getContenu(), utilisateurs.get(a.getIdAuteur()).getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), mctrl));
+                this.ajouterArticle(new ArticleListItem(themes.get(a.getIdTheme()).getIntitule(), a.getIntitule(), a.getContenu(), utilisateurs.get(a.getIdAuteur()).getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), utilisateurs.get(a.getIdAuteur()).getIdUtilisateur(), mctrl));
             }
             this.articleScroller.setViewportView(articleHolder);
             SwingUtilities.invokeLater(new Runnable() {
@@ -118,8 +132,11 @@ public class ActualiteArticleVue extends JPanel{
     public void setArticleUtilisateur(List<Article> articles, Theme theme, Utilisateur utilisateur)
     {
         removeArticles();
-        if(articles != null)
+        if(articles != null && theme != null && utilisateur != null)
         {
+            this.articles = articles;
+            this.themeUtilisateur = theme;
+            this.utilisateur = utilisateur;
             for(Article a : articles)
             {
                 DateFormat df = new SimpleDateFormat("dd/MM/yyy à HH:mm");
@@ -129,7 +146,7 @@ public class ActualiteArticleVue extends JPanel{
                 else
                     date = "Modifié le " + df.format(a.getDateModif());
                 float note = a.getNote();
-                this.ajouterArticle(new ArticleListItem(theme.getIntitule(), a.getIntitule(), a.getContenu(), utilisateur.getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), mctrl));
+                this.ajouterArticle(new ArticleListItem(theme.getIntitule(), a.getIntitule(), a.getContenu(), utilisateur.getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), utilisateur.getIdUtilisateur(), mctrl));
             }
             this.articleScroller.setViewportView(articleHolder);
             SwingUtilities.invokeLater(new Runnable() {
@@ -140,6 +157,28 @@ public class ActualiteArticleVue extends JPanel{
                 }
             });
             this.validate();
+        }
+    }
+    
+    public void supprimerArticle(int idArticle)
+    {
+        if(articles != null && !articles.isEmpty())
+        {
+            for(Article a : articles)
+            {
+                if(a.getIdArticle() == idArticle)
+                {
+                    articles.remove(a);
+                    break;
+                }
+            }
+        }
+        
+        if(utilisateurs != null)
+        {
+            setArticles(articles, themes, utilisateurs);
+        }else{
+            setArticleUtilisateur(articles, themeUtilisateur, utilisateur);
         }
     }
 }

@@ -11,8 +11,11 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -25,6 +28,10 @@ import javax.swing.SpringLayout;
  */
 public class ArticleListItem extends JPanel{
     private MainControleur mctrl;
+    
+    private final ImageIcon edit = new ImageIcon("edit.png");
+    private final ImageIcon trash = new ImageIcon("trash.png");
+    private final ImageIcon visible = new ImageIcon("visible.png");
     
     private int idArticle;
     
@@ -46,7 +53,7 @@ public class ArticleListItem extends JPanel{
     private Font fContent;
     private Font fInfo;
     
-    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, int note, int idArticle, MainControleur mctrl)
+    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, int note, int idArticle, int idAuteur, MainControleur mctrl)
     {
         this.mctrl = mctrl;
         this.theme = new JLabel("[" + theme + "]");
@@ -80,8 +87,30 @@ public class ArticleListItem extends JPanel{
         
         sp = new SpringLayout();
         
-        actionButton = new JButton("A");
-        actionButton.setPreferredSize(new Dimension(50,50));
+        switch(this.mctrl.getUtilisateurConnecte().getTypeProfil())
+        {
+            case ETUDIANT:
+                if(this.mctrl.getUtilisateurConnecte().getIdUtilisateur() == idAuteur){
+                    actionButton = new JButton(edit);
+                    actionButton.setPreferredSize(new Dimension(50,50));
+                    actionButton.setBackground(AppliColor.BLUE.getColor());
+                }else{
+                    actionButton = new JButton();
+                    actionButton.setPreferredSize(new Dimension(50,50));
+                    actionButton.setVisible(false);
+                }
+                break;
+            case PROFESSEUR:
+                actionButton = new JButton(visible);
+                actionButton.setPreferredSize(new Dimension(50,50));
+                actionButton.setBackground(AppliColor.BLUE.getColor());
+                break;
+            case ADMINISTRATEUR:
+                actionButton = new JButton(trash);
+                actionButton.setPreferredSize(new Dimension(50,50));
+                actionButton.setBackground(Color.red);
+                break;            
+        }
         
         this.add(this.title);
         this.add(this.content);
@@ -130,9 +159,26 @@ public class ArticleListItem extends JPanel{
         
         this.addMouseListener(new EcouteurHover());
         this.content.addMouseListener(new EcouteurHover());
-        this.actionButton.addMouseListener(new EcouteurHover());
+        this.actionButton.addActionListener(new EcouteurActionButton());
         
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+    
+    private class EcouteurActionButton implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            switch(mctrl.getUtilisateurConnecte().getTypeProfil())
+            {
+                case ADMINISTRATEUR:
+                    mctrl.supprimerArticle(idArticle);
+                    break;
+                case ETUDIANT:
+                    mctrl.allerVersModificationArticle(idArticle);
+                    break;
+            }
+        }
+        
     }
     
     public class EcouteurHover implements MouseListener
@@ -155,7 +201,6 @@ public class ArticleListItem extends JPanel{
         public void mouseEntered(MouseEvent e) {
             ArticleListItem.this.setBackground(AppliColor.GRAY.getColor());
             ArticleListItem.this.content.setBackground(AppliColor.GRAY.getColor());
-            ArticleListItem.this.actionButton.setBackground(AppliColor.GRAY.getColor());
             ArticleListItem.this.etoiles.setBackground(AppliColor.GRAY.getColor());
         }
 
@@ -163,7 +208,6 @@ public class ArticleListItem extends JPanel{
         public void mouseExited(MouseEvent e) {
             ArticleListItem.this.setBackground(Color.WHITE);
             ArticleListItem.this.content.setBackground(Color.WHITE);
-            ArticleListItem.this.actionButton.setBackground(Color.WHITE);
             ArticleListItem.this.etoiles.setBackground(Color.WHITE);
         }
     }

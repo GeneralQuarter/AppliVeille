@@ -60,6 +60,17 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void supprimerArticle(int idArticle, int idAuteur)
+    {
+        try{
+            acces.mettreAjourBase("DELETE FROM article WHERE ID_ARTICLE='" + idArticle + "'");
+            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=(select nbarticle from utilisateur where id_utilisateur=" + idAuteur + ")-1 WHERE ID_UTILISATEUR = " + idAuteur);
+            donnees.supprimerArticle(idArticle);
+        }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     public void attribuerTheme(int idTheme, int idUtilisateur)
     {
         try{
