@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -86,9 +87,8 @@ public class MainControleur {
                     if(rdi.recupererUtilisateur(utilisateurConnecte.getIdUtilisateur()).getEtat() == Statut.DECONNECTE)
                     {
                         mmbv.setProfilName(utilisateurConnecte.getNom());
-                        aav.setTitle("Actualités");
-                        bcv.changeMainContent(aav);
                         mmv.changeMainFrame(bcv, true);
+                        naviguerVers("ACCUEIL");
                         ed.setUtilisateurConnecte(utilisateurConnecte.getIdUtilisateur());
                         utilisateurConnecte.setNbConn(utilisateurConnecte.getNbConn()+1);
                         d.ajouterUtilisateur(utilisateurConnecte);
@@ -181,10 +181,10 @@ public class MainControleur {
                 bcv.changeMainContent(atv);
                 break;
             case "Mon profil":
-                bcv.changeMainContent(new ProfilVue(utilisateurConnecte, rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()), this));
+                allerVersProfil(utilisateurConnecte.getIdUtilisateur());
                 break;
             case "Editer mon thème":
-                bcv.changeMainContent(new ArticleCommentairesVue(rdi.recupererArticle(1), utilisateurConnecte, rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()), null, this));
+                allerVersProfil(utilisateurConnecte.getIdUtilisateur());
                 break;
             case "Mes articles":
                 aav.setTitle("Mes articles");
@@ -218,16 +218,20 @@ public class MainControleur {
         bcv.changeMainContent(new ArticleCommentairesVue(rdi.recupererArticle(idArticle), rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()), rdi.recupererThemeUtilisateur(rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()).getIdUtilisateur()), null, this));
     }
     
-    public Map<Integer, Article> recupererArticleUtilisateur()
+    public List<Article> recupererArticleUtilisateur()
     {
-        Map<Integer, Article> articles = new HashMap<>();
-        for(Article u : rdi.recupererArticles().values())
+        List<Article> articles = new ArrayList<>();
+        if(rdi.recupererArticles() != null)
         {
-            if(u.getIdAuteur() == utilisateurConnecte.getIdUtilisateur())
+            for(Article u : rdi.recupererArticles())
             {
-                articles.put(u.getIdArticle(), u);
+                if(u.getIdAuteur() == utilisateurConnecte.getIdUtilisateur())
+                {
+                    articles.add(u);
+                }
             }
         }
+        System.out.println("Taille de articles : " + articles.size());
         return articles;
     }
     

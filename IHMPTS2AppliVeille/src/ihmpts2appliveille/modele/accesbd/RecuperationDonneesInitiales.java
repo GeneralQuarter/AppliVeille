@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -319,9 +320,10 @@ public class RecuperationDonneesInitiales {
         return theme;
     }
 
-    public Map<Integer, Article> recupererArticles() {
+    public List<Article> recupererArticles() {
+        List<Article> articlesOrdonnes = new ArrayList<>();
         try{
-            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM ARTICLE");
+            List<List<String>> resultats = acces.interrogerBase("SELECT id_article,id_auteur,id_theme, nb_comm_art, intitule, contenu, datepubli, datemodif, note, visible FROM ARTICLE ORDER BY 7 DESC");
             if(resultats.isEmpty())
             {
                 return null;
@@ -329,12 +331,12 @@ public class RecuperationDonneesInitiales {
             for(List<String> row : resultats)
             {
                 int idArticle = Integer.parseInt(row.get(0));
+                System.out.println(row.get(0));
                 int idAuteur = Integer.parseInt(row.get(1));
                 int idTheme = Integer.parseInt(row.get(2));
                 int nbCommArt = Integer.parseInt(row.get(3));
                 String intitule = row.get(4);
                 String contenu = row.get(5);
-                System.out.println(row.get(6));
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.s");
                 Date datePubli = null; 
                 try {
@@ -359,10 +361,11 @@ public class RecuperationDonneesInitiales {
                     default : break ;
                 }
                 donnees.ajouterArticle(new Article(idArticle, idAuteur, idTheme, nbCommArt, intitule, contenu, datePubli, dateModif, note, visible));
+                articlesOrdonnes.add(new Article(idArticle, idAuteur, idTheme, nbCommArt, intitule, contenu, datePubli, dateModif, note, visible));
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        return donnees.getArticles();
+        return articlesOrdonnes;
     }
 }

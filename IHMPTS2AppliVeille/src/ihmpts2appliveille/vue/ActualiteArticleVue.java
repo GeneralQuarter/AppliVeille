@@ -25,6 +25,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -86,37 +87,59 @@ public class ActualiteArticleVue extends JPanel{
         this.validate();
     }
     
-    public void setArticles(Map<Integer, Article> articles, Map<Integer, Theme> themes, Map<Integer, Utilisateur> utilisateurs)
+    public void setArticles(List<Article> articles, Map<Integer, Theme> themes, Map<Integer, Utilisateur> utilisateurs)
     {
         removeArticles();
-        for(Article a : articles.values())
+        if(articles != null)
         {
-            DateFormat df = new SimpleDateFormat("dd/MM/yyy à HH:mm");
-            String date = null;
-            if(a.getDateModif() == null)
-                date = "Publié le " + df.format(a.getDatePubli());
-            else
-                date = "Modifié le " + df.format(a.getDateModif());
-            float note = a.getNote();
-            this.ajouterArticle(new ArticleListItem(themes.get(a.getIdTheme()).getIntitule(), a.getIntitule(), a.getContenu(), utilisateurs.get(a.getIdAuteur()).getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), mctrl));
+            for(Article a : articles)
+            {
+                DateFormat df = new SimpleDateFormat("dd/MM/yyy à HH:mm");
+                String date = null;
+                if(a.getDateModif() == null)
+                    date = "Publié le " + df.format(a.getDatePubli());
+                else
+                    date = "Modifié le " + df.format(a.getDateModif());
+                float note = a.getNote();
+                this.ajouterArticle(new ArticleListItem(themes.get(a.getIdTheme()).getIntitule(), a.getIntitule(), a.getContenu(), utilisateurs.get(a.getIdAuteur()).getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), mctrl));
+            }
+            this.articleScroller.setViewportView(articleHolder);
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    ActualiteArticleVue.this.articleScroller.getVerticalScrollBar().setValue(0);
+                }
+            });
+            this.validate();
         }
-        this.validate();
     }
     
-    public void setArticleUtilisateur(Map<Integer, Article> articles, Theme theme, Utilisateur utilisateur)
+    public void setArticleUtilisateur(List<Article> articles, Theme theme, Utilisateur utilisateur)
     {
         removeArticles();
-        for(Article a : articles.values())
+        if(articles != null)
         {
-            DateFormat df = new SimpleDateFormat("dd/MM/yyy à HH:mm");
-            String date = null;
-            if(a.getDateModif() == null)
-                date = "Publié le " + df.format(a.getDatePubli());
-            else
-                date = "Modifié le " + df.format(a.getDateModif());
-            float note = a.getNote();
-            this.ajouterArticle(new ArticleListItem(theme.getIntitule(), a.getIntitule(), a.getContenu(), utilisateur.getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), mctrl));
+            for(Article a : articles)
+            {
+                DateFormat df = new SimpleDateFormat("dd/MM/yyy à HH:mm");
+                String date = null;
+                if(a.getDateModif() == null)
+                    date = "Publié le " + df.format(a.getDatePubli());
+                else
+                    date = "Modifié le " + df.format(a.getDateModif());
+                float note = a.getNote();
+                this.ajouterArticle(new ArticleListItem(theme.getIntitule(), a.getIntitule(), a.getContenu(), utilisateur.getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), mctrl));
+            }
+            this.articleScroller.setViewportView(articleHolder);
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    ActualiteArticleVue.this.articleScroller.getVerticalScrollBar().setValue(0);
+                }
+            });
+            this.validate();
         }
-        this.validate();
     }
 }

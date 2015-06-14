@@ -103,6 +103,7 @@ public class EnregistrementDonnees {
             titre = titre.replaceAll("'", "''");
             content = content.replaceAll("'", "''");
             acces.mettreAjourBase("INSERT INTO ARTICLE(ID_ARTICLE,ID_AUTEUR,ID_THEME,NB_COMM_ART,INTITULE,CONTENU,DATEPUBLI,DATEMODIF,NOTE,VISIBLE) VALUES ((select NVL(max(ID_ARTICLE), 0)+1 from ARTICLE)," + idUtilisateur + ", " + idTheme + ", 0, '"+ titre + "', '" + content + "', SYSDATE, NULL, NULL, 'V')");
+            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=(select nbarticle from utilisateur where id_utilisateur=" + idUtilisateur + ")+1 WHERE ID_UTILISATEUR = " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
