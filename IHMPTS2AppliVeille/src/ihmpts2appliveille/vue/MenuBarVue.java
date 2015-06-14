@@ -7,6 +7,8 @@ package ihmpts2appliveille.vue;
 
 import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.AppliColor;
+import ihmpts2appliveille.modele.Droits;
+import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -101,15 +103,6 @@ public class MenuBarVue extends JMenuBar{
         profilMenu.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         
         // -- Adding sub menus --
-        articleMenu.add(newArticleSubMenu);
-        articleMenu.add(myArticleSubMenu);
-        articleMenu.addSeparator();
-        articleMenu.add(allArticleSubMenu);
-        
-        themeMenu.add(editMyThemeSubMenu);
-        themeMenu.addSeparator();
-        themeMenu.add(listThemeSubMenu);
-        
         links.add(moodle);
         links.add(ent);
         links.add(formadep);
@@ -169,8 +162,28 @@ public class MenuBarVue extends JMenuBar{
         
     }
     
-    public void setProfilName(String nomPrenom)
+    public void setInterfaceUtilisateur(Utilisateur u)
     {
-        profilMenu.setText(nomPrenom);
+        profilMenu.setText(u.getNom());
+        articleMenu.removeAll();
+        themeMenu.removeAll();
+        switch(u.getTypeProfil())
+        {
+            case ETUDIANT:
+                articleMenu.add(newArticleSubMenu);
+                articleMenu.add(myArticleSubMenu);
+                articleMenu.addSeparator();
+                articleMenu.add(allArticleSubMenu);
+
+                themeMenu.add(editMyThemeSubMenu);
+                themeMenu.addSeparator();
+                themeMenu.add(listThemeSubMenu);
+                break;
+            case PROFESSEUR:
+            case ADMINISTRATEUR:
+                articleMenu.add(allArticleSubMenu);
+                themeMenu.add(listThemeSubMenu);
+                break;
+        }
     }
 }

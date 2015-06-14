@@ -104,6 +104,15 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void depossserderTheme(int idTheme)
+    {
+        try{
+            acces.mettreAjourBase("UPDATE THEME SET ID_PROP=NULL WHERE ID_THEME='" + idTheme + "'");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     public void setDescriptionTheme(int idTheme, String description)
     {
         try{

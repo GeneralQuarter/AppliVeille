@@ -84,7 +84,7 @@ public class MainControleur {
                 {
                     if(rdi.recupererUtilisateur(utilisateurConnecte.getIdUtilisateur()).getEtat() == Statut.DECONNECTE)
                     {
-                        mmbv.setProfilName(utilisateurConnecte.getNom());
+                        mmbv.setInterfaceUtilisateur(utilisateurConnecte);
                         mmv.changeMainFrame(bcv, true);
                         naviguerVers("ACCUEIL");
                         ed.setUtilisateurConnecte(utilisateurConnecte.getIdUtilisateur());
@@ -221,6 +221,8 @@ public class MainControleur {
     public void supprimerArticle(int idArticle)
     {
         List<Commentaire> commentairesASupprimer = rdi.recupererCommentaires(idArticle);
+        if(commentairesASupprimer == null)
+            commentairesASupprimer = new ArrayList<>();
         int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + rdi.recupererArticle(idArticle).getIntitule() + " et ses " + commentairesASupprimer.size() + " commentaires", "Supprimer article", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if(choix == JOptionPane.YES_OPTION)
         {
@@ -305,7 +307,7 @@ public class MainControleur {
     {
         List<Article> articles = new ArrayList<>();
         Utilisateur u = rdi.recupererUtilisateur(idUtilisateur);
-        if(rdi.recupererArticles() != null)
+        if(rdi.recupererArticles() != null && u != null)
         {
             for(Article a : rdi.recupererArticles())
             {
@@ -325,6 +327,7 @@ public class MainControleur {
             int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + rdi.recupererUtilisateur(idUtilisateur).getNom(), "Supprimer Utilisateur", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if(choix == JOptionPane.YES_OPTION)
             {
+                ed.depossserderTheme(rdi.recupererThemeUtilisateur(idUtilisateur).getIdTheme());
                 ed.supprimerUtilisateur(idUtilisateur);
                 naviguerVers("Liste des utilisateurs");
             }
