@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
+ * Classe Etoile : Cette classe permet l'affichage de la note d'un article représentée sous forme d'étoiles
  * @author qgangler
  */
 public class Etoile extends JPanel{
@@ -23,6 +23,10 @@ public class Etoile extends JPanel{
     private final ImageIcon starEmpty = new ImageIcon("star_empty.png");
     private List<JLabel> etoiles;
     
+    /**
+     * Constructeur de la classe étoie. Un point prend la valeur d'une étoile.
+     * @param note la note de l'article qui a été attribué à un professeur
+     */
     public Etoile(int note)
     {
         this.note = note;

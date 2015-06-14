@@ -11,15 +11,16 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 
 /**
- *
- * @author Bobysmiile
+ * AjoutUtilisateurVue est la vue permettant à un utilisateur de type administrateur d'ajouter un nouvel utilisateur dans la base de donnée
+ * @author vpivet
  */
 public class AjoutUtilisateurVue extends javax.swing.JPanel {
     
     private MainControleur ctrl;
 
     /**
-     * Creates new form AjoutUtilisateurVue
+     * Creates new form AjoutUtilisateurVue : Constructeur de la vue
+     * @param ctrl le main controleur
      */
     public AjoutUtilisateurVue(MainControleur ctrl) {
         
@@ -167,11 +168,19 @@ public class AjoutUtilisateurVue extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCbTypeProfilActionPerformed
 
+    /**
+     * Bouton démarrant le processus d'insertion d'un nouvel utilisateur dans la base de données
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ctrl.ajoutUtilisateur(jNom.getText(), jIdentifiant.getText(), jMdp.getText(), jCbTypeProfil.getSelectedItem().toString());
         ctrl.naviguerVers("Liste des utilisateurs");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Bouton annuler, permettant de revenir à la liste des utilisateurs
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ctrl.naviguerVers("Liste des utilisateurs");
     }//GEN-LAST:event_jButton2ActionPerformed

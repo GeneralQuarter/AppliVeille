@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Classe permettant l'accès aux liens extrernes
  * @author x1QG1x
  */
 public class LienExterne {

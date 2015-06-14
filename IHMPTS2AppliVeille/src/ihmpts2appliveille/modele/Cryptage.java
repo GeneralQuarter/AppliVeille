@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- *
+ * Classe de cryptage des mots de passe : trouvé sur internet
  * @author x1QG1x
  */
 public class Cryptage {

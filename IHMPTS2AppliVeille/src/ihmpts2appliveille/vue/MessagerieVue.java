@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 /**
- *
+ * Messagerie vue est l'interface qui s'affiche à droite de l'écran quelque soit la position de l'utilisateur dans l'application
  * @author x1QG1x
  */
 public class MessagerieVue extends JPanel{
@@ -37,6 +37,10 @@ public class MessagerieVue extends JPanel{
     
     private Font f;
     
+    /**
+     * Constructeur de la vue
+     * @param mctrl main controleur de l'application
+     */
     public MessagerieVue(MainControleur mctrl)
     {
         super(); // Utile ??
@@ -100,6 +104,9 @@ public class MessagerieVue extends JPanel{
         }
     }
     
+    /**
+     * Ecouteur sur le bouton pour l'IHM de rédaction d'un nouveau message
+     */
     public class EcouteurNouveauMessage implements ActionListener{
 
         @Override

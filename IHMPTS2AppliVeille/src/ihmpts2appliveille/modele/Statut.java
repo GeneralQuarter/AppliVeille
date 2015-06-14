@@ -6,7 +6,7 @@
 package ihmpts2appliveille.modele;
 
 /**
- *
+ * Enumération des statuts de l'utilisateur
  * @author x1QG1x
  */
 public enum Statut {

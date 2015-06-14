@@ -6,7 +6,7 @@
 package ihmpts2appliveille.modele;
 
 /**
- *
+ * Enumération des différents droits 
  * @author x1QG1x
  */
 public enum Droits {

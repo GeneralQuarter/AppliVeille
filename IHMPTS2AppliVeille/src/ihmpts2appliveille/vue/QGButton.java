@@ -13,7 +13,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 
 /**
- *
+ * Classe héritant de JButton : Bouton personnalisé pour l'application
  * @author x1QG1x
  */
 public class QGButton extends JButton implements MouseListener{
@@ -22,6 +22,14 @@ public class QGButton extends JButton implements MouseListener{
     private Color textColor;
     private Font f;
     
+    /**
+     * Constructeur du bouton
+     * @param text texte s'affichant à l'interieur du bouton
+     * @param primary couleur principale du bouton
+     * @param hover couleur secondaire au passage du curseur
+     * @param textColor couleur du texte affiché dans le bouton
+     * @param f police de caractère du texte à l'interieur du bouton
+     */
     public QGButton(String text, Color primary, Color hover, Color textColor, Font f)
     {
         super(text);
@@ -54,11 +62,19 @@ public class QGButton extends JButton implements MouseListener{
         // Useless
     }
 
+    /**
+     * Applique le changement de couleur du bouton lors du passage du curseur sur celui-ci
+     * @param e 
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
         this.setBackground(hoverColor);
     }
 
+    /**
+     * Applique le changement de couleur du bouton (retour à la couleur initiale) lorsque le curseur ne survole plus celui-ci
+     * @param e 
+     */
     @Override
     public void mouseExited(MouseEvent e) {
         this.setBackground(primaryColor);

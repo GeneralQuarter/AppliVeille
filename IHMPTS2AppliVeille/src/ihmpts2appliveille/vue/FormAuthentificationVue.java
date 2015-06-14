@@ -26,7 +26,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- *
+ * FormAuthentificationVue est l'IHM qui permet à l'utilisateur d'entrer ses information d'authentification afin de se connecter à l'application
  * @author x1QG1x
  */
 public class FormAuthentificationVue extends JPanel{
@@ -50,12 +50,16 @@ public class FormAuthentificationVue extends JPanel{
     private Dimension formDim;
     private Dimension frameDim;
     
+    /**
+     * Constructeur de la vue
+     * @param mctrl le main controleur de l'application 
+     */
     public FormAuthentificationVue(MainControleur mctrl)
     {
         // -- Setup MainFrame --
-        super(); // Utile ?
+        super();
         
-        // -- Setup COntroleur --
+        // -- Setup Controleur --
         this.mctrl = mctrl;
         this.mctrl.setFormAuthentificationVue(this);
         
@@ -136,6 +140,9 @@ public class FormAuthentificationVue extends JPanel{
         infoLabel.setForeground(Color.red);
     }
     
+    /**
+     * Classe d'écouteur sur le bouton de connexion
+     */
     public class EcouteurConnexion implements ActionListener
     {
         @Override
@@ -145,6 +152,9 @@ public class FormAuthentificationVue extends JPanel{
         
     }
     
+    /***
+     * Classe d'écouteur pour lancer un processus de connection lors que l'appui sur la touche entrée
+     */
     public class EcouteurToucheEntree implements KeyListener
     {
 
@@ -168,12 +178,19 @@ public class FormAuthentificationVue extends JPanel{
         
     }
     
+    /**
+     * Affichage d'une erreur lorsque le login et/ou le mot de passe sont incorrects
+     * @param text 
+     */
     public void afficherErreur(String text)
     {
         infoLabel.setVisible(true);
         infoLabel.setText(text);
     }
     
+    /**
+     * Réinitialisation des informations présentes dans l'interface de connection après une déconnection
+     */
     public void resetConnection()
     {
         loginField.setText("");

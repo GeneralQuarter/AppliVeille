@@ -8,7 +8,7 @@ package ihmpts2appliveille.modele;
 import java.awt.Color;
 
 /**
- *
+ * Enumération des couleurs pérsonnalisées importantes de l'application 
  * @author x1QG1x
  */
 public enum AppliColor {
@@ -19,11 +19,19 @@ public enum AppliColor {
     
     private final Color color;
     
+    /**
+     * Constructeur de l'énumération
+     * @param color 
+     */
     AppliColor(Color color)
     {
         this.color = color;
     }
     
+    /**
+     * Getteur sur la couleur
+     * @return la couleur
+     */
     public Color getColor()
     {
         return color;

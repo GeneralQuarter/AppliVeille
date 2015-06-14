@@ -8,14 +8,15 @@ package ihmpts2appliveille.vue;
 import ihmpts2appliveille.controleur.MainControleur;
 
 /**
- *
+ * AjoutThemeVue est l'IHM permettant à un utilisateur de type administrateur d'ajouter un nouveau thème
  * @author Bobysmiile
  */
 public class AjoutThemeVue extends javax.swing.JPanel {
     private MainControleur ctrl;
 
     /**
-     * Creates new form AjoutThemeVue
+     * Creates new form AjoutThemeVue : Constructeur de la vue 
+     * @param ctrl le main controleur
      */
     public AjoutThemeVue(MainControleur ctrl) {
         this.ctrl = ctrl;
@@ -134,11 +135,19 @@ public class AjoutThemeVue extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jIntituleActionPerformed
 
+    /**
+     * Bouton valider débutant le processus d'ajout d'un nouveau thème dans la base de données
+     * @param evt 
+     */
     private void jValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jValiderActionPerformed
         ctrl.ajoutTheme(jIntitule.getText(), jDescription.getText());
         ctrl.naviguerVers("Liste des thèmes");
     }//GEN-LAST:event_jValiderActionPerformed
 
+    /**
+     * Bouton annuler permettant de revenir vers la liste des thèmes
+     * @param evt 
+     */
     private void jAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnnulerActionPerformed
         ctrl.naviguerVers("Liste des thèmes");
     }//GEN-LAST:event_jAnnulerActionPerformed
