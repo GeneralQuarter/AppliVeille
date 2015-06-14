@@ -47,7 +47,7 @@ public class ProfilVue extends JPanel{
     private JLabel nom;
     private JLabel statut;
     private JLabel typeProfil;
-    private Etoile note;
+    private JPanel note;
     private JLabel nbConnections;
     private JLabel nbConnectionsTitle;
     private JLabel themeTitle;
@@ -90,8 +90,11 @@ public class ProfilVue extends JPanel{
         }
         typeProfil = new JLabel(u.getTypeProfil().toString());
         typeProfil.setFont(fTitles);
-        note = new Etoile((int) u.getNote());
-        note.setToolTipText("" + u.getNote());
+        if(u.getNote() >= 0.0f){
+            note = new Etoile((int) u.getNote());
+            note.setToolTipText("" + u.getNote());
+        }else
+            note = new JPanel();
         nbConnections = new JLabel("" + u.getNbConn());
         nbConnections.setFont(fNumbers);
         nbConnectionsTitle = new JLabel("Connections");

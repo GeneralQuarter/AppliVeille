@@ -115,7 +115,7 @@ public class ActualiteArticleVue extends JPanel{
                 else
                     date = "Modifié le " + df.format(a.getDateModif());
                 float note = a.getNote();
-                this.ajouterArticle(new ArticleListItem(themes.get(a.getIdTheme()).getIntitule(), a.getIntitule(), a.getContenu(), utilisateurs.get(a.getIdAuteur()).getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), utilisateurs.get(a.getIdAuteur()).getIdUtilisateur(), mctrl));
+                this.ajouterArticle(new ArticleListItem(themes.get(a.getIdTheme()).getIntitule(), a.getIntitule(), a.getContenu(), utilisateurs.get(a.getIdAuteur()).getNom(), date, a.getNbCommArt(), note, a.getIdArticle(), utilisateurs.get(a.getIdAuteur()).getIdUtilisateur(), mctrl));
             }
             this.articleScroller.setViewportView(articleHolder);
             SwingUtilities.invokeLater(new Runnable() {
@@ -146,7 +146,7 @@ public class ActualiteArticleVue extends JPanel{
                 else
                     date = "Modifié le " + df.format(a.getDateModif());
                 float note = a.getNote();
-                this.ajouterArticle(new ArticleListItem(theme.getIntitule(), a.getIntitule(), a.getContenu(), utilisateur.getNom(), date, a.getNbCommArt(), (int) note, a.getIdArticle(), utilisateur.getIdUtilisateur(), mctrl));
+                this.ajouterArticle(new ArticleListItem(theme.getIntitule(), a.getIntitule(), a.getContenu(), utilisateur.getNom(), date, a.getNbCommArt(), note, a.getIdArticle(), utilisateur.getIdUtilisateur(), mctrl));
             }
             this.articleScroller.setViewportView(articleHolder);
             SwingUtilities.invokeLater(new Runnable() {

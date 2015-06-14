@@ -36,8 +36,7 @@ public class RecuperationDonneesInitiales {
         this.donnees = donnees;
     }
     
-    public Map<Integer, Utilisateur> recupererUtilisateurs()
-    {
+    public Map<Integer, Utilisateur> recupererUtilisateurs(){
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur");
             int idUtilisateur, nbConn, nbComm, nbArticle;
@@ -86,8 +85,7 @@ public class RecuperationDonneesInitiales {
         return donnees.getUtilisateurs();
     }
     
-    public Utilisateur recupererUtilisateur(int id)
-    {
+    public Utilisateur recupererUtilisateur(int id){
         Utilisateur utilisateur = null;
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where id_utilisateur=" + id);
@@ -135,8 +133,7 @@ public class RecuperationDonneesInitiales {
         return utilisateur;
     }
     
-    public Utilisateur recupererUtilisateurEnConnection(String identifiant)
-    {
+    public Utilisateur recupererUtilisateurEnConnection(String identifiant){
         Utilisateur utilisateur = null;
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur where identifiant='" + identifiant + "'");
@@ -185,8 +182,6 @@ public class RecuperationDonneesInitiales {
     
     public Article recupererArticle(int idArticle){
         Article article = null;
-        if(donnees.containsArticle(idArticle))
-            return donnees.getArticle(idArticle);
         try{
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM ARTICLE WHERE ID_ARTICLE ='" + idArticle + "'");
             if(resultats.isEmpty())
@@ -201,7 +196,6 @@ public class RecuperationDonneesInitiales {
                 int nbCommArt = Integer.parseInt(row.get(3));
                 String intitule = row.get(4);
                 String contenu = row.get(5);
-                System.out.println(row.get(6));
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.s");
                 Date datePubli = null; 
                 try {
@@ -218,7 +212,11 @@ public class RecuperationDonneesInitiales {
                         System.err.println(ex.getMessage());
                     } 
                 }
-                float note = 0.0f;
+                float note = -1.0f;
+                if(row.get(8) != null)
+                {
+                    note = Float.parseFloat(row.get(8));
+                }
                 boolean visible = true;
                 switch(row.get(9)){
                     case "V" : visible = true; break ; 
@@ -226,6 +224,7 @@ public class RecuperationDonneesInitiales {
                     default : break ;
                 }
                 article = new Article(idArticle, idAuteur, idTheme, nbCommArt, intitule, contenu, datePubli, dateModif, note, visible);
+                donnees.ajouterArticle(article);
             }else{
                 //Erreur de selection ou article non existant
             }
@@ -235,8 +234,7 @@ public class RecuperationDonneesInitiales {
         return article;
     }
     
-    public Map<Integer, Theme> recupererThemes()
-    {
+    public Map<Integer, Theme> recupererThemes(){
         try{
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM THEME");
             List<String> row;
@@ -291,8 +289,7 @@ public class RecuperationDonneesInitiales {
         return theme;
     }
     
-    public Theme recupererThemeUtilisateur(int idUtilisateur)
-    {
+    public Theme recupererThemeUtilisateur(int idUtilisateur){
         Theme theme = null;
         for(Theme t : donnees.getThemes().values())
         {
@@ -330,7 +327,6 @@ public class RecuperationDonneesInitiales {
             for(List<String> row : resultats)
             {
                 int idArticle = Integer.parseInt(row.get(0));
-                System.out.println(row.get(0));
                 int idAuteur = Integer.parseInt(row.get(1));
                 int idTheme = Integer.parseInt(row.get(2));
                 int nbCommArt = Integer.parseInt(row.get(3));
@@ -339,20 +335,24 @@ public class RecuperationDonneesInitiales {
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.s");
                 Date datePubli = null; 
                 try {
-                    datePubli = df.parse(row.get(6)); // A MODIFIER
+                    datePubli = df.parse(row.get(6));
                 } catch (ParseException ex) {
                     System.err.println(ex.getMessage());
                 }
-                Date dateModif = null; // A MODIFIER
+                Date dateModif = null;
                 if(row.get(7) != null)
                 {
                    try {
-                        dateModif = df.parse(row.get(7)); // A MODIFIER
+                        dateModif = df.parse(row.get(7));
                     } catch (ParseException ex) {
                         System.err.println(ex.getMessage());
                     } 
                 }
-                float note = 0.0f;
+                float note = -1.0f;
+                if(row.get(8) != null)
+                {
+                    note = Float.parseFloat(row.get(8));
+                }
                 boolean visible = true;
                 switch(row.get(9)){
                     case "V" : visible = true; break ; 

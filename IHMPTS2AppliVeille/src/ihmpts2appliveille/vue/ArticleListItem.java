@@ -42,7 +42,7 @@ public class ArticleListItem extends JPanel{
     private JLabel date;
     private JLabel nbComments;
     
-    private Etoile etoiles;
+    private JPanel etoiles;
     
     private SpringLayout sp;
     
@@ -53,7 +53,7 @@ public class ArticleListItem extends JPanel{
     private Font fContent;
     private Font fInfo;
     
-    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, int note, int idArticle, int idAuteur, MainControleur mctrl)
+    public ArticleListItem(String theme, String title, String content, String auteur, String date, int nbComments, float note, int idArticle, int idAuteur, MainControleur mctrl)
     {
         this.mctrl = mctrl;
         this.theme = new JLabel("[" + theme + "]");
@@ -64,7 +64,11 @@ public class ArticleListItem extends JPanel{
         this.auteur = new JLabel(auteur);
         this.date = new JLabel(date);
         this.nbComments = new JLabel(nbComments + " Commentaires");
-        this.etoiles = new Etoile(note);
+        if(note >= 0.0f){
+            this.etoiles = new Etoile((int) note);
+            this.etoiles.setToolTipText("" + note);
+        }else
+            this.etoiles = new JPanel();
         this.idArticle = idArticle;
         
         // -- Setup This --

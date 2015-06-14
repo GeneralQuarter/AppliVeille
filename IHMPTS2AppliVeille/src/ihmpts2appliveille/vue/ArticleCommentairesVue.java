@@ -7,6 +7,7 @@ package ihmpts2appliveille.vue;
 
 import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.AppliColor;
+import ihmpts2appliveille.modele.Droits;
 import ihmpts2appliveille.modele.accesbd.entites.Article;
 import ihmpts2appliveille.modele.accesbd.entites.Commentaire;
 import ihmpts2appliveille.modele.accesbd.entites.Theme;
@@ -23,6 +24,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -57,7 +59,7 @@ public class ArticleCommentairesVue extends JPanel{
     private JLabel articleTitre;
     private JLabel themeTitre;
     private JLabel auteur;
-    private Etoile note;
+    private JPanel note;
     private JLabel publieLe;
     private JLabel modifieLe;
     private JEditorPane articleContent;
@@ -66,6 +68,8 @@ public class ArticleCommentairesVue extends JPanel{
     private JTextField posterCommTitleField;
     private JTextArea posterCommContentField;
     private QGButton sendComm;
+    private JTextField noteField;
+    private QGButton noteButton;
     
     public ArticleCommentairesVue(Article a, Utilisateur u, Theme t, Map<Integer, Commentaire> cs, MainControleur mctrl)
     {
@@ -91,8 +95,12 @@ public class ArticleCommentairesVue extends JPanel{
         themeTitre.setFont(fMedium);
         auteur = new JLabel(u.getNom());
         auteur.setFont(fSmall);
-        note = new Etoile((int) a.getNote());
-        note.setBackground(this.getBackground());
+        if(a.getNote() >= 0.0f){
+            note = new Etoile((int) a.getNote());
+            note.setToolTipText("" + note);
+            note.setBackground(this.getBackground());
+        }else
+            note = new JPanel();
         publieLe = new JLabel("publié le " + df.format(a.getDatePubli()));
         publieLe.setFont(fSmall);
         if(a.getDateModif() != null)
@@ -118,6 +126,16 @@ public class ArticleCommentairesVue extends JPanel{
             editArticle.addActionListener(new EcouteurBouton());
         }else
             editArticle = null;
+        if(mctrl.getUtilisateurConnecte().getTypeProfil() == Droits.PROFESSEUR){
+            noteField = new JTextField();
+            noteField.setPreferredSize(new Dimension(100, 50));
+            noteField.setFont(fSmall);
+            noteButton = new QGButton("Noter", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
+            noteButton.addActionListener(new EcouteurBouton());
+        }else{
+            noteField = null;
+            noteButton = null;
+        }    
         posterCommTitle = new JLabel("Poster un commentaire");
         posterCommTitle.setFont(fMedium);
         posterCommTitleField = new JTextField();
@@ -147,6 +165,10 @@ public class ArticleCommentairesVue extends JPanel{
         body.add(articleScroller);
         if(editArticle != null)
             body.add(editArticle);
+        if(noteField != null){
+            body.add(noteField);
+            body.add(noteButton);
+        }
         body.add(posterCommTitle);
         body.add(posterCommTitleField);
         body.add(posterCommContentField);
@@ -155,7 +177,7 @@ public class ArticleCommentairesVue extends JPanel{
         sp.putConstraint(SpringLayout.NORTH, articleTitre, 0, SpringLayout.NORTH, body);
         sp.putConstraint(SpringLayout.WEST, articleTitre, 5, SpringLayout.WEST, body);
         
-        sp.putConstraint(SpringLayout.NORTH, themeTitre, -10, SpringLayout.SOUTH, articleTitre);
+        sp.putConstraint(SpringLayout.NORTH, themeTitre, -8, SpringLayout.SOUTH, articleTitre);
         sp.putConstraint(SpringLayout.WEST, themeTitre, 5, SpringLayout.WEST, body);
         
         sp.putConstraint(SpringLayout.NORTH, auteur, 0, SpringLayout.SOUTH, themeTitre);
@@ -181,6 +203,16 @@ public class ArticleCommentairesVue extends JPanel{
         {
             sp.putConstraint(SpringLayout.NORTH, editArticle, 5, SpringLayout.SOUTH, articleScroller);
             sp.putConstraint(SpringLayout.EAST, editArticle, -5, SpringLayout.EAST, body);
+        }
+        
+        if(noteField != null)
+        {
+            sp.putConstraint(SpringLayout.NORTH, noteButton, 5, SpringLayout.SOUTH, articleScroller);
+            sp.putConstraint(SpringLayout.EAST, noteButton, -5, SpringLayout.EAST, body);
+            
+            sp.putConstraint(SpringLayout.NORTH, noteField, 5, SpringLayout.SOUTH, articleScroller);
+            sp.putConstraint(SpringLayout.EAST, noteField, -5, SpringLayout.WEST, noteButton);
+            sp.putConstraint(SpringLayout.SOUTH, noteField, 0, SpringLayout.SOUTH, noteButton);
         }
         
         sp.putConstraint(SpringLayout.NORTH, posterCommTitle, 20, SpringLayout.SOUTH, articleScroller);
@@ -211,6 +243,12 @@ public class ArticleCommentairesVue extends JPanel{
             {
                 case "Editer":
                     mctrl.allerVersModificationArticle(ArticleCommentairesVue.this.a.getIdArticle());
+                    break;
+                case "Noter":
+                    if(Float.parseFloat(noteField.getText()) > 0.0f)
+                        mctrl.miseAjourNoteArticle(ArticleCommentairesVue.this.a.getIdArticle(), Float.parseFloat(noteField.getText()));
+                    else
+                        JOptionPane.showMessageDialog(null, "La note " + noteField.getText() + " est invalide (ex : 4.5)", "Note invalide", JOptionPane.ERROR_MESSAGE);
                     break;
             }
             

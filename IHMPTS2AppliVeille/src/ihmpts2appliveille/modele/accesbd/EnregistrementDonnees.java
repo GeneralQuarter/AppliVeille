@@ -131,5 +131,12 @@ public class EnregistrementDonnees {
         }
     }
     
-    //public void ajoutArticle()
+    public void updateNote(int idArticle, float note)
+    {
+        try{
+            acces.mettreAjourBase("UPDATE ARTICLE SET NOTE=" + note + "WHERE ID_ARTICLE=" + idArticle);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
 }

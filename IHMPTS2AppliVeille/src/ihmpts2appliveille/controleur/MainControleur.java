@@ -288,7 +288,6 @@ public class MainControleur {
                 }
             }
         }
-        System.out.println("Taille de articles : " + articles.size());
         return articles;
     }
     
@@ -334,7 +333,6 @@ public class MainControleur {
             }
             Object u = JOptionPane.showInputDialog(null, "Choisissez un etudiant pour le thème " + rdi.recupererTheme(idTheme).getIntitule(), "Attribuer un thème", JOptionPane.QUESTION_MESSAGE, null, values, values[0]);
             Utilisateur choix = (Utilisateur) u;
-            System.out.println(choix.getIdUtilisateur());
             ed.attribuerTheme(idTheme, choix.getIdUtilisateur());
             naviguerVers("Liste des thèmes");
         }else{
@@ -352,6 +350,15 @@ public class MainControleur {
     public void allerVersProfil(int idUtilisateur)
     {
         bcv.changeMainContent(new ProfilVue(rdi.recupererUtilisateur(idUtilisateur), rdi.recupererThemeUtilisateur(idUtilisateur), this));
+    }
+    
+    public void miseAjourNoteArticle(int idArticle, float note)
+    {
+        if(note <= 5.0f){
+            ed.updateNote(idArticle, note);
+            consulterArticle(idArticle);
+        }else
+            JOptionPane.showMessageDialog(null, "La note " + note + " est trop élevée (max 5)", "Note trop élevée", JOptionPane.ERROR_MESSAGE);
     }
     
     public Utilisateur getUtilisateurConnecte()
