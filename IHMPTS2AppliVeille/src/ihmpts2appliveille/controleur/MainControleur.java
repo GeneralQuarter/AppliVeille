@@ -207,8 +207,16 @@ public class MainControleur {
             if (!titre.isEmpty()) {
                 if (rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()) != null) {
                     ed.ajoutArticle(utilisateurConnecte.getIdUtilisateur(), rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()).getIdTheme(), titre, content);
+                    JOptionPane.showMessageDialog(null, "Article publié", "Publication", JOptionPane.INFORMATION_MESSAGE);
+                    naviguerVers("Mes articles");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Vous n'avez pas de thème attribué impossible de créer un article", "Theme inexistant", JOptionPane.ERROR_MESSAGE);
                 }
+            }else{
+                JOptionPane.showMessageDialog(null, "Votre article n'a pas de titre", "Aucun titre", JOptionPane.ERROR_MESSAGE);
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "Votre article dépasse la longueur de charactères autorisé", "Texte trop long", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -229,8 +237,16 @@ public class MainControleur {
             if (!titre.isEmpty()) {
                 if (rdi.recupererThemeUtilisateur(utilisateurConnecte.getIdUtilisateur()) != null) {
                     ed.modifierArticle(idArticle, titre, content);
+                    JOptionPane.showMessageDialog(null, "Article modifié", "Modification", JOptionPane.INFORMATION_MESSAGE);
+                    naviguerVers("Mes articles");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Vous n'avez pas de thème attribué impossible de créer un article", "Theme inexistant", JOptionPane.ERROR_MESSAGE);
                 }
+            }else{
+                JOptionPane.showMessageDialog(null, "Votre article n'a pas de titre", "Aucun titre", JOptionPane.ERROR_MESSAGE);
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "Votre article dépasse la longueur de charactères autorisé", "Texte trop long", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -322,7 +338,7 @@ public class MainControleur {
             ed.attribuerTheme(idTheme, choix.getIdUtilisateur());
             naviguerVers("Liste des thèmes");
         }else{
-             JOptionPane.showMessageDialog(null, "Tout les étudiants ont un thème", "Attribution impossible", JOptionPane.ERROR_MESSAGE);
+             JOptionPane.showMessageDialog(null, "Tous les étudiants ont un thème", "Attribution impossible", JOptionPane.ERROR_MESSAGE);
         }
     }
     
