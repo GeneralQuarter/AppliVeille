@@ -47,8 +47,8 @@ public class EnregistrementDonnees {
             intitutle = intitutle.replaceAll("'", "''");
             contenu = contenu.replaceAll("'", "''");           
             acces.mettreAjourBase("INSERT INTO commentaire VALUES((select NVL(max(ID_COMMENTAIRE), 0)+1 from commentaire), " + idUtilisateur + ", " + idArticle + ", '" + intitutle + "', '" + contenu + "', SYSDATE, NULL, 'V')");
-            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=(select NB_COMM_ART FROM article where id_article=" + idArticle + ")+1 where id_article = " + idArticle);
-            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=(select NBCOMM FROM utilisateur where id_utilisateur=" + idUtilisateur + ")+1 where id_utilisateur= " + idUtilisateur);
+            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=1+(select NB_COMM_ART FROM article where id_article=" + idArticle + ") where id_article = " + idArticle);
+            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=1+(select NBCOMM FROM utilisateur where id_utilisateur=" + idUtilisateur + ") where id_utilisateur= " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -77,7 +77,7 @@ public class EnregistrementDonnees {
     {
         try{
             acces.mettreAjourBase("DELETE FROM article WHERE ID_ARTICLE='" + idArticle + "'");
-            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=(select nbarticle from utilisateur where id_utilisateur=" + idAuteur + ")-1 WHERE ID_UTILISATEUR = " + idAuteur);
+            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=1-(select nbarticle from utilisateur where id_utilisateur=" + idAuteur + ") WHERE ID_UTILISATEUR = " + idAuteur);
             donnees.supprimerArticle(idArticle);
         }catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -88,8 +88,8 @@ public class EnregistrementDonnees {
     {
         try{       
             acces.mettreAjourBase("DELETE commentaire where id_commentaire = " + idCommentaire);
-            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=(select NB_COMM_ART FROM article where id_article=" + idArticle + ")-1 where id_article = " + idArticle);
-            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=(select NBCOMM FROM utilisateur where id_utilisateur=" + idUtilisateur + ")-1 where id_utilisateur= " + idUtilisateur);
+            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=1-(select NB_COMM_ART FROM article where id_article=" + idArticle + ") where id_article = " + idArticle);
+            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=1-(select NBCOMM FROM utilisateur where id_utilisateur=" + idUtilisateur + ") where id_utilisateur= " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -126,9 +126,9 @@ public class EnregistrementDonnees {
     public void setUtilisateurConnecte(int idUtilisateur)
     {
         try{
-            acces.mettreAjourBase("UPDATE utilisateur SET ETAT='C', NBCONN=((select NBCONN FROM UTILISATEUR WHERE ID_UTILISATEUR=" + idUtilisateur + ")+1) WHERE ID_UTILISATEUR=" + idUtilisateur + "");
+            acces.mettreAjourBase("UPDATE utilisateur SET ETAT='C', NBCONN=1+(select NBCONN FROM UTILISATEUR WHERE ID_UTILISATEUR=" + idUtilisateur + ") WHERE ID_UTILISATEUR=" + idUtilisateur);
         } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
+            System.err.println("Erreur utilisateur connecte : " + ex.getMessage());
         }
     }
     
@@ -147,7 +147,7 @@ public class EnregistrementDonnees {
             titre = titre.replaceAll("'", "''");
             content = content.replaceAll("'", "''");
             acces.mettreAjourBase("INSERT INTO ARTICLE(ID_ARTICLE,ID_AUTEUR,ID_THEME,NB_COMM_ART,INTITULE,CONTENU,DATEPUBLI,DATEMODIF,NOTE,VISIBLE) VALUES ((select NVL(max(ID_ARTICLE), 0)+1 from ARTICLE)," + idUtilisateur + ", " + idTheme + ", 0, '"+ titre + "', '" + content + "', SYSDATE, NULL, NULL, 'V')");
-            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=(select nbarticle from utilisateur where id_utilisateur=" + idUtilisateur + ")+1 WHERE ID_UTILISATEUR = " + idUtilisateur);
+            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=1+(select nbarticle from utilisateur where id_utilisateur=" + idUtilisateur + ") WHERE ID_UTILISATEUR = " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
