@@ -6,6 +6,7 @@
 package ihmpts2appliveille.modele.accesbd.entites;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Classe Message : Une message est une structure d'informations envoyé d'une origine à un ou plusieurs destinataires
@@ -16,7 +17,7 @@ public class Message {
     private int idAuteur;
     private String intitule;
     private String contenu;
-    private Calendar dateEnvoi;
+    private Date dateEnvoi;
    
     /**
      * Constructeur de la classe
@@ -26,7 +27,7 @@ public class Message {
      * @param contenu le contenu du message
      * @param dateEnvoi la date à laquelle le message est envoyé
     */
-    public Message(int idMessage, int idAuteur, String intitule, String contenu, Calendar dateEnvoi) {
+    public Message(int idMessage, int idAuteur, String intitule, String contenu, Date dateEnvoi) {
         this.idMessage = idMessage;
         this.idAuteur = idAuteur;
         this.intitule = intitule;
@@ -70,7 +71,7 @@ public class Message {
      * Getteur sur la date d'envoi du message
      * @return la dateEnvoi
      */
-    public Calendar getDateEnvoi() {
+    public Date getDateEnvoi() {
         return dateEnvoi;
     }
 

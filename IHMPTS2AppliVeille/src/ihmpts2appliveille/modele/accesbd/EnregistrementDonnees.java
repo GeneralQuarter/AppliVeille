@@ -8,6 +8,8 @@ package ihmpts2appliveille.modele.accesbd;
 import ihmpts2appliveille.modele.Cryptage;
 import iutlr.dutinfo.bd.AccesBD;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -150,6 +152,26 @@ public class EnregistrementDonnees {
             acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=1+(select nbarticle from utilisateur where id_utilisateur=" + idUtilisateur + ") WHERE ID_UTILISATEUR = " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
+        }
+    }
+    
+    public void ajouterMessage(int idUtilisateur, String intitule, String content)
+    {
+        intitule = intitule.replaceAll("'", "''");
+        content = content.replaceAll("'", "''");
+        try{
+            acces.mettreAjourBase("INSERT INTO MESSAGE VALUES ((select NVL(max(ID_MESSAGE), 0)+1 from message), " + idUtilisateur + ", '" + intitule + "', '" + content + "', SYSDATE)");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    public void ajouterCorrespondance(int idMessage, int idUtilisateur)
+    {
+        try{
+            acces.mettreAjourBase("INSERT INTO CORRESPONDANCE VALUES (" + idMessage + ", " + idUtilisateur + ")");
+        } catch (SQLException ex) {
+            Logger.getLogger(EnregistrementDonnees.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

@@ -7,9 +7,15 @@ package ihmpts2appliveille.vue;
 
 import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.AppliColor;
+import ihmpts2appliveille.modele.ListCellRendererUtilisateur;
+import ihmpts2appliveille.modele.ModelListeUtilisateurMessage;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -29,6 +35,7 @@ public class NouveauMessageVue extends JPanel{
     private SpringLayout sp;
     
     private List<Utilisateur> utilisateurs;
+    private List<Utilisateur> destinataires;
     
     private Font fLarge;
     private Font fMedium;
@@ -51,11 +58,17 @@ public class NouveauMessageVue extends JPanel{
     private JTextField objetField;
     private JLabel contentLabel;
     private JTextArea contentField;
+    private QGButton envoyerMessage;
     
     public NouveauMessageVue(List<Utilisateur> utilisateurs, MainControleur mctrl)
     {
         this.utilisateurs = utilisateurs;
+        this.destinataires = new ArrayList<>();
         this.mctrl = mctrl;
+        
+        initComponents();
+        
+        majListes(utilisateurs, null);
     }
     
     private void initComponents()
@@ -66,6 +79,9 @@ public class NouveauMessageVue extends JPanel{
         
         sp = new SpringLayout();
         
+        objetField = new JTextField();
+        objetField.setFont(fSmall);
+        contentLabel = new JLabel("Message");
         titreLabel = new JLabel("Nouveau Message");
         titreLabel.setFont(fLarge);
         utilisateursLabel = new JLabel("Utilisateurs");
@@ -73,22 +89,38 @@ public class NouveauMessageVue extends JPanel{
         destinatairesLabel = new JLabel("Destinataires");
         destinatairesLabel.setFont(fMedium);
         addOneBouton = new QGButton("Ajouter >", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
-        addManyBouton = new QGButton("Ajouter\ntous >>", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
+        addOneBouton.addActionListener(new EcouteurBouton());
+        addOneBouton.setPreferredSize(new Dimension(150, 40));
+        addManyBouton = new QGButton("Ajouter tous >>", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
+        addManyBouton.addActionListener(new EcouteurBouton());
+        addManyBouton.setPreferredSize(new Dimension(150, 40));
         removeOneBouton = new QGButton("< Retirer", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
-        removeManyBouton = new QGButton("<< Retirer\ntous", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
+        removeOneBouton.setPreferredSize(new Dimension(150, 40));
+        removeOneBouton.addActionListener(new EcouteurBouton());
+        removeManyBouton = new QGButton("<< Retirer tous", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
+        removeManyBouton.addActionListener(new EcouteurBouton());
+        removeManyBouton.setPreferredSize(new Dimension(150, 40));
         utilisateursList = new JList();
+        utilisateursList.setFont(fSmall);
+        utilisateursList.setCellRenderer(new ListCellRendererUtilisateur());
         scrollerListUtilisateur = new JScrollPane(utilisateursList);
+        scrollerListUtilisateur.setBorder(objetField.getBorder());
+        scrollerListUtilisateur.setPreferredSize(new Dimension(350, 200));
         destinatairesList = new JList();
+        destinatairesList.setFont(fSmall);
+        destinatairesList.setCellRenderer(new ListCellRendererUtilisateur());
         scrollerListDestinataires = new JScrollPane(destinatairesList);
+        scrollerListDestinataires.setBorder(objetField.getBorder());
         objetLabel = new JLabel("Objet");
         objetLabel.setFont(fMedium);
-        objetField = new JTextField();
-        objetField.setFont(fSmall);
-        contentLabel = new JLabel("Message");
         contentLabel.setFont(fMedium);
         contentField = new JTextArea();
         contentField.setFont(fSmall);
+        contentField.setBorder(null);
         scrollerContent = new JScrollPane(contentField);
+        scrollerContent.setBorder(objetField.getBorder());
+        envoyerMessage = new QGButton("Envoyer", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
+        envoyerMessage.addActionListener(new EcouteurBouton());
         
         this.setLayout(sp);
         
@@ -105,11 +137,111 @@ public class NouveauMessageVue extends JPanel{
         this.add(scrollerContent);
         this.add(scrollerListDestinataires);
         this.add(scrollerListUtilisateur);
+        this.add(envoyerMessage);
         
         sp.putConstraint(SpringLayout.NORTH, titreLabel, 10, SpringLayout.NORTH, this);
         sp.putConstraint(SpringLayout.WEST, titreLabel, 10, SpringLayout.WEST, this);
         
-        sp.putConstraint(SpringLayout.NORTH, utilisateursLabel, 10, SpringLayout.NORTH, titreLabel);
+        sp.putConstraint(SpringLayout.NORTH, utilisateursLabel, 10, SpringLayout.SOUTH, titreLabel);
         sp.putConstraint(SpringLayout.WEST, utilisateursLabel, 10, SpringLayout.WEST, this);
+        
+        sp.putConstraint(SpringLayout.NORTH, destinatairesLabel, 10, SpringLayout.SOUTH, titreLabel);
+        sp.putConstraint(SpringLayout.WEST, destinatairesLabel, 10, SpringLayout.EAST, addOneBouton);
+        
+        sp.putConstraint(SpringLayout.NORTH, addOneBouton, 5, SpringLayout.SOUTH, utilisateursLabel);
+        sp.putConstraint(SpringLayout.WEST, addOneBouton, 10, SpringLayout.EAST, scrollerListUtilisateur);
+
+        sp.putConstraint(SpringLayout.NORTH, scrollerListUtilisateur, 5, SpringLayout.SOUTH, utilisateursLabel);
+        sp.putConstraint(SpringLayout.WEST, scrollerListUtilisateur, 10, SpringLayout.WEST, this);
+        sp.putConstraint(SpringLayout.SOUTH, scrollerListUtilisateur, 0, SpringLayout.SOUTH, removeManyBouton);
+        
+        sp.putConstraint(SpringLayout.NORTH, scrollerListDestinataires, 5, SpringLayout.SOUTH, destinatairesLabel);
+        sp.putConstraint(SpringLayout.WEST, scrollerListDestinataires, 10, SpringLayout.EAST, addOneBouton);
+        sp.putConstraint(SpringLayout.EAST, scrollerListDestinataires, -10, SpringLayout.EAST, this);
+        sp.putConstraint(SpringLayout.SOUTH, scrollerListDestinataires, 0, SpringLayout.SOUTH, removeManyBouton);
+        
+        sp.putConstraint(SpringLayout.NORTH, addManyBouton, 10, SpringLayout.SOUTH, addOneBouton);
+        sp.putConstraint(SpringLayout.WEST, addManyBouton, 10, SpringLayout.EAST, scrollerListUtilisateur);
+        
+        sp.putConstraint(SpringLayout.NORTH, removeOneBouton, 10, SpringLayout.SOUTH, addManyBouton);
+        sp.putConstraint(SpringLayout.WEST, removeOneBouton, 10, SpringLayout.EAST, scrollerListUtilisateur);
+        
+        sp.putConstraint(SpringLayout.NORTH, removeManyBouton, 10, SpringLayout.SOUTH, removeOneBouton);
+        sp.putConstraint(SpringLayout.WEST, removeManyBouton, 10, SpringLayout.EAST, scrollerListUtilisateur);
+        
+        sp.putConstraint(SpringLayout.NORTH, objetLabel, 10, SpringLayout.SOUTH, scrollerListUtilisateur);
+        sp.putConstraint(SpringLayout.WEST, objetLabel, 10, SpringLayout.WEST, this);
+        
+        sp.putConstraint(SpringLayout.NORTH, objetField, 5, SpringLayout.SOUTH, objetLabel);
+        sp.putConstraint(SpringLayout.WEST, objetField, 10, SpringLayout.WEST, this);
+        sp.putConstraint(SpringLayout.EAST, objetField, -10, SpringLayout.EAST, this);
+        
+        sp.putConstraint(SpringLayout.NORTH, contentLabel, 10, SpringLayout.SOUTH, objetField);
+        sp.putConstraint(SpringLayout.WEST, contentLabel, 10, SpringLayout.WEST, this);
+        
+        sp.putConstraint(SpringLayout.NORTH, scrollerContent, 5, SpringLayout.SOUTH, contentLabel);
+        sp.putConstraint(SpringLayout.WEST, scrollerContent, 10, SpringLayout.WEST, this);
+        sp.putConstraint(SpringLayout.EAST, scrollerContent, -10, SpringLayout.EAST, this);
+        sp.putConstraint(SpringLayout.SOUTH, scrollerContent, -10, SpringLayout.NORTH, envoyerMessage);
+               
+        sp.putConstraint(SpringLayout.EAST, envoyerMessage, -10, SpringLayout.EAST, this);
+        sp.putConstraint(SpringLayout.SOUTH, envoyerMessage, -10, SpringLayout.SOUTH, this);
+    }
+    
+    public void majListes(List<Utilisateur> utilisateurs, List<Utilisateur> destinataires)
+    {
+        if(utilisateurs != null)
+            utilisateursList.setModel(new ModelListeUtilisateurMessage(utilisateurs));
+        if(destinataires != null)
+            destinatairesList.setModel(new ModelListeUtilisateurMessage(destinataires));
+    }
+    
+    private class EcouteurBouton implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            switch(e.getActionCommand())
+            {
+                case "Ajouter >":
+                    Utilisateur u;
+                    for(Object o : utilisateursList.getSelectedValuesList())
+                    {
+                        u = (Utilisateur) o;
+                        utilisateurs.remove(u);
+                        destinataires.add(u);
+                    }
+                    majListes(utilisateurs, destinataires);
+                    break;
+                case "< Retirer":
+                    for(Object o : destinatairesList.getSelectedValuesList())
+                    {
+                        u = (Utilisateur) o;
+                        destinataires.remove(u);
+                        utilisateurs.add(u);
+                    }
+                    majListes(utilisateurs, destinataires);
+                    break;
+                case "Ajouter tous >>":
+                    for(Utilisateur o : utilisateurs)
+                    {
+                        destinataires.add(o);
+                    }
+                    utilisateurs.clear();
+                    majListes(utilisateurs, destinataires);
+                    break;
+                case "<< Retirer tous":
+                    for(Utilisateur o : destinataires)
+                    {
+                        utilisateurs.add(o);
+                    }
+                    destinataires.clear();
+                    majListes(utilisateurs, destinataires);
+                    break;
+                case "Envoyer":
+                    mctrl.envoyerMessage(objetField.getText(), contentField.getText(), destinataires);
+                    break;
+            }
+        }
+        
     }
 }

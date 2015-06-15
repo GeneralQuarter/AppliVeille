@@ -28,6 +28,7 @@ import ihmpts2appliveille.vue.FormAuthentificationVue;
 import ihmpts2appliveille.vue.ListeVue;
 import ihmpts2appliveille.vue.MainWindowVue;
 import ihmpts2appliveille.vue.MessagerieVue;
+import ihmpts2appliveille.vue.NouveauMessageVue;
 import ihmpts2appliveille.vue.ProfilVue;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,7 @@ public class MainControleur {
     
     public void naviguerVers(String nom)
     {
+        mv.updateMessagerie(rdi.recupererBoite(utilisateurConnecte.getIdUtilisateur()), rdi.recupererUtilisateurs());
         switch(nom)
         {
             case "ACCUEIL":
@@ -155,9 +157,7 @@ public class MainControleur {
                 bcv.changeMainContent(ev);
                 break;
             case "Nouveau Message":
-                ev.setTitle("Nouveau Message");
-                ev.setAcceptBoutonAction("Envoyer");
-                bcv.changeMainContent(ev);
+                bcv.changeMainContent(new NouveauMessageVue(new ArrayList<>(rdi.recupererUtilisateurs().values()), this));
                 break;
             case "Liste des thèmes":
                 lv.setTitle("Liste des thèmes");
@@ -232,6 +232,25 @@ public class MainControleur {
             }
             ed.supprimerArticle(idArticle, rdi.recupererUtilisateur(rdi.recupererArticle(idArticle).getIdAuteur()).getIdUtilisateur());
             aav.supprimerArticle(idArticle);
+        }
+    }
+    
+    public void envoyerMessage(String objet, String content, List<Utilisateur> destinataires)
+    {
+        if(objet.length() <= 50)
+        {
+            if(content.length() <= 2000)
+            {
+                if(!destinataires.isEmpty())
+                {
+                    ed.ajouterMessage(utilisateurConnecte.getIdUtilisateur(), objet, content);
+                    for(Utilisateur u : destinataires)
+                    {
+                        ed.ajouterCorrespondance(rdi.recupererMessageEnvoye(utilisateurConnecte.getIdUtilisateur()).getIdMessage(), u.getIdUtilisateur());
+                        mv.updateMessagerie(rdi.recupererBoite(utilisateurConnecte.getIdUtilisateur()), rdi.recupererUtilisateurs());
+                    }
+                }
+            }
         }
     }
     

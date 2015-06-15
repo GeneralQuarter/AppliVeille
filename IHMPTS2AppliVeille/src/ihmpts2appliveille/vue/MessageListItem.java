@@ -82,7 +82,8 @@ public class MessageListItem extends JPanel{
         sp.putConstraint(SpringLayout.EAST, this.date, -5, SpringLayout.EAST, this);
         sp.putConstraint(SpringLayout.SOUTH, this.date, -5, SpringLayout.SOUTH, this);
         
-        this.setPreferredSize(new Dimension(300,100));
+        this.setPreferredSize(new Dimension(100, 100));
+        this.setMaximumSize(new Dimension(4000, 100));
     }
     
     public class EcouteurHover implements MouseListener

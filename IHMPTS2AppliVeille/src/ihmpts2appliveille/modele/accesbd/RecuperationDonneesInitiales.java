@@ -9,6 +9,7 @@ import ihmpts2appliveille.modele.Droits;
 import ihmpts2appliveille.modele.Statut;
 import ihmpts2appliveille.modele.accesbd.entites.Article;
 import ihmpts2appliveille.modele.accesbd.entites.Commentaire;
+import ihmpts2appliveille.modele.accesbd.entites.Message;
 import ihmpts2appliveille.modele.accesbd.entites.Theme;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import iutlr.dutinfo.bd.AccesBD;
@@ -410,5 +411,71 @@ public class RecuperationDonneesInitiales {
             System.err.println(ex.getMessage());
         }
         return res;
+    }
+    
+    public Message recupererMessage(int idMessage){
+        Message m = null;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM MESSAGE WHERE ID_MESSAGE=" + idMessage);
+            if(resultats.isEmpty())
+                return null;
+            List<String> row = resultats.get(0);
+            int idAuteur = Integer.parseInt(row.get(1));
+            String objet = row.get(2);
+            String contenu = row.get(3);
+            Date dateEnvoi = null;
+            try {
+                dateEnvoi = df.parse(row.get(4));
+            } catch (ParseException ex) {
+                Logger.getLogger(RecuperationDonneesInitiales.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            m = new Message(idMessage, idAuteur, contenu, contenu, dateEnvoi);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return m;
+    }
+    
+    public Message recupererMessageEnvoye(int idUtilisateur){
+        Message m = null;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM MESSAGE WHERE ID_AUTEUR=" + idUtilisateur);
+            if(resultats.isEmpty())
+                return null;
+            List<String> row = resultats.get(resultats.size()-1);
+            int idMessage = Integer.parseInt(row.get(0));
+            int idAuteur = Integer.parseInt(row.get(1));
+            String objet = row.get(2);
+            String contenu = row.get(3);
+            Date dateEnvoi = null;
+            try {
+                dateEnvoi = df.parse(row.get(4));
+            } catch (ParseException ex) {
+                Logger.getLogger(RecuperationDonneesInitiales.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            m = new Message(idMessage, idAuteur, contenu, contenu, dateEnvoi);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return m; 
+    }
+    
+    public List<Message> recupererBoite(int idUtilisateur){
+        List<Message> m = new ArrayList<>();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM CORRESPONDANCE WHERE ID_DESTINATAIRE=" + idUtilisateur);
+            if(resultats.isEmpty())
+                return null;
+            for(List<String> row : resultats)
+            {
+                m.add(recupererMessage(Integer.parseInt(row.get(0))));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return m; 
     }
 }
