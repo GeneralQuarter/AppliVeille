@@ -262,6 +262,13 @@ public class MainControleur {
         }
     }
     
+    public void renvoiMessage(Message m)
+    {
+        NouveauMessageVue nmv = new NouveauMessageVue(new ArrayList<>(rdi.recupererUtilisateurs().values()), this);
+        bcv.changeMainContent(nmv);
+        nmv.renvoiMessage(m);
+    }
+    
     public void modifierArticle(int idArticle, String titre, String content)
     {
         if(content.length() <= 4000)
@@ -375,6 +382,12 @@ public class MainControleur {
         }
     }
     
+    public void supprimerCorrespondance(int idMessage)
+    {
+        ed.supprimerCorrespondance(idMessage, utilisateurConnecte.getIdUtilisateur());
+        naviguerVers("ACCUEIL");
+    }
+    
     public void supprimerTheme(int idTheme){
         List<Article> articlesASupprimer = recupererArticleUtilisateur(rdi.recupererTheme(idTheme).getIdProp());
         List<Commentaire> commentairesASupprimer = new ArrayList<>();
@@ -448,7 +461,7 @@ public class MainControleur {
     
     public void allerVersProfil(int idUtilisateur)
     {
-        bcv.changeMainContent(new ProfilVue(rdi.recupererUtilisateur(idUtilisateur), rdi.recupererThemeUtilisateur(idUtilisateur), this));
+        bcv.changeMainContent(new ProfilVue(rdi.recupererNote(idUtilisateur), rdi.recupererUtilisateur(idUtilisateur), rdi.recupererThemeUtilisateur(idUtilisateur), this));
     }
     
     public void miseAjourNoteArticle(int idArticle, float note)

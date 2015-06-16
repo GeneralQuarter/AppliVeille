@@ -56,6 +56,15 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void supprimerCorrespondance(int idMessage, int idUtilisateur)
+    {
+        try{
+            acces.mettreAjourBase("DELETE FROM CORRESPONDANCE WHERE ID_MESSAGE=" + idMessage + " AND ID_DESTINATAIRE=" + idUtilisateur);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     public void supprimerTheme(int idTheme){
         try{
             acces.mettreAjourBase("DELETE FROM THEME WHERE ID_THEME='" + idTheme + "'");

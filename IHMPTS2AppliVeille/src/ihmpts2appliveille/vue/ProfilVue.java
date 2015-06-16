@@ -37,6 +37,7 @@ public class ProfilVue extends JPanel{
     
     private Utilisateur u;
     private Theme t;
+    private double noteChiffre;
     
     private SpringLayout sp;
     
@@ -47,6 +48,7 @@ public class ProfilVue extends JPanel{
     private JLabel nom;
     private JLabel statut;
     private JLabel typeProfil;
+    private JLabel participationLabel;
     private JPanel note;
     private JLabel nbConnections;
     private JLabel nbConnectionsTitle;
@@ -61,11 +63,12 @@ public class ProfilVue extends JPanel{
     private JLabel nbCommentairesTitle;
     private JLabel messageConfirmation;
     
-    public ProfilVue(Utilisateur u, Theme t, MainControleur mctrl)
+    public ProfilVue(double noteChiffre, Utilisateur u, Theme t, MainControleur mctrl)
     {
         this.mctrl = mctrl;
         this.u = u;
         this.t = t;
+        this.noteChiffre = noteChiffre;
         
         initComponents();
     }
@@ -90,11 +93,10 @@ public class ProfilVue extends JPanel{
         }
         typeProfil = new JLabel(u.getTypeProfil().toString());
         typeProfil.setFont(fTitles);
-        if(u.getNote() >= 0.0f){
-            note = new Etoile((int) u.getNote());
-            note.setToolTipText("" + u.getNote());
-        }else
-            note = new JPanel();
+        participationLabel = new JLabel("Participation à la veille");
+        participationLabel.setFont(fTitles);
+        note = new Note(noteChiffre);
+        note.setToolTipText("" + u.getNote());
         nbConnections = new JLabel("" + u.getNbConn());
         nbConnections.setFont(fNumbers);
         nbConnectionsTitle = new JLabel("Connections");
@@ -156,6 +158,7 @@ public class ProfilVue extends JPanel{
         this.add(nom);
         this.add(statut);
         this.add(typeProfil);
+        this.add(participationLabel);
         this.add(note);
         this.add(nbConnections);
         this.add(nbConnectionsTitle);
@@ -183,22 +186,25 @@ public class ProfilVue extends JPanel{
         sp.putConstraint(SpringLayout.NORTH, typeProfil, 5, SpringLayout.SOUTH, nom);
         sp.putConstraint(SpringLayout.WEST, typeProfil, 10, SpringLayout.WEST, this);
         
-        sp.putConstraint(SpringLayout.NORTH, note, 0, SpringLayout.SOUTH, typeProfil);
-        sp.putConstraint(SpringLayout.WEST, note, 5, SpringLayout.WEST, this);
+        sp.putConstraint(SpringLayout.NORTH, participationLabel, 20, SpringLayout.SOUTH, typeProfil);
+        sp.putConstraint(SpringLayout.WEST, participationLabel, 20, SpringLayout.WEST, this);
         
-        sp.putConstraint(SpringLayout.NORTH, nbConnections, 20, SpringLayout.SOUTH, note);
+        sp.putConstraint(SpringLayout.NORTH, note, 0, SpringLayout.SOUTH, participationLabel);
+        sp.putConstraint(SpringLayout.WEST, note, 20, SpringLayout.WEST, this);
+        
+        sp.putConstraint(SpringLayout.NORTH, nbConnections, 10, SpringLayout.SOUTH, note);
         sp.putConstraint(SpringLayout.WEST, nbConnections, 20, SpringLayout.WEST, this);
         
         sp.putConstraint(SpringLayout.NORTH, nbConnectionsTitle, -8, SpringLayout.SOUTH, nbConnections);
         sp.putConstraint(SpringLayout.WEST, nbConnectionsTitle, 20, SpringLayout.WEST, this);
         
-        sp.putConstraint(SpringLayout.NORTH, nbCommentaires, 20, SpringLayout.SOUTH, note);
+        sp.putConstraint(SpringLayout.NORTH, nbCommentaires, 10, SpringLayout.SOUTH, note);
         sp.putConstraint(SpringLayout.WEST, nbCommentaires, 40, SpringLayout.EAST, nbConnectionsTitle);
         
         sp.putConstraint(SpringLayout.NORTH, nbCommentairesTitle, -8, SpringLayout.SOUTH, nbCommentaires);
         sp.putConstraint(SpringLayout.WEST, nbCommentairesTitle, 40, SpringLayout.EAST, nbConnectionsTitle);
         
-        sp.putConstraint(SpringLayout.NORTH, nbArticles, 20, SpringLayout.SOUTH, note);
+        sp.putConstraint(SpringLayout.NORTH, nbArticles, 10, SpringLayout.SOUTH, note);
         sp.putConstraint(SpringLayout.WEST, nbArticles, 40, SpringLayout.EAST, nbCommentairesTitle);
         
         sp.putConstraint(SpringLayout.NORTH, nbArticlesTitle, -8, SpringLayout.SOUTH, nbArticles);

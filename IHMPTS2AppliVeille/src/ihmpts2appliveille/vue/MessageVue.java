@@ -12,6 +12,8 @@ import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.BorderFactory;
@@ -75,6 +77,7 @@ public class MessageVue extends JPanel{
         supprimerMessage = new JButton(trash);
         supprimerMessage.setSize(40, 40);
         supprimerMessage.setBackground(Color.red);
+        supprimerMessage.addActionListener(new EcouteurSupprimer());
         contenu = new JTextArea(m.getContenu());
         contenu.setFont(fSmall);
         contenu.setEditable(false);
@@ -83,6 +86,7 @@ public class MessageVue extends JPanel{
         contenuScoller = new JScrollPane(contenu);
         contenuScoller.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, AppliColor.BLUE.getColor()));
         repondreMessage = new QGButton("Répondre", AppliColor.BLUE.getColor(), AppliColor.LIGHT_BLUE.getColor(), Color.white, fSmall);
+        repondreMessage.addActionListener(new EcouteurRepondre());
         
         this.setLayout(sp);
         this.setBackground(Color.white);
@@ -113,5 +117,22 @@ public class MessageVue extends JPanel{
         
         sp.putConstraint(SpringLayout.SOUTH, repondreMessage, -10, SpringLayout.SOUTH, this);
         sp.putConstraint(SpringLayout.EAST, repondreMessage, -10, SpringLayout.EAST, this);
+    }
+    
+    private class EcouteurRepondre implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mctrl.renvoiMessage(m);
+        } 
+    }
+    
+    private class EcouteurSupprimer implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mctrl.supprimerCorrespondance(m.getIdMessage());
+        }
+        
     }
 }

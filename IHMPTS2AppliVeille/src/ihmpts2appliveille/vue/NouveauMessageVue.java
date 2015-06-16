@@ -9,6 +9,7 @@ import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.AppliColor;
 import ihmpts2appliveille.modele.ListCellRendererUtilisateur;
 import ihmpts2appliveille.modele.ModelListeUtilisateurMessage;
+import ihmpts2appliveille.modele.accesbd.entites.Message;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -194,6 +195,21 @@ public class NouveauMessageVue extends JPanel{
             utilisateursList.setModel(new ModelListeUtilisateurMessage(utilisateurs));
         if(destinataires != null)
             destinatairesList.setModel(new ModelListeUtilisateurMessage(destinataires));
+    }
+    
+    public void renvoiMessage(Message m)
+    {
+        objetField.setText("Re : " + m.getIntitule());
+        for(Utilisateur u : utilisateurs)
+        {
+            if(m.getIdAuteur() == u.getIdUtilisateur())
+            {
+                utilisateurs.remove(u);
+                destinataires.add(u);
+                break;
+            }
+        }
+        majListes(utilisateurs, destinataires);
     }
     
     private class EcouteurBouton implements ActionListener{

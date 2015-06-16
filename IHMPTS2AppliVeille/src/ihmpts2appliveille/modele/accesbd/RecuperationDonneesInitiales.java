@@ -13,8 +13,10 @@ import ihmpts2appliveille.modele.accesbd.entites.Message;
 import ihmpts2appliveille.modele.accesbd.entites.Theme;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import iutlr.dutinfo.bd.AccesBD;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -477,5 +479,94 @@ public class RecuperationDonneesInitiales {
             System.err.println(ex.getMessage());
         }
         return m; 
+    }
+    
+    public double recupererNote(int idUtilisateur){
+        double noteMoyenneArticle = -1;
+        double comparaisonNombreArticle = -1;
+        double comparaisonNombreCommArt = -1;
+        
+        double nombreArticleUtilisateur = -1;
+        double nombreMoyenArticle = -1;
+        double nombreArticle = -1;
+        double nombreCommentaireUtilisateur = -1;
+        try {
+            List<List<String>> resultats = acces.interrogerBase("SELECT AVG(NOTE) FROM ARTICLE WHERE ID_AUTEUR=" + idUtilisateur);
+            if(resultats == null)
+                noteMoyenneArticle = 0;
+            List<String> row = resultats.get(0);
+            if(row.get(0) == null)
+                noteMoyenneArticle = 0;
+            else
+                noteMoyenneArticle = Double.parseDouble(row.get(0));
+            
+            resultats = acces.interrogerBase("SELECT NBARTICLE FROM UTILISATEUR WHERE ID_UTILISATEUR=" + idUtilisateur);
+            if(resultats == null)
+                nombreArticleUtilisateur = 0;
+            row = resultats.get(0);
+            if(row.get(0) == null)
+                nombreArticleUtilisateur = 0;
+            else
+                nombreArticleUtilisateur = Double.parseDouble(row.get(0));
+            
+            resultats = acces.interrogerBase("SELECT AVG(COUNT(*)) FROM ARTICLE GROUP BY ID_AUTEUR");
+            if(resultats == null)
+                nombreMoyenArticle = 0;
+            row = resultats.get(0);
+            if(row.get(0) == null)
+                nombreMoyenArticle = 0;
+            else
+                nombreMoyenArticle = Double.parseDouble(row.get(0));
+            
+            resultats = acces.interrogerBase("SELECT COUNT(*) FROM ARTICLE");
+            if(resultats == null)
+                nombreArticle = 0;
+            row = resultats.get(0);
+            if(row.get(0) == null)
+                nombreArticle = 0;
+            else
+                nombreArticle = Double.parseDouble(row.get(0));
+            
+            resultats = acces.interrogerBase("SELECT COUNT(*) FROM COMMENTAIRE WHERE ID_AUTEUR = " + idUtilisateur);
+            if(resultats == null)
+                nombreCommentaireUtilisateur = 0;
+            row = resultats.get(0);
+            if(row.get(0) == null)
+                nombreCommentaireUtilisateur = 0;
+            else
+                nombreCommentaireUtilisateur = Double.parseDouble(row.get(0));
+            
+            if(nombreArticleUtilisateur == 0)
+                comparaisonNombreArticle = 0;
+            if(nombreMoyenArticle == 0)
+                comparaisonNombreArticle = 0;
+            else{
+                comparaisonNombreArticle = nombreArticleUtilisateur - nombreMoyenArticle;
+                if(comparaisonNombreArticle >= 3)
+                    comparaisonNombreArticle = 5;
+                else if(comparaisonNombreArticle >= 2)
+                    comparaisonNombreArticle = 4;
+                else if(comparaisonNombreArticle >= 1)
+                    comparaisonNombreArticle = 3;
+                else if(comparaisonNombreArticle >= -1)
+                    comparaisonNombreArticle = 2;
+                else if(comparaisonNombreArticle >= -2)
+                    comparaisonNombreArticle = 1;
+                else
+                    comparaisonNombreArticle = 0;
+            }
+            
+            if(nombreArticle != 0)
+            {
+                comparaisonNombreCommArt = (nombreCommentaireUtilisateur / (nombreArticle / 5.0))*5.0;
+                if(comparaisonNombreCommArt > 5.0)
+                    comparaisonNombreCommArt = 5.0;
+            }
+            else
+                comparaisonNombreCommArt = 0;
+        }catch(SQLException ex){
+            
+        }
+        return noteMoyenneArticle + comparaisonNombreArticle + comparaisonNombreCommArt;
     }
 }
