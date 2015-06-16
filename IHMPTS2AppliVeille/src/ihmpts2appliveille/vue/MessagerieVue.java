@@ -97,26 +97,14 @@ public class MessagerieVue extends JPanel{
         layout.putConstraint(SpringLayout.EAST, messagesScroller, -5, SpringLayout.EAST, this);
     }
     
-    private void testInsert()
-    {
-        for(int i = 0; i < 10; i++)
-        {
-            messagesHolder.add(new MessageListItem("Message " + (i+1), "Lorem ipsum dolor sit amet, consectetur "
-                    + "adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
-                    + "Ut enim ad minim veniam, quis nostrud", "Auteur " + (i+1), "05/12/2015"));
-            messagesHolder.add(Box.createRigidArea(new Dimension(0,5)));
-        }
-    }
-    
     public void updateMessagerie(List<Message> messages, Map<Integer, Utilisateur> utilisateurs)
     {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
         if(messages != null)
         {
             messagesHolder.removeAll();
             for(Message m : messages)
             {
-                messagesHolder.add(new MessageListItem(m.getIntitule(), m.getContenu(), utilisateurs.get(m.getIdAuteur()).getNom(), df.format(m.getDateEnvoi())));
+                messagesHolder.add(new MessageListItem(m, utilisateurs.get(m.getIdAuteur()), mctrl));
                 messagesHolder.add(Box.createRigidArea(new Dimension(0,5)));
             }
         }

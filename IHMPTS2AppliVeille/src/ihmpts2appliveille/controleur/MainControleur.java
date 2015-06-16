@@ -16,6 +16,7 @@ import ihmpts2appliveille.modele.accesbd.EnregistrementDonnees;
 import ihmpts2appliveille.modele.accesbd.RecuperationDonneesInitiales;
 import ihmpts2appliveille.modele.accesbd.entites.Article;
 import ihmpts2appliveille.modele.accesbd.entites.Commentaire;
+import ihmpts2appliveille.modele.accesbd.entites.Message;
 import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import ihmpts2appliveille.vue.ActualiteArticleVue;
 import ihmpts2appliveille.vue.AjoutThemeVue;
@@ -27,6 +28,7 @@ import ihmpts2appliveille.vue.BodyContentVue;
 import ihmpts2appliveille.vue.FormAuthentificationVue;
 import ihmpts2appliveille.vue.ListeVue;
 import ihmpts2appliveille.vue.MainWindowVue;
+import ihmpts2appliveille.vue.MessageVue;
 import ihmpts2appliveille.vue.MessagerieVue;
 import ihmpts2appliveille.vue.NouveauMessageVue;
 import ihmpts2appliveille.vue.ProfilVue;
@@ -247,10 +249,16 @@ public class MainControleur {
                     for(Utilisateur u : destinataires)
                     {
                         ed.ajouterCorrespondance(rdi.recupererMessageEnvoye(utilisateurConnecte.getIdUtilisateur()).getIdMessage(), u.getIdUtilisateur());
-                        mv.updateMessagerie(rdi.recupererBoite(utilisateurConnecte.getIdUtilisateur()), rdi.recupererUtilisateurs());
                     }
+                    naviguerVers("ACCUEIL");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Votre message n'a pas de destinataire", "Aucun destinataire", JOptionPane.ERROR_MESSAGE);
                 }
+            }else{
+                JOptionPane.showMessageDialog(null, "Votre contenu est trop long : " + content.length() + "(max 2000 caractères)", "Contenu trop long", JOptionPane.ERROR_MESSAGE);
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "Votre objet est trop long " + objet.length() + " (max 50 caractères)", "Objet trop long", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -272,6 +280,12 @@ public class MainControleur {
         }else{
             JOptionPane.showMessageDialog(null, "Votre article dépasse la longueur de charactères autorisé", "Texte trop long", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public void consulterMessage(int idMessage)
+    {
+        Message m = rdi.recupererMessage(idMessage);
+        bcv.changeMainContent(new MessageVue(m, rdi.recupererUtilisateur(m.getIdAuteur()), this));
     }
     
     public void allerVersModificationArticle(int idArticle)
@@ -309,7 +323,11 @@ public class MainControleur {
             {
                 ed.ajouterCommenatire(idArticle, utilisateurConnecte.getIdUtilisateur(), intitule, content);
                 consulterArticle(idArticle);
+            }else{
+                JOptionPane.showMessageDialog(null, "Votre commentaire ne possede pas de contenu !", "Contenu manquant", JOptionPane.WARNING_MESSAGE);
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "Votre commentaire ne possede pas de titre !", "Titre manquant", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -319,6 +337,8 @@ public class MainControleur {
         {
             ed.modifierCommentaire(idCommentaire, contenu);
             consulterArticle(idArticle);
+        }else{
+            JOptionPane.showMessageDialog(null, "Votre commentaire ne possede pas de contenu !", "Contenu manquant", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -385,8 +405,12 @@ public class MainControleur {
     
     public void supprimerCommentaire(int idCommentaire, int idArticle, int idUtilisateur)
     {
-        ed.supprimerCommentaire(idCommentaire, idArticle, idUtilisateur);
-        consulterArticle(idArticle);
+        int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer ce commentaire ?", "Supprimer Commentaire", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(choix == JOptionPane.YES_OPTION)
+        {
+            ed.supprimerCommentaire(idCommentaire, idArticle, idUtilisateur);
+            consulterArticle(idArticle);
+        }
     }
     
     public void attribuerTheme(int idTheme)

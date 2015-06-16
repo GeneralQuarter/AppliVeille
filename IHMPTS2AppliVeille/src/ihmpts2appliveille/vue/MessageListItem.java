@@ -5,30 +5,29 @@
  */
 package ihmpts2appliveille.vue;
 
+import ihmpts2appliveille.controleur.MainControleur;
 import ihmpts2appliveille.modele.AppliColor;
+import ihmpts2appliveille.modele.accesbd.entites.Message;
+import ihmpts2appliveille.modele.accesbd.entites.Utilisateur;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JEditorPane;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
 
 /**
  *
  * @author x1QG1x
  */
 public class MessageListItem extends JPanel{
+    private MainControleur mctrl;
     
     private JLabel objet;
     private JTextArea message;
@@ -41,11 +40,18 @@ public class MessageListItem extends JPanel{
     
     private SpringLayout sp;
     
-    public MessageListItem(String objet, String message, String auteur, String date)
+    private Message m;
+    private Utilisateur u;
+    
+    public MessageListItem(Message m, Utilisateur u, MainControleur mctrl)
     {
-        this.objet = new JLabel(objet);
-        this.auteur = new JLabel(auteur);
-        this.date = new JLabel(date);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
+        this.mctrl = mctrl;
+        this.m = m;
+        this.u = u;
+        this.objet = new JLabel(m.getIntitule());
+        this.auteur = new JLabel(u.getNom());
+        this.date = new JLabel(df.format(m.getDateEnvoi()));
         fMessage = new Font("Arial", 0, 10);
         fObjet = new Font("Arial", 0, 18);
         fBottom = new Font("Arial", Font.ITALIC, 10);
@@ -53,7 +59,7 @@ public class MessageListItem extends JPanel{
         sp = new SpringLayout();
         this.setLayout(sp);
         this.message = new JTextArea();
-        this.message.setText(message);
+        this.message.setText(m.getContenu());
         this.message.setLineWrap(true);
         this.message.addMouseListener(new EcouteurHover());
         this.message.setEditable(false);
@@ -91,6 +97,7 @@ public class MessageListItem extends JPanel{
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            mctrl.consulterMessage(m.getIdMessage());
         }
 
         @Override

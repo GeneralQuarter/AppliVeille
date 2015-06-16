@@ -430,7 +430,7 @@ public class RecuperationDonneesInitiales {
             } catch (ParseException ex) {
                 Logger.getLogger(RecuperationDonneesInitiales.class.getName()).log(Level.SEVERE, null, ex);
             }
-            m = new Message(idMessage, idAuteur, contenu, contenu, dateEnvoi);
+            m = new Message(idMessage, idAuteur, objet, contenu, dateEnvoi);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -455,7 +455,7 @@ public class RecuperationDonneesInitiales {
             } catch (ParseException ex) {
                 Logger.getLogger(RecuperationDonneesInitiales.class.getName()).log(Level.SEVERE, null, ex);
             }
-            m = new Message(idMessage, idAuteur, contenu, contenu, dateEnvoi);
+            m = new Message(idMessage, idAuteur, objet, contenu, dateEnvoi);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
