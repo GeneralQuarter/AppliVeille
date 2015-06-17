@@ -49,8 +49,8 @@ public class EnregistrementDonnees {
             intitutle = intitutle.replaceAll("'", "''");
             contenu = contenu.replaceAll("'", "''");           
             acces.mettreAjourBase("INSERT INTO commentaire VALUES((select NVL(max(ID_COMMENTAIRE), 0)+1 from commentaire), " + idUtilisateur + ", " + idArticle + ", '" + intitutle + "', '" + contenu + "', SYSDATE, NULL, 'V')");
-            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=1+(select NB_COMM_ART FROM article where id_article=" + idArticle + ") where id_article = " + idArticle);
-            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=1+(select NBCOMM FROM utilisateur where id_utilisateur=" + idUtilisateur + ") where id_utilisateur= " + idUtilisateur);
+            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=(select COUNT(*) FROM commentaire where id_article=" + idArticle + ") where id_article = " + idArticle);
+            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=(select COUNT(*) FROM commentaire where id_auteur=" + idUtilisateur + ") where id_utilisateur= " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -88,7 +88,7 @@ public class EnregistrementDonnees {
     {
         try{
             acces.mettreAjourBase("DELETE FROM article WHERE ID_ARTICLE='" + idArticle + "'");
-            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=1-(select nbarticle from utilisateur where id_utilisateur=" + idAuteur + ") WHERE ID_UTILISATEUR = " + idAuteur);
+            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=(select COUNT(*) from article where id_auteur=" + idAuteur + ") WHERE ID_UTILISATEUR = " + idAuteur);
             donnees.supprimerArticle(idArticle);
         }catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -99,8 +99,8 @@ public class EnregistrementDonnees {
     {
         try{       
             acces.mettreAjourBase("DELETE commentaire where id_commentaire = " + idCommentaire);
-            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=1-(select NB_COMM_ART FROM article where id_article=" + idArticle + ") where id_article = " + idArticle);
-            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=1-(select NBCOMM FROM utilisateur where id_utilisateur=" + idUtilisateur + ") where id_utilisateur= " + idUtilisateur);
+            acces.mettreAjourBase("UPDATE article set NB_COMM_ART=(select COUNT(*) FROM commentaire where id_article=" + idArticle + ") where id_article = " + idArticle);
+            acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=(select COUNT(*) FROM commentaire where id_auteur=" + idUtilisateur + ") where id_utilisateur= " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -158,7 +158,7 @@ public class EnregistrementDonnees {
             titre = titre.replaceAll("'", "''");
             content = content.replaceAll("'", "''");
             acces.mettreAjourBase("INSERT INTO ARTICLE(ID_ARTICLE,ID_AUTEUR,ID_THEME,NB_COMM_ART,INTITULE,CONTENU,DATEPUBLI,DATEMODIF,NOTE,VISIBLE) VALUES ((select NVL(max(ID_ARTICLE), 0)+1 from ARTICLE)," + idUtilisateur + ", " + idTheme + ", 0, '"+ titre + "', '" + content + "', SYSDATE, NULL, NULL, 'V')");
-            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=1+(select nbarticle from utilisateur where id_utilisateur=" + idUtilisateur + ") WHERE ID_UTILISATEUR = " + idUtilisateur);
+            acces.mettreAjourBase("UPDATE UTILISATEUR SET NBARTICLE=(select COUNT(*) from article where id_auteur=" + idUtilisateur + ") WHERE ID_UTILISATEUR = " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -175,10 +175,11 @@ public class EnregistrementDonnees {
         }
     }
     
-    public void ajouterCorrespondance(int idMessage, int idUtilisateur)
+    public void ajouterCorrespondance(int idMessage, int idDestinataire)
     {
+        System.out.println("Ajout correspondance : " + idMessage + ", " + idDestinataire);
         try{
-            acces.mettreAjourBase("INSERT INTO CORRESPONDANCE VALUES (" + idMessage + ", " + idUtilisateur + ")");
+            acces.mettreAjourBase("INSERT INTO CORRESPONDANCE VALUES (" + idMessage + ", " + idDestinataire + ")");
         } catch (SQLException ex) {
             Logger.getLogger(EnregistrementDonnees.class.getName()).log(Level.SEVERE, null, ex);
         }

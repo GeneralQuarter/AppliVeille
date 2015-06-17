@@ -443,10 +443,10 @@ public class RecuperationDonneesInitiales {
         Message m = null;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
-            List<List<String>> resultats = acces.interrogerBase("SELECT * FROM MESSAGE WHERE ID_AUTEUR=" + idUtilisateur);
+            List<List<String>> resultats = acces.interrogerBase("SELECT ID_MESSAGE, ID_AUTEUR, INTITULE, CONTENU, DATEENVOI FROM MESSAGE WHERE ID_AUTEUR=" + idUtilisateur + " ORDER BY ID_MESSAGE DESC");
             if(resultats.isEmpty())
                 return null;
-            List<String> row = resultats.get(resultats.size()-1);
+            List<String> row = resultats.get(0);
             int idMessage = Integer.parseInt(row.get(0));
             int idAuteur = Integer.parseInt(row.get(1));
             String objet = row.get(2);
@@ -509,7 +509,7 @@ public class RecuperationDonneesInitiales {
             else
                 nombreArticleUtilisateur = Double.parseDouble(row.get(0));
             
-            resultats = acces.interrogerBase("SELECT AVG(COUNT(*)) FROM ARTICLE GROUP BY ID_AUTEUR");
+            resultats = acces.interrogerBase("SELECT AVG(NBARTICLE) FROM UTILISATEUR");
             if(resultats == null)
                 nombreMoyenArticle = 0;
             row = resultats.get(0);
@@ -536,9 +536,11 @@ public class RecuperationDonneesInitiales {
             else
                 nombreCommentaireUtilisateur = Double.parseDouble(row.get(0));
             
+            System.out.println("Nombre d'article utilisateur : " + nombreArticleUtilisateur);
+            System.out.println("Nombre d'article moyen : " + nombreMoyenArticle);
             if(nombreArticleUtilisateur == 0)
                 comparaisonNombreArticle = 0;
-            if(nombreMoyenArticle == 0)
+            else if(nombreMoyenArticle == 0)
                 comparaisonNombreArticle = 0;
             else{
                 comparaisonNombreArticle = nombreArticleUtilisateur - nombreMoyenArticle;
@@ -567,6 +569,7 @@ public class RecuperationDonneesInitiales {
         }catch(SQLException ex){
             
         }
+        System.out.println("Note moyenne article : " + noteMoyenneArticle + "\nComparaison nombre article : " + comparaisonNombreArticle + "\nComparaison nombre comm article : " + comparaisonNombreCommArt);
         return noteMoyenneArticle + comparaisonNombreArticle + comparaisonNombreCommArt;
     }
 }

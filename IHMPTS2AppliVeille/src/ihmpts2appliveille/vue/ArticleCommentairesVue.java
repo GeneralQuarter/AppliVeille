@@ -283,10 +283,11 @@ public class ArticleCommentairesVue extends JPanel{
                     mctrl.allerVersModificationArticle(ArticleCommentairesVue.this.a.getIdArticle());
                     break;
                 case "Noter":
-                    if(Float.parseFloat(noteField.getText()) >= 0.0f)
-                        mctrl.miseAjourNoteArticle(ArticleCommentairesVue.this.a.getIdArticle(), Float.parseFloat(noteField.getText()));
-                    else
-                        JOptionPane.showMessageDialog(null, "La note " + noteField.getText() + " est invalide (ex : 4.5)", "Note invalide", JOptionPane.ERROR_MESSAGE);
+                        try {
+                            mctrl.miseAjourNoteArticle(ArticleCommentairesVue.this.a.getIdArticle(), Float.parseFloat(noteField.getText()));
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(null, "La note " + noteField.getText() + " est invalide (ex : 4.5)", "Note invalide", JOptionPane.ERROR_MESSAGE);
+                        }
                     break;
                 case "Envoyer":
                     mctrl.posterCommentaire(ArticleCommentairesVue.this.a.getIdArticle(), posterCommTitleField.getText(), posterCommContentField.getText());

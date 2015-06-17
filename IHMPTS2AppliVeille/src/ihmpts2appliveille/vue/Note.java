@@ -42,7 +42,7 @@ public class Note extends JPanel{
         noteLabel.setFont(new Font("Arial", Font.BOLD, 16));
         if(note >= 10)
             noteLabel.setBackground(new Color(76, 175, 80));
-        else if(note >= 5)
+        else if(note >= 6)
             noteLabel.setBackground(new Color(255, 152, 0));
         else
             noteLabel.setBackground(new Color(244, 67, 54));
