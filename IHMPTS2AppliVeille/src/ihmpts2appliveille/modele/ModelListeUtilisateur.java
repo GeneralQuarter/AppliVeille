@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.table.AbstractTableModel;
 
 /**
- *
+ * Classe modélisant la liste des utilisateurs
  * @author x1QG1x
  */
 public class ModelListeUtilisateur extends AbstractTableModel{

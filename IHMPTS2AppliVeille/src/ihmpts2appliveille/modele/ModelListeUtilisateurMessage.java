@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 /**
- *
+ * Classe modélisant la liste des messages
  * @author x1QG1x
  */
 public class ModelListeUtilisateurMessage extends AbstractListModel<Utilisateur>{

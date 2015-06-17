@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Classe de récupération des données de la base de donnée pour les maintenir dans l'application
  * @author x1QG1x
  */
 public class Donnees {
@@ -28,6 +28,9 @@ public class Donnees {
     private Map<Integer, Message> messages;
     private List<Correspondance> correspondances;
     
+    /**
+     * Constructeur de la classe données. 
+     */
     public Donnees()
     {
         utilisateurs = new HashMap<>();
@@ -38,6 +41,11 @@ public class Donnees {
         correspondances = new ArrayList<>();
     }
     
+    /**
+     * Méthode de mise à jour du propriétaire d'un thème
+     * @param idTheme L'identifiant de l'utilisateur
+     * @param idUtilisateur L'identifiant du propriétaire
+     */
     public void updateProprietaireTheme(int idTheme, int idUtilisateur)
     {
         Theme t = themes.get(idTheme);
@@ -46,6 +54,11 @@ public class Donnees {
         themes.put(idTheme, t);
     }
     
+    /**
+     * Méthode de mise à jour de la description d'un thème
+     * @param idTheme L'identifiant du thème
+     * @param description La nouvelle description du thème
+     */
     public void updateDescriptionTheme(int idTheme, String description)
     {
         Theme t = themes.get(idTheme);
@@ -54,6 +67,10 @@ public class Donnees {
         themes.put(idTheme, t);
     }
     
+    /**
+     * Méthode permettant la modification du HashMap utilisateur pour lui ajouter un nouvel utilisateur
+     * @param u L'utilisateur ajouté
+     */
     public void ajouterUtilisateur(Utilisateur u)
     {
         if(!utilisateurs.containsKey(u.getIdUtilisateur()))
@@ -65,6 +82,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant la modification du HashMap articles pour lui ajouter un nouvel article
+     * @param a  L'article ajouté
+     */
     public void ajouterArticle(Article a)
     {
         if(!articles.containsKey(a.getIdArticle()))
@@ -76,6 +97,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant la modification du HashMap themes pour lui ajouter un nouveau thème
+     * @param t Le thème ajouté
+     */
     public void ajouterTheme(Theme t)
     {
         if(!themes.containsKey(t.getIdTheme()))
@@ -87,6 +112,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant la modification du HashMap commentaires pour lui ajouter un nouveau commentaire
+     * @param c Le commentaire ajouté
+     */
     public void ajouterCommentaire(Commentaire c)
     {
         if(!commentaires.containsKey(c.getIdCommentaire()))
@@ -98,6 +127,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant la modification du HashMap messages pour lui ajouter un nouveau message
+     * @param m Le message ajouté
+     */
     public void ajouterMessage(Message m)
     {
         if(!messages.containsKey(m.getIdMessage()))
@@ -109,6 +142,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant la modification du HashMap correspondances pour lui ajouter une nouvelle correspondance
+     * @param c La correspondance ajoutée
+     */
     public void ajouterCorresponde(Correspondance c)
     {
         if(!correspondances.contains(c))
@@ -120,6 +157,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer un utilisateur du HashMap utilisateurs
+     * @param idUtilisateur L'identifiant de l'utilisateur à supprimer
+     */
     public void supprimerUtilisateur(int idUtilisateur)
     {
         if(utilisateurs.containsKey(idUtilisateur))
@@ -128,6 +169,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer un article du HashMap articles
+     * @param idArticle L'identifiant de l'article à supprimer
+     */
     public void supprimerArticle(int idArticle)
     {
         if(articles.containsKey(idArticle))
@@ -136,6 +181,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer un theme du HashMap themes
+     * @param idTheme L'identifiant du theme à supprimer 
+     */
     public void supprimerTheme(int idTheme)
     {
         if(themes.containsKey(idTheme))
@@ -144,6 +193,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer un commentaire du HashMap commentaires
+     * @param idCommentaire L'identifiant du commentaire à supprimer
+     */
     public void supprimerCommentaire(int idCommentaire)
     {
         if(commentaires.containsKey(idCommentaire))
@@ -152,6 +205,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer un message du HashMap messages
+     * @param idMessage L'identifiant du message à supprimer
+     */
     public void supprimerMessage(int idMessage)
     {
         if(messages.containsKey(idMessage))
@@ -160,6 +217,10 @@ public class Donnees {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer une correspondance du HashMap correspondances
+     * @param c L'identifiant de la correspondance à supprimer
+     */
     public void supprimerCorrespondance(Correspondance c)
     {
         if(correspondances.contains(c))

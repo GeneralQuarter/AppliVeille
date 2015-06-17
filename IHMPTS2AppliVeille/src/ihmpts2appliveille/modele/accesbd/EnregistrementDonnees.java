@@ -12,18 +12,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Classe d'enregistrement d'informations dans la base de données
  * @author vpivet
  */
 public class EnregistrementDonnees {
     private AccesBD acces;
     private Donnees donnees;
 
+    /**
+     * Constructeur de la classe
+     * @param donnees La classe de maintient des données dans l'application
+     */
     public EnregistrementDonnees(Donnees donnees) {
         this.acces = new AccesBD();
         this.donnees = donnees;
     }
     
+    /**
+     * Ajout d'un utilisateur à la base de données
+     * @param nom Le nom du nouvel utilisateur
+     * @param identifiant L'identifiant du nouvel utilisateur
+     * @param mdp Le mot de passe du nouvel utilisateur
+     * @param typeProfil Le type de profil du nouvel utlisateur
+     */
     public void ajoutUtilisateur(String nom, String identifiant, String mdp, String typeProfil){
         String mdpCrypte;
         mdpCrypte = Cryptage.getEncodedPassword(mdp);
@@ -34,6 +45,11 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Ajout d'un thème dans la base de données
+     * @param intitule L'intitulé du thème
+     * @param description La description du thème
+     */
     public void ajoutTheme(String intitule, String description){
         try{
             description = description.replaceAll("'", "''");
@@ -43,6 +59,13 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Ajout d'un commentaire dans la base de données
+     * @param idArticle L'identifiant de l'article concerné par le commentaire
+     * @param idUtilisateur L'identifiant de l'auteur du commentaire
+     * @param intitutle L'intitulé du commentaire 
+     * @param contenu Le contenu du commentaire ajouté
+     */
     public void ajouterCommenatire(int idArticle, int idUtilisateur, String intitutle, String contenu)
     {
         try{
@@ -56,6 +79,11 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Suppression d'une correspondace de la base de données
+     * @param idMessage L'identifiant du message à supprimer
+     * @param idUtilisateur L'identifiant du destinataire
+     */
     public void supprimerCorrespondance(int idMessage, int idUtilisateur)
     {
         try{
@@ -65,6 +93,10 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Suppression d'un thème de la base de données
+     * @param idTheme L'identifiant du thème à supprimer
+     */
     public void supprimerTheme(int idTheme){
         try{
             acces.mettreAjourBase("DELETE FROM THEME WHERE ID_THEME='" + idTheme + "'");
@@ -74,6 +106,10 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Suppression d'un utilisateur de la base de données
+     * @param idUtilisateur L'identifiant de l'utilisateur à supprimer
+     */
     public void supprimerUtilisateur(int idUtilisateur)
     {
         try{
@@ -84,6 +120,11 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Suppression d'un article de la base de données et changement du nombre d'article de son auteur
+     * @param idArticle identifiant de l'article à supprimer
+     * @param idAuteur identifiant de l'auteur de l'article
+     */
     public void supprimerArticle(int idArticle, int idAuteur)
     {
         try{
@@ -95,6 +136,12 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Suppression d'un commentaire de la base de données et changement du nombre de commentaire de son auteur
+     * @param idCommentaire identifiant du commentaire à supprimer
+     * @param idArticle Identifiant de l'article concerné par le commentaire
+     * @param idUtilisateur Identifiant de l'auteur du commentaire
+     */
     public void supprimerCommentaire(int idCommentaire, int idArticle, int idUtilisateur)
     {
         try{       
@@ -106,6 +153,11 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Mise à jour du propriétaire d'un thème dans la base de données
+     * @param idTheme identifiant du thème
+     * @param idUtilisateur Identifiant du propriétaire
+     */
     public void attribuerTheme(int idTheme, int idUtilisateur)
     {
         try{
@@ -115,6 +167,10 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Mise à jour d'un thème pour lui supprimer son propriétaire
+     * @param idTheme L'identifiant du thème
+     */
     public void depossserderTheme(int idTheme)
     {
         try{
@@ -152,6 +208,13 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Ajout d'un article dans la base de données
+     * @param idUtilisateur Identifiant de l'auteur
+     * @param idTheme Identifiant de son thème
+     * @param titre Titre de l'article à ajouté
+     * @param content Contenu de l'article à ajouter
+     */
     public void ajoutArticle(int idUtilisateur, int idTheme, String titre, String content)
     {
         try{
@@ -164,6 +227,12 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Ajout d'un message dans la base de données
+     * @param idUtilisateur l'identifiant de l'auteur du message
+     * @param intitule L'intitule du message à ajouté
+     * @param content Le contenu du message à ajouté
+     */
     public void ajouterMessage(int idUtilisateur, String intitule, String content)
     {
         intitule = intitule.replaceAll("'", "''");
@@ -175,6 +244,11 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Ajout d'une correspondace dans la base de données
+     * @param idMessage L'identifiant du message à faire correspondre
+     * @param idDestinataire L'identifiant du destinataire
+     */
     public void ajouterCorrespondance(int idMessage, int idDestinataire)
     {
         System.out.println("Ajout correspondance : " + idMessage + ", " + idDestinataire);
@@ -185,6 +259,12 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Modification d'un article dans la base de données
+     * @param idArticle L'identifiant de l'article à modifier
+     * @param titre Le titre de l'article à modifier
+     * @param content Le contenu de l'article à modifier
+     */
     public void modifierArticle(int idArticle, String titre, String content)
     {
         try{
@@ -196,6 +276,11 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Modification d'un commentaire dans la base de données
+     * @param idCommentaire L'identifiant du commentaire à modifier
+     * @param contenu Le contenu du commentaire à modifier
+     */
     public void modifierCommentaire(int idCommentaire, String contenu)
     {
         try{
@@ -206,6 +291,11 @@ public class EnregistrementDonnees {
         }
     }
     
+    /**
+     * Modification de la note d'un article
+     * @param idArticle Identifiant de l'article dont la note est modifié
+     * @param note La note
+     */
     public void updateNote(int idArticle, float note)
     {
         try{

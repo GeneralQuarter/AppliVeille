@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 import javax.swing.table.AbstractTableModel;
 
 /**
- *
+ * Classe modélisant la liste des thèmes
  * @author x1QG1x
  */
 public class ModelListeTheme extends AbstractTableModel{

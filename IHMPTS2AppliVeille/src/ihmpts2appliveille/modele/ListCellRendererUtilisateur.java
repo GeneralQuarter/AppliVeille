@@ -12,7 +12,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 /**
- *
+ * Classe définissant l'aspect le rendu des cellules pour les listes
  * @author x1QG1x
  */
 public class ListCellRendererUtilisateur extends JLabel implements ListCellRenderer<Utilisateur>{
