@@ -11,12 +11,13 @@ import ihmpts2appliveille.vue.MainWindowVue;
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * Main Classe de l'application
  * @author x1QG1x
  */
 public class IHMPTS2AppliVeille {
 
     /**
+     * Fonction principale : Création du controleur et de la Vue principale.
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -25,7 +26,6 @@ public class IHMPTS2AppliVeille {
             @Override
             public void run() {
                 
-                System.out.println(Cryptage.getEncodedPassword("invite"));
                 MainControleur mctrl = new MainControleur();
                 MainWindowVue mwv = new MainWindowVue(mctrl);
             }

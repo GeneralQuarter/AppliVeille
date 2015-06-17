@@ -19,11 +19,18 @@ import javax.swing.JOptionPane;
 public class LienExterne {
     private String url;
     
+    /**
+     * Constructeur de la classe.
+     * @param url Le lien vers la page souhaitée
+     */
     public LienExterne(String url)
     {
         this.url = url;
     }
     
+    /**
+     * La fonction browse permet d'ouvrir le navigateur par défaut de l'utilistaure avec comme entrée le lien de l'URL qu'il a séléctionné
+     */
     public void browse()
     {
         try {
@@ -33,6 +40,10 @@ public class LienExterne {
         }
     }
     
+    /**
+     * Setter sur le lien.
+     * @param url
+     */
     public void setUrl(String url)
     {
         this.url = url;

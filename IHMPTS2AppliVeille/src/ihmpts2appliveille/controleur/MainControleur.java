@@ -37,7 +37,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Controleur de l'application
  * @author x1QG1x
  */
 public class MainControleur {
@@ -66,6 +66,11 @@ public class MainControleur {
     
     private Utilisateur utilisateurConnecte;
     
+    /**
+     * Constructeur du controleur :
+     * Création des classes de connexion à la base de donnée
+     * Ajout des liens externes
+     */
     public MainControleur()
     {
         d = new Donnees();
@@ -76,6 +81,12 @@ public class MainControleur {
         formadep = new LienExterne("http://www.formadepetudiant.fr/?ref=19");
     }
     
+    /**
+     * Méthode de connection à l'application : Vérification de l'existence de l'utilisateur
+     * Verification de la concordance de l'identifiant et du mot de passe
+     * @param login l'identifiant
+     * @param mdp le mot de passe
+     */
     public void connection(String login, String mdp)
     {
         if(!login.isEmpty() && !mdp.isEmpty())
@@ -105,6 +116,9 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode de fermeture de l'application.
+     */
     public void fermerFenetre()
     {
         if(utilisateurConnecte != null)
@@ -112,6 +126,9 @@ public class MainControleur {
         mmv.dispose();
     }
     
+    /**
+     * Déconnection de l'utilisateur. Modification de son état dans la base de donnée
+     */
     public void deconnection()
     {
            ed.setUtilisateurDeconnecte(utilisateurConnecte.getIdUtilisateur());
@@ -123,6 +140,10 @@ public class MainControleur {
            mmv.changeMainFrame(fav, false);
     }
     
+    /**
+     * Méthode d'ouverture du lien choisi par l'utilisateur
+     * @param nom Nom du site séléctionné
+     */
     public void lienVersInternet(String nom)
     {
         switch(nom)
@@ -139,6 +160,10 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode de navigation dans l'application : permet à l'utilisateur de changer de menu
+     * @param nom Le nom du menu ciblé
+     */
     public void naviguerVers(String nom)
     {
         mv.updateMessagerie(rdi.recupererBoite(utilisateurConnecte.getIdUtilisateur()), rdi.recupererUtilisateurs());
@@ -192,14 +217,33 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode d'ajout d'un nouvel utilisateur à la base de données
+     * (Méthode pouvant être activer seulement par un administrateur)
+     * @param nom Prénom et nom du nouvel utilisateur
+     * @param identifiant Identifiant du nouvel utilisateur
+     * @param mdp Mot de passe du nouvel utilisateur
+     * @param typeProfil Type de profil du nouvel utilisateur (Professeur , Administrateur ou Eleve)
+     */
     public void ajoutUtilisateur(String nom, String identifiant, String mdp, String typeProfil) {
         ed.ajoutUtilisateur(nom, identifiant, mdp, typeProfil);
     }
     
+    /**
+     * Méthode d'ajout d'un nouveau thème
+     * (Méthode pouvant être activer seulement par un administrateur ou un professeur)
+     * @param intitule du nouveau thème
+     * @param description du nouveau thème
+     */
     public void ajoutTheme(String intitule, String description){
         ed.ajoutTheme(intitule, description);
     }
     
+    /**
+     * Méthode permettant d'ajouter un article posté à la pase de données
+     * @param titre Le titre du nouvel article 
+     * @param content Le contenu du nouvel article
+     */
     public void ajouterArticle(String titre, String content)
     {
         if(content.length() <= 4000)
@@ -220,6 +264,11 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer un article de la base de données
+     * (Méthode pouvant être activer seulement par un administrateur)
+     * @param idArticle L'id de l'article que l'on souhaite supprimer
+     */
     public void supprimerArticle(int idArticle)
     {
         List<Commentaire> commentairesASupprimer = rdi.recupererCommentaires(idArticle);
@@ -237,6 +286,12 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode permettant d'ajouter un nouveau message dans la base de données puis du ou des correspondances permettant de lier le message à son destinataire
+     * @param objet L'objet du message
+     * @param content Le contenu du message
+     * @param destinataires Le ou les destinataires du message
+     */
     public void envoyerMessage(String objet, String content, List<Utilisateur> destinataires)
     {
         if(objet.length() <= 50)
@@ -262,6 +317,10 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode permettant de répondre à un message en enregistrant ce dernier dans la base de données.
+     * @param m 
+     */
     public void renvoiMessage(Message m)
     {
         NouveauMessageVue nmv = new NouveauMessageVue(new ArrayList<>(rdi.recupererUtilisateurs().values()), this);
@@ -269,6 +328,12 @@ public class MainControleur {
         nmv.renvoiMessage(m);
     }
     
+    /**
+     * Méthode permettant à un étudiant de modifier un article qui lui appartient
+     * @param idArticle L'id de l'article à modifier
+     * @param titre Le titre de l'article à modifié ou non
+     * @param content Le contenu de l'article modifié ou non
+     */
     public void modifierArticle(int idArticle, String titre, String content)
     {
         if(content.length() <= 4000)
@@ -289,12 +354,20 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Permet à l'utilisateur de consulter en détail un message qu'il a séléctionné
+     * @param idMessage l'identifiant du message séléctionné
+     */
     public void consulterMessage(int idMessage)
     {
         Message m = rdi.recupererMessage(idMessage);
         bcv.changeMainContent(new MessageVue(m, rdi.recupererUtilisateur(m.getIdAuteur()), this));
     }
     
+    /**
+     * Accès à l'interface de modification d'un article
+     * @param idArticle L'identifiant de l'article à modifier
+     */
     public void allerVersModificationArticle(int idArticle)
     {
         Article a = rdi.recupererArticle(idArticle);
@@ -302,6 +375,10 @@ public class MainControleur {
         bcv.changeMainContent(ev);
     }
     
+    /**
+     * Méthode permettant d'accéder à un utilisateur d'accéder à sa liste d'article
+     * @param idUtilisateur l'identifiant de l'utilisateur
+     */
     public void consulterArticleUtilisateur(int idUtilisateur)
     {
         if(idUtilisateur != utilisateurConnecte.getIdUtilisateur())
@@ -314,6 +391,10 @@ public class MainControleur {
             naviguerVers("Mes articles");
     }
     
+    /**
+     * Méthode permettant à l'utilisateur de consulter en détail l'article séléctionné
+     * @param idArticle L'identifiant de l'article séléctionné
+     */
     public void consulterArticle(int idArticle)
     {
         bcv.changeMainContent(new ArticleCommentairesVue(rdi.recupererArticle(idArticle), 
@@ -322,6 +403,12 @@ public class MainControleur {
                 rdi.recupererCommentaires(idArticle), rdi.recupererUtilisateurs(), this));
     }
     
+    /**
+     * Permet à l'utilisateur de poster un nouveau commentaire, celui-ci sera ajouté à la base de données
+     * @param idArticle L'id de l'article concerné par le commentaire
+     * @param intitule L'intitulé du commentaire
+     * @param content Le contenu du commentaire
+     */
     public void posterCommentaire(int idArticle, String intitule, String content)
     {
         if(!intitule.isEmpty())
@@ -338,6 +425,12 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Permet à un utilisateur de modifier le contenu d'un commentaire qu'il a posté
+     * @param idCommentaire L'identifiant du commentaire
+     * @param idArticle L'identifiant de l'article concerné par le commentaire
+     * @param contenu Le contenu du commentaire à modifier
+     */
     public void modifierCommentaire(int idCommentaire, int idArticle, String contenu)
     {
         if(!contenu.isEmpty())
@@ -349,6 +442,11 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode permettant de récupérer dans une liste l'ensemble des articles d'un utilisateur dans la base de données
+     * @param idUtilisateur L'identifiant de l'utilisateur 
+     * @return Une liste d'articles
+     */
     public List<Article> recupererArticleUtilisateur(int idUtilisateur)
     {
         List<Article> articles = new ArrayList<>();
@@ -366,6 +464,11 @@ public class MainControleur {
         return articles;
     }
     
+    /**
+     * Méthode permettant de supprimer un utilisateur de la base de données et donc de le détacher de son thème, de supprimer ses articles et commentaires
+     * (Méthode pouvant être activer seulement par un administrateur)
+     * @param idUtilisateur L'identifiant de l'utilisateur
+     */
     public void supprimerUtilisateur(int idUtilisateur)
     {
         if(idUtilisateur != utilisateurConnecte.getIdUtilisateur())
@@ -382,12 +485,21 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer de la base de données une correspondance de message afin que celui-ci ne s'affiche plus dans l'interface
+     * On maintient cependant le message dans la base
+     * @param idMessage l'id du message dont on veut supprimer la correspondance
+     */
     public void supprimerCorrespondance(int idMessage)
     {
         ed.supprimerCorrespondance(idMessage, utilisateurConnecte.getIdUtilisateur());
         naviguerVers("ACCUEIL");
     }
     
+    /**
+     * Méthode permettant de supprimer un thème de la base de données
+     * @param idTheme  l'identifiant du thme à supprimer
+     */
     public void supprimerTheme(int idTheme){
         List<Article> articlesASupprimer = recupererArticleUtilisateur(rdi.recupererTheme(idTheme).getIdProp());
         List<Commentaire> commentairesASupprimer = new ArrayList<>();
@@ -416,6 +528,13 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode permettant de supprimer un commentaire de la base de données
+     * (Méthode pouvant être activer seulement par un administrateur)
+     * @param idCommentaire L'identifiant du commentaire à supprimer
+     * @param idArticle L'identifiant de l'article concerné par l'article
+     * @param idUtilisateur L'identifiant de l'utilisateur auteur de cet article
+     */
     public void supprimerCommentaire(int idCommentaire, int idArticle, int idUtilisateur)
     {
         int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer ce commentaire ?", "Supprimer Commentaire", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -426,6 +545,10 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Permet à un professeur d'attribuer un thème à un étudiant
+     * @param idTheme L'identifiant du thème
+     */
     public void attribuerTheme(int idTheme)
     {
         List<Utilisateur> utilisateursSansTheme = new ArrayList<>();
@@ -452,6 +575,11 @@ public class MainControleur {
         }
     }
     
+    /**
+     * Méthode permettant au propriétaire d'un thème de modifier la description de son thème
+     * @param idTheme L'identifiant du thème
+     * @param description La description modifiée
+     */
     public void modifierDescriptionTheme(int idTheme, String description)
     {
         if(description.isEmpty())
@@ -459,11 +587,20 @@ public class MainControleur {
         ed.setDescriptionTheme(idTheme, description);
     }
     
+    /**
+     * Méthode permettant d'afficher l'interface du profil d'un utilisateur
+     * @param idUtilisateur L'identifiant de l'utilisateur
+     */
     public void allerVersProfil(int idUtilisateur)
     {
         bcv.changeMainContent(new ProfilVue(rdi.recupererNote(idUtilisateur), rdi.recupererUtilisateur(idUtilisateur), rdi.recupererThemeUtilisateur(idUtilisateur), this));
     }
     
+    /**
+     * Méthode permettant à un professeur de mettre et modifier une note à un article
+     * @param idArticle L'identifiant de l'article
+     * @param note La note attribuée
+     */
     public void miseAjourNoteArticle(int idArticle, float note)
     {
         if(note <= 5.0f){
@@ -473,6 +610,10 @@ public class MainControleur {
             JOptionPane.showMessageDialog(null, "La note " + note + " est trop élevée (max 5)", "Note trop élevée", JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Getteur sur l'instance de l'utilisateur connecté
+     * @return utilisateurConnecte l'utilisateur connecté
+     */
     public Utilisateur getUtilisateurConnecte()
     {
         return utilisateurConnecte;
