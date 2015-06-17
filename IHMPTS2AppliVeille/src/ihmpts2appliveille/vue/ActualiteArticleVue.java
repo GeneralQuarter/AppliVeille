@@ -28,7 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * Classe d'interface de l'interface d'actualité
  * @author x1QG1x
  */
 public class ActualiteArticleVue extends JPanel{
@@ -160,6 +160,10 @@ public class ActualiteArticleVue extends JPanel{
         }
     }
     
+    /**
+     * Suppression d'un article dans l'interface
+     * @param idArticle 
+     */
     public void supprimerArticle(int idArticle)
     {
         if(articles != null && !articles.isEmpty())

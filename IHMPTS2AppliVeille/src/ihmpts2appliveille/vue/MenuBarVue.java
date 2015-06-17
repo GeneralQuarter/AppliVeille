@@ -23,7 +23,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 /**
- *
+ * Classe d'affichage de la barre de menue
  * @author x1QG1x
  */
 public class MenuBarVue extends JMenuBar{

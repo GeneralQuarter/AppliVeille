@@ -27,7 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 /**
- *
+ * Classe d'affichage de l'interface d'édition d'un nouveau message
  * @author x1QG1x
  */
 public class NouveauMessageVue extends JPanel{

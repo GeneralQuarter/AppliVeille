@@ -26,7 +26,7 @@ import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 
 /**
- *
+ * Classe d'affichage de l'interface d'un message en détail
  * @author x1QG1x
  */
 public class MessageVue extends JPanel{

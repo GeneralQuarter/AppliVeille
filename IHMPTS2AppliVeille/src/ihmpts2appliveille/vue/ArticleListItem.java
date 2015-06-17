@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 /**
- *
+ * Classe d'affichage d'un item de la liste d'article
  * @author x1QG1x
  */
 public class ArticleListItem extends JPanel{

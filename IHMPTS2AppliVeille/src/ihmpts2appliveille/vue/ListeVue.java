@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 /**
- *
+ * Classe d'affichage des listes
  * @author x1QG1x
  */
 public class ListeVue extends JPanel{

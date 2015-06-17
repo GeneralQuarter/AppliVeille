@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 /**
- *
+ * Classe d'affichage d'un commentaire 
  * @author x1QG1x
  */
 public class CommentaireVue extends JPanel{

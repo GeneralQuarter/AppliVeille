@@ -20,7 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- *
+ * Classe d'affichage de la fenêtre principale
  * @author x1QG1x
  */
 public class MainWindowVue extends JFrame{

@@ -26,7 +26,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- *
+ * Classe d'affichage de l'interface sur un profil
  * @author x1QG1x
  */
 public class ProfilVue extends JPanel{

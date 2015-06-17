@@ -36,7 +36,7 @@ import javax.swing.SpringLayout;
 import javax.swing.text.html.HTMLDocument;
 
 /**
- *
+ * Classe d'affichage de l'interface d'un article en détail et de ses commentaires
  * @author x1QG1x
  */
 public class ArticleCommentairesVue extends JPanel{
@@ -266,6 +266,11 @@ public class ArticleCommentairesVue extends JPanel{
         }
     }
     
+    /**
+     * Insertion d'un nouveau commentaire dans l'interface
+     * @param c
+     * @param u 
+     */
     public void ajouterCommentaire(Commentaire c, Utilisateur u)
     {
         CommentaireVue cv = new CommentaireVue(c, u, mctrl);

@@ -30,7 +30,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 /**
- *
+ * Classe d'affichage de l'éditeur de texte
  * @author x1QG1x
  */
 public class EditorVue extends JPanel{

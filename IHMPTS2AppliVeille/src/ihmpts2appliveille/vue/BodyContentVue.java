@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
- *
+ * Classe d'affichage du corp de l'affichage principal
  * @author x1QG1x
  */
 public class BodyContentVue extends JPanel{
@@ -58,6 +58,10 @@ public class BodyContentVue extends JPanel{
         this.changeMainContent(ev);
     }
     
+    /**
+     * Méthode permettant de changer le contenu de la vue principale
+     * @param content 
+     */
     public void changeMainContent(JPanel content)
     {
         if(currentMainContent != null)

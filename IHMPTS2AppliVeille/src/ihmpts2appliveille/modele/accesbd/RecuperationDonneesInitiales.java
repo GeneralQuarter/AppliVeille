@@ -27,18 +27,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Classe de récupération de données dans la base de données
  * @author x1QG1x
  */
 public class RecuperationDonneesInitiales {
     private AccesBD acces;
     private Donnees donnees;
     
+    /**
+     * Constructeur de la classe
+     * @param donnees 
+     */
     public RecuperationDonneesInitiales(Donnees donnees){
         this.acces = new AccesBD();
         this.donnees = donnees;
     }
     
+    /**
+     * Récupération des utilisateurs dans la base de données
+     * @return Une liste d'utilisateur
+     */
     public Map<Integer, Utilisateur> recupererUtilisateurs(){
         try {
             List<List<String>> resultats = acces.interrogerBase("select id_utilisateur, nom, note, nbconn, nbcomm, nbarticle, identifiant, mdp, type_profil, etat from utilisateur");
@@ -88,6 +96,11 @@ public class RecuperationDonneesInitiales {
         return donnees.getUtilisateurs();
     }
     
+    /**
+     * Récupération d'un utilisateur dans la base de données
+     * @param id L'identifiant de l'utilisateur
+     * @return Une instance de la classe utilisateur
+     */
     public Utilisateur recupererUtilisateur(int id){
         Utilisateur utilisateur = null;
         try {
@@ -136,6 +149,11 @@ public class RecuperationDonneesInitiales {
         return utilisateur;
     }
     
+    /**
+     * Récupération de l'utilisateur connecté dans l'application dans la base de données
+     * @param identifiant de l'utilisateur connecté
+     * @return Une instance de la classe Utilisateur
+     */
     public Utilisateur recupererUtilisateurEnConnection(String identifiant){
         Utilisateur utilisateur = null;
         try {
@@ -183,6 +201,11 @@ public class RecuperationDonneesInitiales {
         return utilisateur;
     }
     
+    /**
+     * Récupération d'un article dans la base de données
+     * @param idArticle L'identifiant de l'article à récupérer
+     * @return Une instance de la classe article
+     */
     public Article recupererArticle(int idArticle){
         Article article = null;
         try{
@@ -237,6 +260,10 @@ public class RecuperationDonneesInitiales {
         return article;
     }
     
+    /**
+     * Récupération des thèmes dans la base de données
+     * @return Une liste de thèmes
+     */
     public Map<Integer, Theme> recupererThemes(){
         try{
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM THEME");
@@ -267,6 +294,11 @@ public class RecuperationDonneesInitiales {
         return donnees.getThemes();
     }
     
+    /**
+     * Récupération d'un thème dans la base de données
+     * @param idTheme L'identifiant du thème à récupérer
+     * @return Une instance de la classe Theme
+     */
     public Theme recupererTheme(int idTheme){
         Theme theme = null;
         if(donnees.containsTheme(idTheme))
@@ -292,6 +324,11 @@ public class RecuperationDonneesInitiales {
         return theme;
     }
     
+    /**
+     * Récupération du thème de l'utilisateur connecté dans la base de données
+     * @param idUtilisateur L'identifiant de l'utilisateur connecté
+     * @return Une instance de la classe Theme
+     */
     public Theme recupererThemeUtilisateur(int idUtilisateur){
         Theme theme = null;
         for(Theme t : donnees.getThemes().values())
@@ -319,6 +356,10 @@ public class RecuperationDonneesInitiales {
         return theme;
     }
 
+    /**
+     * Récupération des articles dans la base de données dans un bon ordre
+     * @return Une liste d'articles
+     */
     public List<Article> recupererArticles() {
         List<Article> articlesOrdonnes = new ArrayList<>();
         try{
@@ -371,6 +412,11 @@ public class RecuperationDonneesInitiales {
         return articlesOrdonnes;
     }
     
+    /**
+     * Récupération des commentaires dans la base de données
+     * @param idArticle l'identifiant d'un article dont on souhaite avoir les commentaires
+     * @return un liste de commentaire
+     */
     public List<Commentaire> recupererCommentaires(int idArticle){
         List<Commentaire> res = new ArrayList<>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.s");
@@ -415,6 +461,11 @@ public class RecuperationDonneesInitiales {
         return res;
     }
     
+    /**
+     * Recupérer un message dans la base de données
+     * @param idMessage l'identifiant du message à récupérer
+     * @return Une instance de la classe Message
+     */
     public Message recupererMessage(int idMessage){
         Message m = null;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -439,6 +490,11 @@ public class RecuperationDonneesInitiales {
         return m;
     }
     
+    /**
+     * Récupération les messages d'un utilisateur dans la base de données
+     * @param idUtilisateur l'identifiant de l'utilisateur dont on souhaite récupérer les messages
+     * @return une liste de messages
+     */
     public Message recupererMessageEnvoye(int idUtilisateur){
         Message m = null;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -464,6 +520,11 @@ public class RecuperationDonneesInitiales {
         return m; 
     }
     
+    /**
+     * Récupérer la messagerie d'un utilisateur
+     * @param idUtilisateur Identifiant de l'utilisateur dont on souhaite obtenir la messagerie
+     * @return Une liste de correspondances
+     */
     public List<Message> recupererBoite(int idUtilisateur){
         List<Message> m = new ArrayList<>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -481,6 +542,11 @@ public class RecuperationDonneesInitiales {
         return m; 
     }
     
+    /**
+     * Récupération des résultats d'un utilisateur
+     * @param idUtilisateur L'identifiant de l'utilisateur dont on souhaite récupérer les résultats
+     * @return Le cumul des notes des trois critères
+     */
     public double recupererNote(int idUtilisateur){
         double noteMoyenneArticle = -1;
         double comparaisonNombreArticle = -1;

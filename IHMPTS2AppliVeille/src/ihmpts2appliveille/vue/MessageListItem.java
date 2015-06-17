@@ -23,7 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 
 /**
- *
+ * Classe d'affichage d'un item dans la liste de messages
  * @author x1QG1x
  */
 public class MessageListItem extends JPanel{

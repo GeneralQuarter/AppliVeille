@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 /**
- *
+ * Classe d'affichage de la barre d'aide à la notation
  * @author x1QG1x
  */
 public class Note extends JPanel{
