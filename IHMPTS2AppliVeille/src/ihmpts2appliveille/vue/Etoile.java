@@ -19,8 +19,8 @@ import javax.swing.JPanel;
  */
 public class Etoile extends JPanel{
     private int note;
-    private final ImageIcon starFull = new ImageIcon("star_full.png");
-    private final ImageIcon starEmpty = new ImageIcon("star_empty.png");
+    private final ImageIcon starFull = new ImageIcon("images/star_full.png");
+    private final ImageIcon starEmpty = new ImageIcon("images/star_empty.png");
     private List<JLabel> etoiles;
     
     /**

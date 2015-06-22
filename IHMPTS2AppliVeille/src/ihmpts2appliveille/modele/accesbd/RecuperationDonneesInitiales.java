@@ -532,6 +532,7 @@ public class RecuperationDonneesInitiales {
             List<List<String>> resultats = acces.interrogerBase("SELECT * FROM CORRESPONDANCE WHERE ID_DESTINATAIRE=" + idUtilisateur);
             if(resultats.isEmpty())
                 return null;
+            System.out.println("Message reçu !");
             for(List<String> row : resultats)
             {
                 m.add(recupererMessage(Integer.parseInt(row.get(0))));

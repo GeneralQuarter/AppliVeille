@@ -80,7 +80,7 @@ public class MainWindowVue extends JFrame{
         
         // -- Display --
         try {
-        this.setIconImage(ImageIO.read(new File("logo2.png")));
+        this.setIconImage(ImageIO.read(new File("images/logo.png")));
         } catch (IOException e) {
             System.err.println("Impossible de charger l'icone de l'application");
         }

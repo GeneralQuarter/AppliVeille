@@ -30,7 +30,7 @@ import javax.swing.SpringLayout;
  * @author x1QG1x
  */
 public class MessageVue extends JPanel{
-    private final ImageIcon trash = new ImageIcon("trash.png");
+    private final ImageIcon trash = new ImageIcon("images/trash.png");
     private MainControleur mctrl;
     
     private SpringLayout sp;

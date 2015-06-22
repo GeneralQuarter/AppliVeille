@@ -18,8 +18,8 @@ import javax.swing.table.AbstractTableModel;
  * @author x1QG1x
  */
 public class ModelListeUtilisateur extends AbstractTableModel{
-    private final ImageIcon connected = new ImageIcon("connected.png");
-    private final ImageIcon deconnected = new ImageIcon("deconnected.png");
+    private final ImageIcon connected = new ImageIcon("images/connected.png");
+    private final ImageIcon deconnected = new ImageIcon("images/deconnected.png");
     private final String[] titres = {"Nom", "Type de profil", "Nombre articles", "Nombre commentaires", "Statut"};
     private final Map<Integer, Utilisateur> utilisateurs;
     

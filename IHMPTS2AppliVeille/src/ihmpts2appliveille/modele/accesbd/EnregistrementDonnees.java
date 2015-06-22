@@ -52,6 +52,7 @@ public class EnregistrementDonnees {
      */
     public void ajoutTheme(String intitule, String description){
         try{
+            intitule = intitule.replaceAll("'", "''");
             description = description.replaceAll("'", "''");
             acces.mettreAjourBase("INSERT INTO theme(ID_THEME, ID_PROP, INTITULE, DESCRIPTION) VALUES ((select NVL(max(ID_THEME), 0)+1 from theme), NULL, '" + intitule + "', '" + description + "')");
         } catch (SQLException ex) {
@@ -148,6 +149,26 @@ public class EnregistrementDonnees {
             acces.mettreAjourBase("DELETE commentaire where id_commentaire = " + idCommentaire);
             acces.mettreAjourBase("UPDATE article set NB_COMM_ART=(select COUNT(*) FROM commentaire where id_article=" + idArticle + ") where id_article = " + idArticle);
             acces.mettreAjourBase("UPDATE utilisateur set NBCOMM=(select COUNT(*) FROM commentaire where id_auteur=" + idUtilisateur + ") where id_utilisateur= " + idUtilisateur);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    public void supprimerMessages(int idUtilisateur)
+    {
+        try{
+            acces.mettreAjourBase("DELETE correspondance where id_message IN (select id_message from message where id_auteur = " + idUtilisateur + ")");
+            acces.mettreAjourBase("DELETE correspondance where id_destinataire = " + idUtilisateur);
+            acces.mettreAjourBase("DELETE message where id_auteur = " + idUtilisateur);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    public void supprimerCommentaires(int idUtilisateur)
+    {
+        try{
+            acces.mettreAjourBase("DELETE commentaire where id_auteur = " + idUtilisateur);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }

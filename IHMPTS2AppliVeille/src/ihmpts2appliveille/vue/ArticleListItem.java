@@ -29,9 +29,9 @@ import javax.swing.SpringLayout;
 public class ArticleListItem extends JPanel{
     private MainControleur mctrl;
     
-    private final ImageIcon edit = new ImageIcon("edit.png");
-    private final ImageIcon trash = new ImageIcon("trash.png");
-    private final ImageIcon visible = new ImageIcon("visible.png");
+    private final ImageIcon edit = new ImageIcon("images/edit.png");
+    private final ImageIcon trash = new ImageIcon("images/trash.png");
+    private final ImageIcon visible = new ImageIcon("images/visible.png");
     
     private int idArticle;
     

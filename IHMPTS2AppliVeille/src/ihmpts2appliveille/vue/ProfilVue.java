@@ -30,8 +30,8 @@ import javax.swing.event.DocumentListener;
  * @author x1QG1x
  */
 public class ProfilVue extends JPanel{
-    private final ImageIcon connected = new ImageIcon("connected.png");
-    private final ImageIcon deconnected = new ImageIcon("deconnected.png");
+    private final ImageIcon connected = new ImageIcon("images/connected.png");
+    private final ImageIcon deconnected = new ImageIcon("images/deconnected.png");
     
     private MainControleur mctrl;
     

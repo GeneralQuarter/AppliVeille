@@ -476,7 +476,10 @@ public class MainControleur {
             int choix = JOptionPane.showConfirmDialog(null, "Voulez vous vraiment supprimer " + rdi.recupererUtilisateur(idUtilisateur).getNom(), "Supprimer Utilisateur", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if(choix == JOptionPane.YES_OPTION)
             {
-                ed.depossserderTheme(rdi.recupererThemeUtilisateur(idUtilisateur).getIdTheme());
+                ed.supprimerMessages(idUtilisateur);
+                ed.supprimerCommentaires(idUtilisateur);
+                if(rdi.recupererThemeUtilisateur(idUtilisateur) != null)
+                    ed.depossserderTheme(rdi.recupererThemeUtilisateur(idUtilisateur).getIdTheme());
                 ed.supprimerUtilisateur(idUtilisateur);
                 naviguerVers("Liste des utilisateurs");
             }
