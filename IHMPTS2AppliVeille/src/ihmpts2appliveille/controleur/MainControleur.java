@@ -479,7 +479,8 @@ public class MainControleur {
                 ed.supprimerMessages(idUtilisateur);
                 ed.supprimerCommentaires(idUtilisateur);
                 if(rdi.recupererThemeUtilisateur(idUtilisateur) != null)
-                    ed.depossserderTheme(rdi.recupererThemeUtilisateur(idUtilisateur).getIdTheme());
+                    ed.depossederTheme(rdi.recupererThemeUtilisateur(idUtilisateur).getIdTheme());
+                ed.supprimerArticles(idUtilisateur);
                 ed.supprimerUtilisateur(idUtilisateur);
                 naviguerVers("Liste des utilisateurs");
             }

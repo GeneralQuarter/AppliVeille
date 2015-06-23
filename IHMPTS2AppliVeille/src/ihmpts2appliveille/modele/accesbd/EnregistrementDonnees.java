@@ -165,6 +165,16 @@ public class EnregistrementDonnees {
         }
     }
     
+    public void supprimerArticles(int idUtilisateur)
+    {
+        try{
+            acces.mettreAjourBase("DELETE commentaire where id_article in (select id_article from article where id_auteur = " + idUtilisateur + ")");
+            acces.mettreAjourBase("DELETE article where id_auteur = " + idUtilisateur);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
     public void supprimerCommentaires(int idUtilisateur)
     {
         try{
@@ -192,7 +202,7 @@ public class EnregistrementDonnees {
      * Mise à jour d'un thème pour lui supprimer son propriétaire
      * @param idTheme L'identifiant du thème
      */
-    public void depossserderTheme(int idTheme)
+    public void depossederTheme(int idTheme)
     {
         try{
             acces.mettreAjourBase("UPDATE THEME SET ID_PROP=NULL WHERE ID_THEME='" + idTheme + "'");
